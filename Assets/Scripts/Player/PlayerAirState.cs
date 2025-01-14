@@ -17,6 +17,7 @@ public class PlayerAirState : PlayerState
     public override void Update()
     {
         base.Update();
+
         if(player.IsWallDetected()){
             stateMachine.ChangeState(player.wallSlide);
         }
@@ -26,7 +27,7 @@ public class PlayerAirState : PlayerState
         }
 
         if(xInput != 0){
-            player.SetVelocity(player.moveSpeed * .8f * xInput, rb.velocity.y);
+            player.SetVelocity(player.moveSpeed * 0.8f * xInput, rb.velocity.y);
         }
     }
 }
