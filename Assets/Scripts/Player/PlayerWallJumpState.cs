@@ -6,7 +6,8 @@ public class PlayerWallJumpState : PlayerState
     public override void Enter()
     {
         base.Enter();
-        stateTimer = 1f;
+        
+        stateTimer = 0.2f;
         player.SetVelocity(5 * -player.facingDir, player.jumpForce);
     }
 
@@ -18,6 +19,7 @@ public class PlayerWallJumpState : PlayerState
     public override void Update()
     {
         base.Update();
+
         if(stateTimer < 0){
             stateMachine.ChangeState(player.airState);
         }
