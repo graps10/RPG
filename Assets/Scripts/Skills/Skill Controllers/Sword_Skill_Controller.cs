@@ -176,21 +176,21 @@ public class Sword_Skill_Controller : MonoBehaviour
     }
   }
 
-  private void OnTriggerEnter2D(Collider2D collission)
+  private void OnTriggerEnter2D(Collider2D collision)
     {
         if (isReturning) return;
 
-        if(collission.GetComponent<Enemy>() != null)
+        if(collision.GetComponent<Enemy>() != null)
         {
-            Enemy enemy = collission.GetComponent<Enemy>();
+            Enemy enemy = collision.GetComponent<Enemy>();
             SwordSkillDamage(enemy);
         }
 
-        collission.GetComponent<Enemy>()?.Damage();
+        collision.GetComponent<Enemy>()?.Damage();
 
-        SetupTargetsForBounce(collission);
+        SetupTargetsForBounce(collision);
 
-        StuckInto(collission);
+        StuckInto(collision);
     }
 
   private void SwordSkillDamage(Enemy enemy)
@@ -199,9 +199,9 @@ public class Sword_Skill_Controller : MonoBehaviour
     enemy.StartCoroutine("FreezeTimeFor", freezeTimeDuration);
   }
 
-  private void SetupTargetsForBounce(Collider2D collission)
+  private void SetupTargetsForBounce(Collider2D collision)
   {
-    if (collission.GetComponent<Enemy>() != null)
+    if (collision.GetComponent<Enemy>() != null)
       {
         if (isBouncing && enemyTarget.Count <= 0)
         {
@@ -217,9 +217,9 @@ public class Sword_Skill_Controller : MonoBehaviour
     }
   }
 
-  private void StuckInto(Collider2D collission)
+  private void StuckInto(Collider2D collision)
   {
-    if(pierceAmount > 0 && collission.GetComponent<Enemy>() != null)
+    if(pierceAmount > 0 && collision.GetComponent<Enemy>() != null)
     {
       pierceAmount--;
       return;
@@ -240,6 +240,6 @@ public class Sword_Skill_Controller : MonoBehaviour
     if(isBouncing && enemyTarget.Count > 0) return;
 
     anim.SetBool("Rotation", false);
-    transform.parent = collission.transform;
+    transform.parent = collision.transform;
   }
 }
