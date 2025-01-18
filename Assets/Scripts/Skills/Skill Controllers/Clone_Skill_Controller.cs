@@ -12,6 +12,11 @@ public class Clone_Skill_Controller : MonoBehaviour
     [SerializeField] private float attackCheckRadius = 0.8f;
 
     private Transform closestEnemy;
+    private int facingDir = 1;
+
+    private bool canDuplicateClone;
+    private float chanceToDuplicate;
+    
 
     void Awake()
     {
@@ -32,13 +37,17 @@ public class Clone_Skill_Controller : MonoBehaviour
         }
     }
 
-    public void SetupClone(Transform _newTransform, float cloneDuration, bool canAttack, Vector3 _offset)
+    public void SetupClone(Transform _newTransform, float cloneDuration, bool canAttack, Vector3 _offset, Transform _closestEnemy, bool _canDuplicate, float _chanceToDuplicate)
     {
         if(canAttack)
             anim.SetInteger("AttackNumber", Random.Range(1,4));
         transform.position = _newTransform.position + _offset;
         cloneTimer = cloneDuration;
 
+        closestEnemy = _closestEnemy;
+        
+        canDuplicateClone = _canDuplicate;
+        chanceToDuplicate = _chanceToDuplicate;
         FaceClosestTarget();
     }
 
@@ -55,35 +64,27 @@ public class Clone_Skill_Controller : MonoBehaviour
             if(hit.GetComponent<Enemy>() != null)
             {
                 hit.GetComponent<Enemy>().Damage();
+
+                if(canDuplicateClone)
+                {
+                    if(Random.Range(0, 100) < chanceToDuplicate)
+                    {
+                        SkillManager.instance.clone.CreateClone(hit.transform, new Vector3(.5f * facingDir, 0));
+                    }
+                }
             }
         }
     }
 
     private void FaceClosestTarget()
     {
-        Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, 25);
-
-        float closestDistance = Mathf.Infinity;
-
-        foreach(var hit in colliders)
-        {
-            if(hit.GetComponent<Enemy>() != null)
-            {
-                float distanceToEnemy = Vector2.Distance(transform.position, hit.transform.position);
-
-                if(distanceToEnemy < closestDistance)
-                {   
-                    closestDistance = distanceToEnemy;
-                    closestEnemy = hit.transform;
-                }
-                    
-            }
-        }
-
         if(closestEnemy != null)
         {
             if(transform.position.x > closestEnemy.position.x)
+            {
+                facingDir = -1;
                 transform.Rotate(0, 180,0);
+            } 
         }
     }
 }
