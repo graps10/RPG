@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class Clone_Skill_Controller : MonoBehaviour
 {
+    private Player player;
     private SpriteRenderer sr;
     private Animator anim;
     [SerializeField] private float colorLosingSpeed;
@@ -37,10 +38,12 @@ public class Clone_Skill_Controller : MonoBehaviour
         }
     }
 
-    public void SetupClone(Transform _newTransform, float cloneDuration, bool canAttack, Vector3 _offset, Transform _closestEnemy, bool _canDuplicate, float _chanceToDuplicate)
+    public void SetupClone(Transform _newTransform, float cloneDuration, bool canAttack, Vector3 _offset, Transform _closestEnemy, bool _canDuplicate, float _chanceToDuplicate, Player _player)
     {
         if(canAttack)
             anim.SetInteger("AttackNumber", Random.Range(1,4));
+
+        player = _player;
         transform.position = _newTransform.position + _offset;
         cloneTimer = cloneDuration;
 
@@ -63,7 +66,7 @@ public class Clone_Skill_Controller : MonoBehaviour
         {
             if(hit.GetComponent<Enemy>() != null)
             {
-                hit.GetComponent<Enemy>().Damage();
+                player.stats.DoDamage(hit.GetComponent<CharacterStats>());
 
                 if(canDuplicateClone)
                 {

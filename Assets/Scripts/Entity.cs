@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 
@@ -8,6 +9,8 @@ public class Entity : MonoBehaviour
     public Rigidbody2D rb { get; private set; }
     public EntityFX fx { get; private set; }
     public SpriteRenderer sr { get; private set; }
+    public CharacterStats stats {get; private set;}
+    public CapsuleCollider2D cd {get; private set;}
     #endregion
 
     [Header("KnockBack Info")]
@@ -27,6 +30,8 @@ public class Entity : MonoBehaviour
 
     public int facingDir {get; private set; } = 1;
     protected bool facingRight = true;
+
+    public Action onFlipped;
     
 
     protected virtual void Awake()
@@ -40,11 +45,23 @@ public class Entity : MonoBehaviour
         anim = GetComponentInChildren<Animator>();
         rb = GetComponent<Rigidbody2D>();
         fx = GetComponent<EntityFX>();
+        stats = GetComponent<CharacterStats>();
+        cd = GetComponent<CapsuleCollider2D>();
     }
 
     protected virtual void Update()
     {
 
+    }
+
+    public virtual void SlowEntityBy(float _slowPercantage, float _slowDuration)
+    {
+
+    }
+
+    protected virtual void ReturnDefaultSpeed()
+    {
+        anim.speed = 1;
     }
 
     protected virtual IEnumerator HitKnockback()
@@ -58,13 +75,7 @@ public class Entity : MonoBehaviour
         isKnocked = false;
     }
 
-    public virtual void Damage()
-    {
-        fx.StartCoroutine("FlashFX");
-        StartCoroutine("HitKnockback");
-
-        // Debug.Log(gameObject.name + " was damaged!");
-    }
+    public virtual void DamageImpact() => StartCoroutine("HitKnockback");
 
     #region Velocity
     public void SetZeroVelocity()
@@ -96,10 +107,13 @@ public class Entity : MonoBehaviour
     #endregion
 
     #region Flip
+    
     public virtual void Flip(){
         facingDir *= -1;
         facingRight = !facingRight;
         transform.Rotate(0, 180, 0);
+
+        onFlipped?.Invoke();
     }
 
     public virtual void FlipController(float _x){
@@ -110,12 +124,8 @@ public class Entity : MonoBehaviour
         }
     }
     #endregion
-
-    public void MakeTransparent(bool _transparent)
+    public virtual void Die()
     {
-        if(_transparent)
-            sr.color = Color.clear;
-        else
-            sr.color = Color.white;
+        
     }
 }

@@ -86,7 +86,7 @@ public class BlackHole_Skill_Controller : MonoBehaviour
         if(playerCanDisapear)
         {
             playerCanDisapear = false;
-            PlayerManager.instance.player.MakeTransparent(true);
+            PlayerManager.instance.player.fx.MakeTransparent(true);
         }
     }
 
@@ -166,7 +166,7 @@ public class BlackHole_Skill_Controller : MonoBehaviour
 
         if(!canCreateHotKeys) return;
 
-        GameObject newHotKey = Instantiate(hotKeyPrefab, collision.transform.position + new Vector3(0, 2), Quaternion.identity);
+        GameObject newHotKey = Instantiate(hotKeyPrefab, collision.transform.position + new Vector3(0, 3), Quaternion.identity);
         createdHotKey.Add(newHotKey);
 
         KeyCode chooseKey = keyCodeList[Random.Range(0, keyCodeList.Count)];

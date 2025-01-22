@@ -12,10 +12,13 @@ public class Player : Entity
     public float moveSpeed = 8f;
     public float jumpForce;
     public float swordReturnImpact;
+    private float defaultMoveSpeed;
+    private float defaultJumpForce;
 
     [Header("Dash Info")]
     public float dashSpeed;
     public float dashDuration;
+    private float defaultDashSpeed;
     public float dashDir { get; private set; }
 
     public SkillManager skill {get; private set;}
@@ -38,6 +41,8 @@ public class Player : Entity
     public PlayerAimSwordState aimSword {get; private set;}
     public PlayerCatchSwordState catchSword {get; private set;}
     public PlayerBlackHoleState blackHoleState {get; private set;}
+    
+    public PlayerDeadState deadState {get; private set;}
     #endregion
 
     protected override void Awake()
@@ -60,6 +65,8 @@ public class Player : Entity
         aimSword = new PlayerAimSwordState(this, stateMachine, "AimSword");
         catchSword = new PlayerCatchSwordState(this, stateMachine, "CatchSword");
         blackHoleState = new PlayerBlackHoleState(this, stateMachine, "Jump");
+
+        deadState = new PlayerDeadState(this, stateMachine, "Die");
     }
 
     protected override void Start()
@@ -69,6 +76,10 @@ public class Player : Entity
         skill = SkillManager.instance;
 
         stateMachine.Initialize(idleState);
+
+        defaultMoveSpeed = moveSpeed;
+        defaultJumpForce = jumpForce;
+        defaultDashSpeed = dashSpeed;
     }
 
     protected override void Update()
@@ -81,6 +92,32 @@ public class Player : Entity
 
         if(Input.GetKeyDown(KeyCode.F))
             skill.crystal.CanUseSkill();
+    }
+
+    public override void Die()
+    {
+        base.Die();
+
+        stateMachine.ChangeState(deadState);
+    }
+
+    public override void SlowEntityBy(float _slowPercantage, float _slowDuration)
+    {
+        moveSpeed = moveSpeed * (1 - _slowPercantage);
+        jumpForce = jumpForce * (1 - _slowPercantage);
+        dashSpeed = dashSpeed * (1 - _slowPercantage);
+        anim.speed = anim.speed * (1 - _slowPercantage);
+
+        Invoke("ReturnDefaultSpeed", _slowDuration);
+    }
+
+    protected override void ReturnDefaultSpeed()
+    {
+        base.ReturnDefaultSpeed();
+
+        moveSpeed = defaultMoveSpeed;
+        jumpForce = defaultJumpForce;
+        dashSpeed = defaultDashSpeed;
     }
 
     public void AssignNewSword(GameObject _newSword)
