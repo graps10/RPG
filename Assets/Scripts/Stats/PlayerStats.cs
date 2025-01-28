@@ -19,5 +19,74 @@ public class PlayerStats : CharacterStats
         base.Die();
 
         player.Die();
+        GetComponent<PlayerItemDrop>()?.GenerateDrop();
+    }
+
+    protected override void DeacreaseHealthBy(int _damage)
+    {
+        base.DeacreaseHealthBy(_damage);
+
+        ItemData_Equipment currentArmor = Inventory.instance.GetEquipment(EquipmentType.Armor);
+
+        if(currentArmor != null)
+            currentArmor.Effect(player.transform);
+    }
+
+    public void AddStats(
+        int _strength, int _agility, int _intelligence, int _vitality,
+        int _damage, int _critChance, int _critPower,
+        int _maxHealth, int _armor, int _evasion, int _magicResistance,
+        int _fireDamage, int _iceDamage, int _lightingDamage)
+    {
+        // Major Stats
+        strength.AddModifier(_strength);
+        agility.AddModifier(_agility);
+        intelligence.AddModifier(_intelligence);
+        vitality.AddModifier(_vitality);
+
+        // Offensive Stats
+        damage.AddModifier(_damage);
+        critChance.AddModifier(_critChance);
+        critPower.AddModifier(_critPower);
+
+        // Defensive Stats
+        maxHealth.AddModifier(_maxHealth);
+        armor.AddModifier(_armor);
+        evasion.AddModifier(_evasion);
+        magicResistance.AddModifier(_magicResistance);
+
+        // Magic Stats
+        fireDamage.AddModifier(_fireDamage);
+        iceDamage.AddModifier(_iceDamage);
+        lightingDamage.AddModifier(_lightingDamage);
+    }
+    
+    public void RemoveStats(
+        int _strength, int _agility, int _intelligence, int _vitality,
+        int _damage, int _critChance, int _critPower,
+        int _maxHealth, int _armor, int _evasion, int _magicResistance,
+        int _fireDamage, int _iceDamage, int _lightingDamage)
+    {
+        // Major Stats
+        strength.RemoveModifier(_strength);
+        agility.RemoveModifier(_agility);
+        intelligence.RemoveModifier(_intelligence);
+        vitality.RemoveModifier(_vitality);
+
+        // Offensive Stats
+        damage.RemoveModifier(_damage);
+        critChance.RemoveModifier(_critChance);
+        critPower.RemoveModifier(_critPower);
+
+        // Defensive Stats
+        maxHealth.RemoveModifier(_maxHealth);
+        armor.RemoveModifier(_armor);
+        evasion.RemoveModifier(_evasion);
+        magicResistance.RemoveModifier(_magicResistance);
+
+        // Magic Stats
+        fireDamage.RemoveModifier(_fireDamage);
+        iceDamage.RemoveModifier(_iceDamage);
+        lightingDamage.RemoveModifier(_lightingDamage);
     }
 }

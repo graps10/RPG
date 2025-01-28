@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class CharacterStats : MonoBehaviour
@@ -5,27 +6,26 @@ public class CharacterStats : MonoBehaviour
     private EntityFX fx;
 
     [Header("Major Stats")]
-    [SerializeField] protected Stat strength;
-    [SerializeField] protected Stat agility;
-    [SerializeField] protected Stat intelligence;
-    [SerializeField] protected Stat vitality;
+    [SerializeField] public Stat strength;
+    [SerializeField] public Stat agility;
+    [SerializeField] public Stat intelligence;
+    [SerializeField] public Stat vitality;
 
     [Header("Offensive Stats")]
-    [SerializeField] protected Stat damage;
-    [SerializeField] protected Stat critChance;
-    [SerializeField] protected Stat critPower;
-
+    [SerializeField] public Stat damage;
+    [SerializeField] public Stat critChance;
+    [SerializeField] public Stat critPower;
 
     [Header("Defensive Stats")]
-    [SerializeField] protected Stat maxHealth;
-    [SerializeField] protected Stat armor;
-    [SerializeField] protected Stat evasion;
-    [SerializeField] protected Stat magicResistance;
+    [SerializeField] public Stat maxHealth;
+    [SerializeField] public Stat armor;
+    [SerializeField] public Stat evasion;
+    [SerializeField] public Stat magicResistance;
 
     [Header("Magic Stats")]
-    [SerializeField] protected Stat fireDamage;
-    [SerializeField] protected Stat iceDamage;
-    [SerializeField] protected Stat lightingDamage;
+    [SerializeField] public Stat fireDamage;
+    [SerializeField] public Stat iceDamage;
+    [SerializeField] public Stat lightingDamage;
 
     public bool IsIgnited {get; private set;}
     public bool IsChilled {get; private set;}
@@ -45,11 +45,10 @@ public class CharacterStats : MonoBehaviour
     private int shockDamage;
 
 
-    // public int CurrentHealth {get; private set;}
-    public int CurrentHealth;
+    public int CurrentHealth {get; private set;}
 
     public System.Action onHealthChanged;
-    protected bool isDead;
+    public bool isDead {get; private set;}
 
     protected virtual void Start() 
     {
@@ -77,6 +76,20 @@ public class CharacterStats : MonoBehaviour
         if(IsIgnited) ApplyIgniteDamage();
     }
 
+    public virtual void IncreaseStatBy(int _modifier, float _duration, Stat _statToModify)
+    {
+        StartCoroutine(StatModCoroutine(_modifier, _duration, _statToModify));
+    }
+
+    private IEnumerator StatModCoroutine(int _modifier, float _duration, Stat _statToModify)
+    {
+        _statToModify.AddModifier(_modifier);
+
+        yield return new WaitForSeconds(_duration);
+        
+        _statToModify.RemoveModifier(_modifier);
+    }
+
     public virtual void DoDamage(CharacterStats _targetStats)
     {
         if(_targetStats == null) return;
@@ -93,6 +106,8 @@ public class CharacterStats : MonoBehaviour
         totalDamage = CheckTargetArmor(_targetStats, totalDamage);
         
         _targetStats.TakeDamage(totalDamage);
+
+        DoMagicalDamage(_targetStats);
     }
     
     #region Magical Damage and ailments
@@ -226,6 +241,15 @@ public class CharacterStats : MonoBehaviour
         fx.StartCoroutine("FlashFX");
     }
 
+    public void IncreaseHealthBy(int _amount)
+    {
+        CurrentHealth += _amount;
+        onHealthChanged?.Invoke();
+
+        if(CurrentHealth > GetMaxHealthValue())
+            CurrentHealth = GetMaxHealthValue();
+    }
+    
     protected virtual void DeacreaseHealthBy(int _damage)
     {
         CurrentHealth -= _damage;
