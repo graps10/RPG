@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlayerCounterAttackState : PlayerState
@@ -29,13 +30,15 @@ public class PlayerCounterAttackState : PlayerState
             {
                 if(hit.GetComponent<Enemy>().CanBeStunned())
                 {
-                    stateTimer = 10;
+                    stateTimer = 10; // any value bigger than 1
                     player.anim.SetBool("SuccessfulCounterAttack", true);
                     
+                    player.skill.parry.UseSkill(); // to restore health on parry
+
                     if(canCreateClone)
                     {
                         canCreateClone = false;
-                        player.skill.clone.CreateCloneOnCounterAttack(hit.transform);
+                        player.skill.parry.MakeMirageOnParry(hit.transform);
                     }
                 }
             }

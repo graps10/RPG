@@ -14,8 +14,10 @@ public class ItemData_Equipment : ItemData
 {
     public EquipmentType equipmentType;
 
+    [Header("Unique effect")]
     public float itemCooldown;
     public ItemEffect[] itemEffects;
+
 
     [Header("Major Stats")]
     [SerializeField] private int strength;
@@ -41,6 +43,57 @@ public class ItemData_Equipment : ItemData
 
     [Header("Craft Requirements")]
     [SerializeField] private List<InventoryItem> craftingMaterials;
+
+    private int descriptionLength;
+
+    public override string GetDescription()
+    {
+        sb.Length = 0;
+        descriptionLength = 0;
+
+        // Major Stats
+        AddItemDescription(strength, "Strength");
+        AddItemDescription(agility, "Agility");
+        AddItemDescription(intelligence, "Intelligence");
+        AddItemDescription(vitality, "Vitality");
+
+        // Offensive Stats
+        AddItemDescription(damage, "Damage");
+        AddItemDescription(critChance, "Critical Chance");
+        AddItemDescription(critPower, "Critical Power");
+
+        // Defensive Stats
+        AddItemDescription(health, "Health");
+        AddItemDescription(armor, "Armor");
+        AddItemDescription(evasion, "Evasion");
+        AddItemDescription(magicResistance, "Magic Resistance");
+
+        // Magic Stats
+        AddItemDescription(fireDamage, "Fire Damage");
+        AddItemDescription(iceDamage, "Ice Damage");
+        AddItemDescription(lightingDamage, "Lightning Damage");
+
+        for (int i = 0; i < itemEffects.Length; i++)
+        {
+            if(itemEffects[i].effectDescription.Length > 0)
+            {
+                sb.AppendLine();
+                sb.AppendLine("Unique: " + itemEffects[i].effectDescription);
+                descriptionLength++;
+            }
+        }
+
+        if(descriptionLength < 5)
+        {
+            for(int i = 0; i < 5 - descriptionLength; i++)
+            {
+                sb.AppendLine();
+                sb.Append("");
+            }
+        }
+        
+        return sb.ToString();
+    }
 
     public void Effect(Transform _enemyPosition)
     {
@@ -74,4 +127,18 @@ public class ItemData_Equipment : ItemData
     }
 
     public List<InventoryItem> GetCraftingMaterials() => craftingMaterials;
+
+    private void AddItemDescription(int _value, string _name)
+    {
+        if(_value != 0)
+        {
+            if(sb.Length > 0)
+                sb.AppendLine();
+            
+            if(_value > 0)
+                sb.Append("+ " + _value + " " + _name);
+
+            descriptionLength ++;
+        }
+    }
 }

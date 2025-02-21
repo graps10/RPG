@@ -20,11 +20,12 @@ TextureImporter:
     externalNormalMap: 0
     heightScale: 0.25
     normalMapFilter: 0
+    flipGreenChannel: 0
   isReadable: 0
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
-  ignoreMasterTextureLimit: 0
+  ignoreMipmapLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -63,11 +64,12 @@ TextureImporter:
   textureFormatSet: 0
   ignorePngGamma: 0
   applyGammaDecoding: 0
+  swizzle: 50462976
   cookieLightType: 0
   platformSettings:
   - serializedVersion: 3
     buildTarget: DefaultTexturePlatform
-    maxTextureSize: 2048
+    maxTextureSize: 1024
     resizeAlgorithm: 0
     textureFormat: -1
     textureCompression: 0
@@ -75,6 +77,7 @@ TextureImporter:
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
+    ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 3
@@ -87,6 +90,7 @@ TextureImporter:
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
+    ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 3
@@ -99,6 +103,33 @@ TextureImporter:
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: iPhone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
@@ -6079,293 +6110,292 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      '#2 - Transparent Icons & Drop Shadow_15': -583925579
-      '#2 - Transparent Icons & Drop Shadow_139': -1112065209
-      '#2 - Transparent Icons & Drop Shadow_74': 1501034884
-      '#2 - Transparent Icons & Drop Shadow_141': -389340715
-      '#2 - Transparent Icons & Drop Shadow_94': 239226756
-      '#2 - Transparent Icons & Drop Shadow_46': -997409879
-      '#2 - Transparent Icons & Drop Shadow_158': 1336147245
-      '#2 - Transparent Icons & Drop Shadow_11': -92679457
-      '#2 - Transparent Icons & Drop Shadow_260': -528493863
-      '#2 - Transparent Icons & Drop Shadow_75': -1887118994
-      '#2 - Transparent Icons & Drop Shadow_149': 1113823081
-      '#2 - Transparent Icons & Drop Shadow_13': 1428136709
-      '#2 - Transparent Icons & Drop Shadow_116': 1064111171
-      '#2 - Transparent Icons & Drop Shadow_129': -634045109
-      '#2 - Transparent Icons & Drop Shadow_207': 1527091879
-      '#2 - Transparent Icons & Drop Shadow_183': -1248571004
-      '#2 - Transparent Icons & Drop Shadow_127': 370755832
-      '#2 - Transparent Icons & Drop Shadow_171': 435087778
-      '#2 - Transparent Icons & Drop Shadow_185': -445288517
-      '#2 - Transparent Icons & Drop Shadow_263': -1192999517
-      '#2 - Transparent Icons & Drop Shadow_279': -8202945
-      '#2 - Transparent Icons & Drop Shadow_109': -1328147861
-      '#2 - Transparent Icons & Drop Shadow_143': -2059280682
-      '#2 - Transparent Icons & Drop Shadow_83': -1294465547
-      '#2 - Transparent Icons & Drop Shadow_283': 59983994
-      '#2 - Transparent Icons & Drop Shadow_20': -1211589979
-      '#2 - Transparent Icons & Drop Shadow_237': 737754450
-      '#2 - Transparent Icons & Drop Shadow_150': -1001331978
-      '#2 - Transparent Icons & Drop Shadow_180': -206128802
-      '#2 - Transparent Icons & Drop Shadow_255': 58902981
-      '#2 - Transparent Icons & Drop Shadow_253': 883830905
-      '#2 - Transparent Icons & Drop Shadow_1': -809361918
-      '#2 - Transparent Icons & Drop Shadow_177': -786038898
-      '#2 - Transparent Icons & Drop Shadow_196': 1483220681
-      '#2 - Transparent Icons & Drop Shadow_222': -1232702326
-      '#2 - Transparent Icons & Drop Shadow_212': -628995355
-      '#2 - Transparent Icons & Drop Shadow_206': 397414281
-      '#2 - Transparent Icons & Drop Shadow_162': 454980674
-      '#2 - Transparent Icons & Drop Shadow_31': -944711722
-      '#2 - Transparent Icons & Drop Shadow_232': 935114584
-      '#2 - Transparent Icons & Drop Shadow_194': 1605866299
-      '#2 - Transparent Icons & Drop Shadow_63': -1505564473
-      '#2 - Transparent Icons & Drop Shadow_197': -833144632
-      '#2 - Transparent Icons & Drop Shadow_41': -2032821502
-      '#2 - Transparent Icons & Drop Shadow_32': -1360319688
-      '#2 - Transparent Icons & Drop Shadow_21': 1285305529
-      '#2 - Transparent Icons & Drop Shadow_10': 127570159
-      '#2 - Transparent Icons & Drop Shadow_136': 740601316
-      '#2 - Transparent Icons & Drop Shadow_26': -1253049546
-      '#2 - Transparent Icons & Drop Shadow_51': -362178505
-      '#2 - Transparent Icons & Drop Shadow_76': -2001372202
-      '#2 - Transparent Icons & Drop Shadow_6': -1547864223
-      '#2 - Transparent Icons & Drop Shadow_256': -1500107966
-      '#2 - Transparent Icons & Drop Shadow_104': -725617236
-      '#2 - Transparent Icons & Drop Shadow_220': 1337562163
-      '#2 - Transparent Icons & Drop Shadow_258': 112817174
-      '#2 - Transparent Icons & Drop Shadow_239': -655032487
-      '#2 - Transparent Icons & Drop Shadow_259': -1969949487
-      '#2 - Transparent Icons & Drop Shadow_137': 523175136
-      '#2 - Transparent Icons & Drop Shadow_266': -1761950028
-      '#2 - Transparent Icons & Drop Shadow_56': -1240070012
-      '#2 - Transparent Icons & Drop Shadow_219': 413684207
-      '#2 - Transparent Icons & Drop Shadow_201': 117527768
-      '#2 - Transparent Icons & Drop Shadow_4': -1898523646
-      '#2 - Transparent Icons & Drop Shadow_22': 1487364129
-      '#2 - Transparent Icons & Drop Shadow_216': -1873313981
-      '#2 - Transparent Icons & Drop Shadow_228': -293499293
-      '#2 - Transparent Icons & Drop Shadow_225': 1143837041
-      '#2 - Transparent Icons & Drop Shadow_58': 1666142173
-      '#2 - Transparent Icons & Drop Shadow_242': -1599522399
-      '#2 - Transparent Icons & Drop Shadow_198': 1954205950
-      '#2 - Transparent Icons & Drop Shadow_106': 938343867
-      '#2 - Transparent Icons & Drop Shadow_230': 491315575
-      '#2 - Transparent Icons & Drop Shadow_277': 939789450
-      '#2 - Transparent Icons & Drop Shadow_62': -1061769194
-      '#2 - Transparent Icons & Drop Shadow_59': 1352044876
-      '#2 - Transparent Icons & Drop Shadow_192': -979731868
-      '#2 - Transparent Icons & Drop Shadow_215': -1726271465
-      '#2 - Transparent Icons & Drop Shadow_29': 1508536180
-      '#2 - Transparent Icons & Drop Shadow_145': 351727531
-      '#2 - Transparent Icons & Drop Shadow_155': -2070399289
-      '#2 - Transparent Icons & Drop Shadow_14': 1767515411
-      '#2 - Transparent Icons & Drop Shadow_71': 2043814778
-      '#2 - Transparent Icons & Drop Shadow_170': 1409933052
-      '#2 - Transparent Icons & Drop Shadow_124': -945537713
-      '#2 - Transparent Icons & Drop Shadow_243': 1408612788
-      '#2 - Transparent Icons & Drop Shadow_115': 1361707535
-      '#2 - Transparent Icons & Drop Shadow_121': -856162487
-      '#2 - Transparent Icons & Drop Shadow_227': -636503649
-      '#2 - Transparent Icons & Drop Shadow_2': -444610737
-      '#2 - Transparent Icons & Drop Shadow_153': -358009098
-      '#2 - Transparent Icons & Drop Shadow_105': -648297027
-      '#2 - Transparent Icons & Drop Shadow_126': -1548812619
-      '#2 - Transparent Icons & Drop Shadow_47': -1848583977
-      '#2 - Transparent Icons & Drop Shadow_61': 767027315
-      '#2 - Transparent Icons & Drop Shadow_248': -1152116519
-      '#2 - Transparent Icons & Drop Shadow_221': -1622592811
-      '#2 - Transparent Icons & Drop Shadow_57': -1943397117
-      '#2 - Transparent Icons & Drop Shadow_175': -795483718
-      '#2 - Transparent Icons & Drop Shadow_35': -452983286
-      '#2 - Transparent Icons & Drop Shadow_203': -5155309
-      '#2 - Transparent Icons & Drop Shadow_154': -2026720689
-      '#2 - Transparent Icons & Drop Shadow_8': -1470902421
-      '#2 - Transparent Icons & Drop Shadow_108': 2008310005
-      '#2 - Transparent Icons & Drop Shadow_90': 2114130076
-      '#2 - Transparent Icons & Drop Shadow_224': 1695586568
-      '#2 - Transparent Icons & Drop Shadow_261': -1685385974
-      '#2 - Transparent Icons & Drop Shadow_18': -613494815
-      '#2 - Transparent Icons & Drop Shadow_182': 341602073
-      '#2 - Transparent Icons & Drop Shadow_128': -357499309
-      '#2 - Transparent Icons & Drop Shadow_102': 1206954855
-      '#2 - Transparent Icons & Drop Shadow_78': 414091960
-      '#2 - Transparent Icons & Drop Shadow_113': 1995677919
-      '#2 - Transparent Icons & Drop Shadow_122': -610764296
-      '#2 - Transparent Icons & Drop Shadow_125': -904838711
-      '#2 - Transparent Icons & Drop Shadow_5': -1218949138
-      '#2 - Transparent Icons & Drop Shadow_214': -700182847
-      '#2 - Transparent Icons & Drop Shadow_240': -111840147
-      '#2 - Transparent Icons & Drop Shadow_236': -30923116
-      '#2 - Transparent Icons & Drop Shadow_269': -1559455885
-      '#2 - Transparent Icons & Drop Shadow_33': -1138557387
-      '#2 - Transparent Icons & Drop Shadow_3': 649132855
-      '#2 - Transparent Icons & Drop Shadow_249': 548113150
-      '#2 - Transparent Icons & Drop Shadow_72': 1284424274
-      '#2 - Transparent Icons & Drop Shadow_123': -1555242625
-      '#2 - Transparent Icons & Drop Shadow_271': -1287106543
-      '#2 - Transparent Icons & Drop Shadow_191': 940411880
-      '#2 - Transparent Icons & Drop Shadow_45': -537921570
-      '#2 - Transparent Icons & Drop Shadow_27': 858247798
-      '#2 - Transparent Icons & Drop Shadow_281': -446807250
-      '#2 - Transparent Icons & Drop Shadow_274': -1337995201
-      '#2 - Transparent Icons & Drop Shadow_187': -1689572839
-      '#2 - Transparent Icons & Drop Shadow_247': -1209794006
-      '#2 - Transparent Icons & Drop Shadow_52': 397739693
-      '#2 - Transparent Icons & Drop Shadow_252': -515432759
       '#2 - Transparent Icons & Drop Shadow_0': -1409952321
-      '#2 - Transparent Icons & Drop Shadow_65': 1696523892
-      '#2 - Transparent Icons & Drop Shadow_231': -1051680629
-      '#2 - Transparent Icons & Drop Shadow_195': 644638275
-      '#2 - Transparent Icons & Drop Shadow_178': -1935324340
-      '#2 - Transparent Icons & Drop Shadow_99': -1624624355
-      '#2 - Transparent Icons & Drop Shadow_107': -923979039
-      '#2 - Transparent Icons & Drop Shadow_103': 920896099
-      '#2 - Transparent Icons & Drop Shadow_157': -1920582380
-      '#2 - Transparent Icons & Drop Shadow_140': 1420218089
-      '#2 - Transparent Icons & Drop Shadow_17': 2134143234
-      '#2 - Transparent Icons & Drop Shadow_38': -1550959131
-      '#2 - Transparent Icons & Drop Shadow_25': -1868606538
-      '#2 - Transparent Icons & Drop Shadow_229': -104826009
-      '#2 - Transparent Icons & Drop Shadow_268': -317809730
-      '#2 - Transparent Icons & Drop Shadow_53': 1863113123
-      '#2 - Transparent Icons & Drop Shadow_69': -72005552
-      '#2 - Transparent Icons & Drop Shadow_131': -598475839
-      '#2 - Transparent Icons & Drop Shadow_278': -533659001
-      '#2 - Transparent Icons & Drop Shadow_130': 1907419988
-      '#2 - Transparent Icons & Drop Shadow_80': -460786257
-      '#2 - Transparent Icons & Drop Shadow_36': -1043137112
-      '#2 - Transparent Icons & Drop Shadow_110': -1857543799
-      '#2 - Transparent Icons & Drop Shadow_199': 1377359268
-      '#2 - Transparent Icons & Drop Shadow_164': 126960613
-      '#2 - Transparent Icons & Drop Shadow_223': -895954219
-      '#2 - Transparent Icons & Drop Shadow_245': 158665842
-      '#2 - Transparent Icons & Drop Shadow_251': -157086128
-      '#2 - Transparent Icons & Drop Shadow_77': 1461977103
-      '#2 - Transparent Icons & Drop Shadow_119': -29933531
-      '#2 - Transparent Icons & Drop Shadow_147': 657366318
-      '#2 - Transparent Icons & Drop Shadow_73': -242578667
-      '#2 - Transparent Icons & Drop Shadow_9': -1950394
-      '#2 - Transparent Icons & Drop Shadow_142': -1012288947
-      '#2 - Transparent Icons & Drop Shadow_188': -638014362
-      '#2 - Transparent Icons & Drop Shadow_88': 1236261992
-      '#2 - Transparent Icons & Drop Shadow_49': 998750072
-      '#2 - Transparent Icons & Drop Shadow_234': 1855695228
-      '#2 - Transparent Icons & Drop Shadow_173': -153325730
-      '#2 - Transparent Icons & Drop Shadow_167': 2121942510
-      '#2 - Transparent Icons & Drop Shadow_19': 1090575430
-      '#2 - Transparent Icons & Drop Shadow_169': 1543945294
-      '#2 - Transparent Icons & Drop Shadow_273': -1777910307
-      '#2 - Transparent Icons & Drop Shadow_97': -102417002
-      '#2 - Transparent Icons & Drop Shadow_134': -528304650
-      '#2 - Transparent Icons & Drop Shadow_60': -118601973
-      '#2 - Transparent Icons & Drop Shadow_48': -1055781779
-      '#2 - Transparent Icons & Drop Shadow_235': -1000743885
-      '#2 - Transparent Icons & Drop Shadow_257': 110400585
-      '#2 - Transparent Icons & Drop Shadow_208': 617094054
-      '#2 - Transparent Icons & Drop Shadow_168': 2035249044
-      '#2 - Transparent Icons & Drop Shadow_209': -489727177
-      '#2 - Transparent Icons & Drop Shadow_152': -602158353
-      '#2 - Transparent Icons & Drop Shadow_68': 410906621
-      '#2 - Transparent Icons & Drop Shadow_70': 549003315
+      '#2 - Transparent Icons & Drop Shadow_1': -809361918
+      '#2 - Transparent Icons & Drop Shadow_10': 127570159
       '#2 - Transparent Icons & Drop Shadow_100': 1700278913
-      '#2 - Transparent Icons & Drop Shadow_270': -1657849085
-      '#2 - Transparent Icons & Drop Shadow_179': -588659790
-      '#2 - Transparent Icons & Drop Shadow_67': -316142158
-      '#2 - Transparent Icons & Drop Shadow_112': 50426615
-      '#2 - Transparent Icons & Drop Shadow_163': -261998850
-      '#2 - Transparent Icons & Drop Shadow_16': 1864297879
-      '#2 - Transparent Icons & Drop Shadow_156': -1392471637
-      '#2 - Transparent Icons & Drop Shadow_85': -1145925287
-      '#2 - Transparent Icons & Drop Shadow_200': -1600379483
-      '#2 - Transparent Icons & Drop Shadow_218': 1036225412
-      '#2 - Transparent Icons & Drop Shadow_211': -240188096
-      '#2 - Transparent Icons & Drop Shadow_30': 281222209
-      '#2 - Transparent Icons & Drop Shadow_93': 806190763
-      '#2 - Transparent Icons & Drop Shadow_91': -229098253
-      '#2 - Transparent Icons & Drop Shadow_166': -235380508
-      '#2 - Transparent Icons & Drop Shadow_44': -251623037
-      '#2 - Transparent Icons & Drop Shadow_95': 999485223
-      '#2 - Transparent Icons & Drop Shadow_217': -2114278501
-      '#2 - Transparent Icons & Drop Shadow_98': 1501868837
-      '#2 - Transparent Icons & Drop Shadow_276': 164881453
-      '#2 - Transparent Icons & Drop Shadow_37': -1351563598
-      '#2 - Transparent Icons & Drop Shadow_55': 678717410
-      '#2 - Transparent Icons & Drop Shadow_12': 645359591
-      '#2 - Transparent Icons & Drop Shadow_138': -2057425105
-      '#2 - Transparent Icons & Drop Shadow_64': -2141142661
-      '#2 - Transparent Icons & Drop Shadow_193': -564232693
-      '#2 - Transparent Icons & Drop Shadow_144': -1749496469
-      '#2 - Transparent Icons & Drop Shadow_159': -1266239194
-      '#2 - Transparent Icons & Drop Shadow_161': -1100126603
-      '#2 - Transparent Icons & Drop Shadow_96': -1232294077
-      '#2 - Transparent Icons & Drop Shadow_111': 1998587261
-      '#2 - Transparent Icons & Drop Shadow_42': -1682259948
-      '#2 - Transparent Icons & Drop Shadow_24': -1697554700
-      '#2 - Transparent Icons & Drop Shadow_148': -1926270335
-      '#2 - Transparent Icons & Drop Shadow_210': 349640121
-      '#2 - Transparent Icons & Drop Shadow_213': 1870011191
-      '#2 - Transparent Icons & Drop Shadow_174': -1799554416
-      '#2 - Transparent Icons & Drop Shadow_120': 418654495
-      '#2 - Transparent Icons & Drop Shadow_133': 117454195
-      '#2 - Transparent Icons & Drop Shadow_184': 1357173420
-      '#2 - Transparent Icons & Drop Shadow_181': 1535124125
-      '#2 - Transparent Icons & Drop Shadow_262': -191816445
-      '#2 - Transparent Icons & Drop Shadow_241': 1251957676
-      '#2 - Transparent Icons & Drop Shadow_82': -947522925
-      '#2 - Transparent Icons & Drop Shadow_205': -2121358690
-      '#2 - Transparent Icons & Drop Shadow_244': -1938221961
-      '#2 - Transparent Icons & Drop Shadow_43': -827120969
-      '#2 - Transparent Icons & Drop Shadow_146': -1540688895
-      '#2 - Transparent Icons & Drop Shadow_275': -502890045
-      '#2 - Transparent Icons & Drop Shadow_86': 534172809
-      '#2 - Transparent Icons & Drop Shadow_265': 1431419482
-      '#2 - Transparent Icons & Drop Shadow_66': 1625896041
-      '#2 - Transparent Icons & Drop Shadow_40': 856843705
-      '#2 - Transparent Icons & Drop Shadow_282': -707470048
-      '#2 - Transparent Icons & Drop Shadow_118': 1862874294
-      '#2 - Transparent Icons & Drop Shadow_165': 1836679710
-      '#2 - Transparent Icons & Drop Shadow_238': 523908427
-      '#2 - Transparent Icons & Drop Shadow_272': 678072837
-      '#2 - Transparent Icons & Drop Shadow_28': 497711233
-      '#2 - Transparent Icons & Drop Shadow_226': -1501611519
-      '#2 - Transparent Icons & Drop Shadow_186': 1793735380
-      '#2 - Transparent Icons & Drop Shadow_81': -965925972
-      '#2 - Transparent Icons & Drop Shadow_79': -1570772297
-      '#2 - Transparent Icons & Drop Shadow_202': -902619569
-      '#2 - Transparent Icons & Drop Shadow_264': -869165806
-      '#2 - Transparent Icons & Drop Shadow_172': 422265125
-      '#2 - Transparent Icons & Drop Shadow_250': -2035442007
-      '#2 - Transparent Icons & Drop Shadow_280': -723952554
-      '#2 - Transparent Icons & Drop Shadow_114': -155686565
-      '#2 - Transparent Icons & Drop Shadow_160': 885549674
-      '#2 - Transparent Icons & Drop Shadow_246': -1890357831
-      '#2 - Transparent Icons & Drop Shadow_176': -1340397092
-      '#2 - Transparent Icons & Drop Shadow_23': -591911314
-      '#2 - Transparent Icons & Drop Shadow_84': 1574747948
-      '#2 - Transparent Icons & Drop Shadow_135': -649024866
-      '#2 - Transparent Icons & Drop Shadow_50': -1525172847
-      '#2 - Transparent Icons & Drop Shadow_39': 932685937
-      '#2 - Transparent Icons & Drop Shadow_204': -1536034362
-      '#2 - Transparent Icons & Drop Shadow_92': 1319071753
-      '#2 - Transparent Icons & Drop Shadow_189': 948589509
-      '#2 - Transparent Icons & Drop Shadow_117': 1569890367
-      '#2 - Transparent Icons & Drop Shadow_87': -527025962
-      '#2 - Transparent Icons & Drop Shadow_34': -1111427956
-      '#2 - Transparent Icons & Drop Shadow_132': -1364027442
-      '#2 - Transparent Icons & Drop Shadow_190': -2092503316
-      '#2 - Transparent Icons & Drop Shadow_54': -96611047
-      '#2 - Transparent Icons & Drop Shadow_233': 668117513
-      '#2 - Transparent Icons & Drop Shadow_254': -1775435387
-      '#2 - Transparent Icons & Drop Shadow_7': 1285407444
-      '#2 - Transparent Icons & Drop Shadow_89': -742078844
-      '#2 - Transparent Icons & Drop Shadow_267': -214715372
       '#2 - Transparent Icons & Drop Shadow_101': -776893243
+      '#2 - Transparent Icons & Drop Shadow_102': 1206954855
+      '#2 - Transparent Icons & Drop Shadow_103': 920896099
+      '#2 - Transparent Icons & Drop Shadow_104': -725617236
+      '#2 - Transparent Icons & Drop Shadow_105': -648297027
+      '#2 - Transparent Icons & Drop Shadow_106': 938343867
+      '#2 - Transparent Icons & Drop Shadow_107': -923979039
+      '#2 - Transparent Icons & Drop Shadow_108': 2008310005
+      '#2 - Transparent Icons & Drop Shadow_109': -1328147861
+      '#2 - Transparent Icons & Drop Shadow_11': -92679457
+      '#2 - Transparent Icons & Drop Shadow_110': -1857543799
+      '#2 - Transparent Icons & Drop Shadow_111': 1998587261
+      '#2 - Transparent Icons & Drop Shadow_112': 50426615
+      '#2 - Transparent Icons & Drop Shadow_113': 1995677919
+      '#2 - Transparent Icons & Drop Shadow_114': -155686565
+      '#2 - Transparent Icons & Drop Shadow_115': 1361707535
+      '#2 - Transparent Icons & Drop Shadow_116': 1064111171
+      '#2 - Transparent Icons & Drop Shadow_117': 1569890367
+      '#2 - Transparent Icons & Drop Shadow_118': 1862874294
+      '#2 - Transparent Icons & Drop Shadow_119': -29933531
+      '#2 - Transparent Icons & Drop Shadow_12': 645359591
+      '#2 - Transparent Icons & Drop Shadow_120': 418654495
+      '#2 - Transparent Icons & Drop Shadow_121': -856162487
+      '#2 - Transparent Icons & Drop Shadow_122': -610764296
+      '#2 - Transparent Icons & Drop Shadow_123': -1555242625
+      '#2 - Transparent Icons & Drop Shadow_124': -945537713
+      '#2 - Transparent Icons & Drop Shadow_125': -904838711
+      '#2 - Transparent Icons & Drop Shadow_126': -1548812619
+      '#2 - Transparent Icons & Drop Shadow_127': 370755832
+      '#2 - Transparent Icons & Drop Shadow_128': -357499309
+      '#2 - Transparent Icons & Drop Shadow_129': -634045109
+      '#2 - Transparent Icons & Drop Shadow_13': 1428136709
+      '#2 - Transparent Icons & Drop Shadow_130': 1907419988
+      '#2 - Transparent Icons & Drop Shadow_131': -598475839
+      '#2 - Transparent Icons & Drop Shadow_132': -1364027442
+      '#2 - Transparent Icons & Drop Shadow_133': 117454195
+      '#2 - Transparent Icons & Drop Shadow_134': -528304650
+      '#2 - Transparent Icons & Drop Shadow_135': -649024866
+      '#2 - Transparent Icons & Drop Shadow_136': 740601316
+      '#2 - Transparent Icons & Drop Shadow_137': 523175136
+      '#2 - Transparent Icons & Drop Shadow_138': -2057425105
+      '#2 - Transparent Icons & Drop Shadow_139': -1112065209
+      '#2 - Transparent Icons & Drop Shadow_14': 1767515411
+      '#2 - Transparent Icons & Drop Shadow_140': 1420218089
+      '#2 - Transparent Icons & Drop Shadow_141': -389340715
+      '#2 - Transparent Icons & Drop Shadow_142': -1012288947
+      '#2 - Transparent Icons & Drop Shadow_143': -2059280682
+      '#2 - Transparent Icons & Drop Shadow_144': -1749496469
+      '#2 - Transparent Icons & Drop Shadow_145': 351727531
+      '#2 - Transparent Icons & Drop Shadow_146': -1540688895
+      '#2 - Transparent Icons & Drop Shadow_147': 657366318
+      '#2 - Transparent Icons & Drop Shadow_148': -1926270335
+      '#2 - Transparent Icons & Drop Shadow_149': 1113823081
+      '#2 - Transparent Icons & Drop Shadow_15': -583925579
+      '#2 - Transparent Icons & Drop Shadow_150': -1001331978
       '#2 - Transparent Icons & Drop Shadow_151': 1698666122
-  spritePackingTag: 
+      '#2 - Transparent Icons & Drop Shadow_152': -602158353
+      '#2 - Transparent Icons & Drop Shadow_153': -358009098
+      '#2 - Transparent Icons & Drop Shadow_154': -2026720689
+      '#2 - Transparent Icons & Drop Shadow_155': -2070399289
+      '#2 - Transparent Icons & Drop Shadow_156': -1392471637
+      '#2 - Transparent Icons & Drop Shadow_157': -1920582380
+      '#2 - Transparent Icons & Drop Shadow_158': 1336147245
+      '#2 - Transparent Icons & Drop Shadow_159': -1266239194
+      '#2 - Transparent Icons & Drop Shadow_16': 1864297879
+      '#2 - Transparent Icons & Drop Shadow_160': 885549674
+      '#2 - Transparent Icons & Drop Shadow_161': -1100126603
+      '#2 - Transparent Icons & Drop Shadow_162': 454980674
+      '#2 - Transparent Icons & Drop Shadow_163': -261998850
+      '#2 - Transparent Icons & Drop Shadow_164': 126960613
+      '#2 - Transparent Icons & Drop Shadow_165': 1836679710
+      '#2 - Transparent Icons & Drop Shadow_166': -235380508
+      '#2 - Transparent Icons & Drop Shadow_167': 2121942510
+      '#2 - Transparent Icons & Drop Shadow_168': 2035249044
+      '#2 - Transparent Icons & Drop Shadow_169': 1543945294
+      '#2 - Transparent Icons & Drop Shadow_17': 2134143234
+      '#2 - Transparent Icons & Drop Shadow_170': 1409933052
+      '#2 - Transparent Icons & Drop Shadow_171': 435087778
+      '#2 - Transparent Icons & Drop Shadow_172': 422265125
+      '#2 - Transparent Icons & Drop Shadow_173': -153325730
+      '#2 - Transparent Icons & Drop Shadow_174': -1799554416
+      '#2 - Transparent Icons & Drop Shadow_175': -795483718
+      '#2 - Transparent Icons & Drop Shadow_176': -1340397092
+      '#2 - Transparent Icons & Drop Shadow_177': -786038898
+      '#2 - Transparent Icons & Drop Shadow_178': -1935324340
+      '#2 - Transparent Icons & Drop Shadow_179': -588659790
+      '#2 - Transparent Icons & Drop Shadow_18': -613494815
+      '#2 - Transparent Icons & Drop Shadow_180': -206128802
+      '#2 - Transparent Icons & Drop Shadow_181': 1535124125
+      '#2 - Transparent Icons & Drop Shadow_182': 341602073
+      '#2 - Transparent Icons & Drop Shadow_183': -1248571004
+      '#2 - Transparent Icons & Drop Shadow_184': 1357173420
+      '#2 - Transparent Icons & Drop Shadow_185': -445288517
+      '#2 - Transparent Icons & Drop Shadow_186': 1793735380
+      '#2 - Transparent Icons & Drop Shadow_187': -1689572839
+      '#2 - Transparent Icons & Drop Shadow_188': -638014362
+      '#2 - Transparent Icons & Drop Shadow_189': 948589509
+      '#2 - Transparent Icons & Drop Shadow_19': 1090575430
+      '#2 - Transparent Icons & Drop Shadow_190': -2092503316
+      '#2 - Transparent Icons & Drop Shadow_191': 940411880
+      '#2 - Transparent Icons & Drop Shadow_192': -979731868
+      '#2 - Transparent Icons & Drop Shadow_193': -564232693
+      '#2 - Transparent Icons & Drop Shadow_194': 1605866299
+      '#2 - Transparent Icons & Drop Shadow_195': 644638275
+      '#2 - Transparent Icons & Drop Shadow_196': 1483220681
+      '#2 - Transparent Icons & Drop Shadow_197': -833144632
+      '#2 - Transparent Icons & Drop Shadow_198': 1954205950
+      '#2 - Transparent Icons & Drop Shadow_199': 1377359268
+      '#2 - Transparent Icons & Drop Shadow_2': -444610737
+      '#2 - Transparent Icons & Drop Shadow_20': -1211589979
+      '#2 - Transparent Icons & Drop Shadow_200': -1600379483
+      '#2 - Transparent Icons & Drop Shadow_201': 117527768
+      '#2 - Transparent Icons & Drop Shadow_202': -902619569
+      '#2 - Transparent Icons & Drop Shadow_203': -5155309
+      '#2 - Transparent Icons & Drop Shadow_204': -1536034362
+      '#2 - Transparent Icons & Drop Shadow_205': -2121358690
+      '#2 - Transparent Icons & Drop Shadow_206': 397414281
+      '#2 - Transparent Icons & Drop Shadow_207': 1527091879
+      '#2 - Transparent Icons & Drop Shadow_208': 617094054
+      '#2 - Transparent Icons & Drop Shadow_209': -489727177
+      '#2 - Transparent Icons & Drop Shadow_21': 1285305529
+      '#2 - Transparent Icons & Drop Shadow_210': 349640121
+      '#2 - Transparent Icons & Drop Shadow_211': -240188096
+      '#2 - Transparent Icons & Drop Shadow_212': -628995355
+      '#2 - Transparent Icons & Drop Shadow_213': 1870011191
+      '#2 - Transparent Icons & Drop Shadow_214': -700182847
+      '#2 - Transparent Icons & Drop Shadow_215': -1726271465
+      '#2 - Transparent Icons & Drop Shadow_216': -1873313981
+      '#2 - Transparent Icons & Drop Shadow_217': -2114278501
+      '#2 - Transparent Icons & Drop Shadow_218': 1036225412
+      '#2 - Transparent Icons & Drop Shadow_219': 413684207
+      '#2 - Transparent Icons & Drop Shadow_22': 1487364129
+      '#2 - Transparent Icons & Drop Shadow_220': 1337562163
+      '#2 - Transparent Icons & Drop Shadow_221': -1622592811
+      '#2 - Transparent Icons & Drop Shadow_222': -1232702326
+      '#2 - Transparent Icons & Drop Shadow_223': -895954219
+      '#2 - Transparent Icons & Drop Shadow_224': 1695586568
+      '#2 - Transparent Icons & Drop Shadow_225': 1143837041
+      '#2 - Transparent Icons & Drop Shadow_226': -1501611519
+      '#2 - Transparent Icons & Drop Shadow_227': -636503649
+      '#2 - Transparent Icons & Drop Shadow_228': -293499293
+      '#2 - Transparent Icons & Drop Shadow_229': -104826009
+      '#2 - Transparent Icons & Drop Shadow_23': -591911314
+      '#2 - Transparent Icons & Drop Shadow_230': 491315575
+      '#2 - Transparent Icons & Drop Shadow_231': -1051680629
+      '#2 - Transparent Icons & Drop Shadow_232': 935114584
+      '#2 - Transparent Icons & Drop Shadow_233': 668117513
+      '#2 - Transparent Icons & Drop Shadow_234': 1855695228
+      '#2 - Transparent Icons & Drop Shadow_235': -1000743885
+      '#2 - Transparent Icons & Drop Shadow_236': -30923116
+      '#2 - Transparent Icons & Drop Shadow_237': 737754450
+      '#2 - Transparent Icons & Drop Shadow_238': 523908427
+      '#2 - Transparent Icons & Drop Shadow_239': -655032487
+      '#2 - Transparent Icons & Drop Shadow_24': -1697554700
+      '#2 - Transparent Icons & Drop Shadow_240': -111840147
+      '#2 - Transparent Icons & Drop Shadow_241': 1251957676
+      '#2 - Transparent Icons & Drop Shadow_242': -1599522399
+      '#2 - Transparent Icons & Drop Shadow_243': 1408612788
+      '#2 - Transparent Icons & Drop Shadow_244': -1938221961
+      '#2 - Transparent Icons & Drop Shadow_245': 158665842
+      '#2 - Transparent Icons & Drop Shadow_246': -1890357831
+      '#2 - Transparent Icons & Drop Shadow_247': -1209794006
+      '#2 - Transparent Icons & Drop Shadow_248': -1152116519
+      '#2 - Transparent Icons & Drop Shadow_249': 548113150
+      '#2 - Transparent Icons & Drop Shadow_25': -1868606538
+      '#2 - Transparent Icons & Drop Shadow_250': -2035442007
+      '#2 - Transparent Icons & Drop Shadow_251': -157086128
+      '#2 - Transparent Icons & Drop Shadow_252': -515432759
+      '#2 - Transparent Icons & Drop Shadow_253': 883830905
+      '#2 - Transparent Icons & Drop Shadow_254': -1775435387
+      '#2 - Transparent Icons & Drop Shadow_255': 58902981
+      '#2 - Transparent Icons & Drop Shadow_256': -1500107966
+      '#2 - Transparent Icons & Drop Shadow_257': 110400585
+      '#2 - Transparent Icons & Drop Shadow_258': 112817174
+      '#2 - Transparent Icons & Drop Shadow_259': -1969949487
+      '#2 - Transparent Icons & Drop Shadow_26': -1253049546
+      '#2 - Transparent Icons & Drop Shadow_260': -528493863
+      '#2 - Transparent Icons & Drop Shadow_261': -1685385974
+      '#2 - Transparent Icons & Drop Shadow_262': -191816445
+      '#2 - Transparent Icons & Drop Shadow_263': -1192999517
+      '#2 - Transparent Icons & Drop Shadow_264': -869165806
+      '#2 - Transparent Icons & Drop Shadow_265': 1431419482
+      '#2 - Transparent Icons & Drop Shadow_266': -1761950028
+      '#2 - Transparent Icons & Drop Shadow_267': -214715372
+      '#2 - Transparent Icons & Drop Shadow_268': -317809730
+      '#2 - Transparent Icons & Drop Shadow_269': -1559455885
+      '#2 - Transparent Icons & Drop Shadow_27': 858247798
+      '#2 - Transparent Icons & Drop Shadow_270': -1657849085
+      '#2 - Transparent Icons & Drop Shadow_271': -1287106543
+      '#2 - Transparent Icons & Drop Shadow_272': 678072837
+      '#2 - Transparent Icons & Drop Shadow_273': -1777910307
+      '#2 - Transparent Icons & Drop Shadow_274': -1337995201
+      '#2 - Transparent Icons & Drop Shadow_275': -502890045
+      '#2 - Transparent Icons & Drop Shadow_276': 164881453
+      '#2 - Transparent Icons & Drop Shadow_277': 939789450
+      '#2 - Transparent Icons & Drop Shadow_278': -533659001
+      '#2 - Transparent Icons & Drop Shadow_279': -8202945
+      '#2 - Transparent Icons & Drop Shadow_28': 497711233
+      '#2 - Transparent Icons & Drop Shadow_280': -723952554
+      '#2 - Transparent Icons & Drop Shadow_281': -446807250
+      '#2 - Transparent Icons & Drop Shadow_282': -707470048
+      '#2 - Transparent Icons & Drop Shadow_283': 59983994
+      '#2 - Transparent Icons & Drop Shadow_29': 1508536180
+      '#2 - Transparent Icons & Drop Shadow_3': 649132855
+      '#2 - Transparent Icons & Drop Shadow_30': 281222209
+      '#2 - Transparent Icons & Drop Shadow_31': -944711722
+      '#2 - Transparent Icons & Drop Shadow_32': -1360319688
+      '#2 - Transparent Icons & Drop Shadow_33': -1138557387
+      '#2 - Transparent Icons & Drop Shadow_34': -1111427956
+      '#2 - Transparent Icons & Drop Shadow_35': -452983286
+      '#2 - Transparent Icons & Drop Shadow_36': -1043137112
+      '#2 - Transparent Icons & Drop Shadow_37': -1351563598
+      '#2 - Transparent Icons & Drop Shadow_38': -1550959131
+      '#2 - Transparent Icons & Drop Shadow_39': 932685937
+      '#2 - Transparent Icons & Drop Shadow_4': -1898523646
+      '#2 - Transparent Icons & Drop Shadow_40': 856843705
+      '#2 - Transparent Icons & Drop Shadow_41': -2032821502
+      '#2 - Transparent Icons & Drop Shadow_42': -1682259948
+      '#2 - Transparent Icons & Drop Shadow_43': -827120969
+      '#2 - Transparent Icons & Drop Shadow_44': -251623037
+      '#2 - Transparent Icons & Drop Shadow_45': -537921570
+      '#2 - Transparent Icons & Drop Shadow_46': -997409879
+      '#2 - Transparent Icons & Drop Shadow_47': -1848583977
+      '#2 - Transparent Icons & Drop Shadow_48': -1055781779
+      '#2 - Transparent Icons & Drop Shadow_49': 998750072
+      '#2 - Transparent Icons & Drop Shadow_5': -1218949138
+      '#2 - Transparent Icons & Drop Shadow_50': -1525172847
+      '#2 - Transparent Icons & Drop Shadow_51': -362178505
+      '#2 - Transparent Icons & Drop Shadow_52': 397739693
+      '#2 - Transparent Icons & Drop Shadow_53': 1863113123
+      '#2 - Transparent Icons & Drop Shadow_54': -96611047
+      '#2 - Transparent Icons & Drop Shadow_55': 678717410
+      '#2 - Transparent Icons & Drop Shadow_56': -1240070012
+      '#2 - Transparent Icons & Drop Shadow_57': -1943397117
+      '#2 - Transparent Icons & Drop Shadow_58': 1666142173
+      '#2 - Transparent Icons & Drop Shadow_59': 1352044876
+      '#2 - Transparent Icons & Drop Shadow_6': -1547864223
+      '#2 - Transparent Icons & Drop Shadow_60': -118601973
+      '#2 - Transparent Icons & Drop Shadow_61': 767027315
+      '#2 - Transparent Icons & Drop Shadow_62': -1061769194
+      '#2 - Transparent Icons & Drop Shadow_63': -1505564473
+      '#2 - Transparent Icons & Drop Shadow_64': -2141142661
+      '#2 - Transparent Icons & Drop Shadow_65': 1696523892
+      '#2 - Transparent Icons & Drop Shadow_66': 1625896041
+      '#2 - Transparent Icons & Drop Shadow_67': -316142158
+      '#2 - Transparent Icons & Drop Shadow_68': 410906621
+      '#2 - Transparent Icons & Drop Shadow_69': -72005552
+      '#2 - Transparent Icons & Drop Shadow_7': 1285407444
+      '#2 - Transparent Icons & Drop Shadow_70': 549003315
+      '#2 - Transparent Icons & Drop Shadow_71': 2043814778
+      '#2 - Transparent Icons & Drop Shadow_72': 1284424274
+      '#2 - Transparent Icons & Drop Shadow_73': -242578667
+      '#2 - Transparent Icons & Drop Shadow_74': 1501034884
+      '#2 - Transparent Icons & Drop Shadow_75': -1887118994
+      '#2 - Transparent Icons & Drop Shadow_76': -2001372202
+      '#2 - Transparent Icons & Drop Shadow_77': 1461977103
+      '#2 - Transparent Icons & Drop Shadow_78': 414091960
+      '#2 - Transparent Icons & Drop Shadow_79': -1570772297
+      '#2 - Transparent Icons & Drop Shadow_8': -1470902421
+      '#2 - Transparent Icons & Drop Shadow_80': -460786257
+      '#2 - Transparent Icons & Drop Shadow_81': -965925972
+      '#2 - Transparent Icons & Drop Shadow_82': -947522925
+      '#2 - Transparent Icons & Drop Shadow_83': -1294465547
+      '#2 - Transparent Icons & Drop Shadow_84': 1574747948
+      '#2 - Transparent Icons & Drop Shadow_85': -1145925287
+      '#2 - Transparent Icons & Drop Shadow_86': 534172809
+      '#2 - Transparent Icons & Drop Shadow_87': -527025962
+      '#2 - Transparent Icons & Drop Shadow_88': 1236261992
+      '#2 - Transparent Icons & Drop Shadow_89': -742078844
+      '#2 - Transparent Icons & Drop Shadow_9': -1950394
+      '#2 - Transparent Icons & Drop Shadow_90': 2114130076
+      '#2 - Transparent Icons & Drop Shadow_91': -229098253
+      '#2 - Transparent Icons & Drop Shadow_92': 1319071753
+      '#2 - Transparent Icons & Drop Shadow_93': 806190763
+      '#2 - Transparent Icons & Drop Shadow_94': 239226756
+      '#2 - Transparent Icons & Drop Shadow_95': 999485223
+      '#2 - Transparent Icons & Drop Shadow_96': -1232294077
+      '#2 - Transparent Icons & Drop Shadow_97': -102417002
+      '#2 - Transparent Icons & Drop Shadow_98': 1501868837
+      '#2 - Transparent Icons & Drop Shadow_99': -1624624355
+  mipmapLimitGroupName: 
   pSDRemoveMatte: 0
-  pSDShowRemoveMatteOption: 0
   userData: 
   assetBundleName: 
   assetBundleVariant: 

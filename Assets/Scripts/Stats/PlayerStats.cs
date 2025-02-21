@@ -1,3 +1,6 @@
+using Unity.VisualScripting.Antlr3.Runtime.Misc;
+using UnityEngine;
+
 public class PlayerStats : CharacterStats
 {
     private Player player;
@@ -12,6 +15,34 @@ public class PlayerStats : CharacterStats
     public override void TakeDamage(int _damage)
     {
         base.TakeDamage(_damage);
+    }
+
+    public override void OnEvasion()
+    {
+        player.skill.dodge.CreateMirageOnDodge();
+    }
+
+    public void CloneDoDamage(CharacterStats _targetStats, float _multiplier)
+    {
+        if(_targetStats == null) return;
+        
+        if (TargetCanAvoidAttack(_targetStats)) return;
+
+        int totalDamage = damage.GetValue() + strength.GetValue();
+
+        if(_multiplier > 0)
+            totalDamage = Mathf.RoundToInt(totalDamage * _multiplier);
+        
+        if(CanCrit())
+        {
+            totalDamage = CalculateCriticalDamage(totalDamage);
+        }
+
+        totalDamage = CheckTargetArmor(_targetStats, totalDamage);
+        
+        _targetStats.TakeDamage(totalDamage);
+
+        DoMagicalDamage(_targetStats);
     }
 
     protected override void Die()

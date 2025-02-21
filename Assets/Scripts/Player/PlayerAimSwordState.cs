@@ -11,6 +11,8 @@ public class PlayerAimSwordState : PlayerState
         base.Enter();
 
         player.skill.sword.DotsActive(true);
+        if(player.isBusy)
+            stateMachine.ChangeState(player.idleState);
     }
     public override void Update()
     {

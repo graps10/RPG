@@ -90,7 +90,7 @@ public class Player : Entity
 
         CheckForDashInput();
 
-        if(Input.GetKeyDown(KeyCode.F))
+        if(Input.GetKeyDown(KeyCode.F) && skill.crystal.crystalUnlocked)
             skill.crystal.CanUseSkill();
 
         if(Input.GetKeyDown(KeyCode.E))
@@ -144,8 +144,15 @@ public class Player : Entity
 
     public void AnimationTrigger() => stateMachine.currentState.AnimationFinishTrigger();
 
-    private void CheckForDashInput(){
+    private void CheckForDashInput()
+    {
         if(IsWallDetected())
+            return;
+
+        if(skill.dash.dashUnlocked == false)
+            return;
+
+        if(stateMachine.currentState == blackHoleState || stateMachine.currentState == deadState)
             return;
        
 

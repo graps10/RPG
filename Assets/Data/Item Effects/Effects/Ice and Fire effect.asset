@@ -12,5 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b0b4aec531cf1ac4d90cd581fe41e9f7, type: 3}
   m_Name: Ice and Fire effect
   m_EditorClassIdentifier: 
+  effectDescription: Create Ice and Fire on 3rd attack.
   iceAndFirePrefab: {fileID: 1244835694717432849, guid: bcadf8eee9e29404b86303067fee6617, type: 3}
   xVelocity: 10

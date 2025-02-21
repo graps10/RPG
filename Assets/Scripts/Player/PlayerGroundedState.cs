@@ -20,16 +20,16 @@ public class PlayerGroundedState : PlayerState
     {
         base.Update();
 
-        if(Input.GetKeyDown(KeyCode.R))
+        if(Input.GetKeyDown(KeyCode.R) && IsBlackHoleUnlocked())
             stateMachine.ChangeState(player.blackHoleState);
 
-        if(Input.GetKeyDown(KeyCode.Mouse1) && HasNoSword())
+        if(Input.GetKeyDown(KeyCode.Mouse1) && HasNoSword() && IsSwordUnlocked())
             stateMachine.ChangeState(player.aimSword);
 
-        if(Input.GetKeyDown(KeyCode.Q) && HasNoSwordCheck())
+        if(Input.GetKeyDown(KeyCode.Q) && HasSword() && IsParryUnlocked())
             stateMachine.ChangeState(player.counterAttack);
 
-        if(Input.GetKeyDown(KeyCode.Mouse0) && HasNoSwordCheck())
+        if(Input.GetKeyDown(KeyCode.Mouse0) && HasSword())
             stateMachine.ChangeState(player.primaryAttack);
         
 
@@ -51,7 +51,7 @@ public class PlayerGroundedState : PlayerState
         player.sword.GetComponent<Sword_Skill_Controller>().ReturnSword();
         return false;
     }
-    private bool HasNoSwordCheck()
+    private bool HasSword()
     {
         if(!player.sword)
         {
@@ -59,5 +59,29 @@ public class PlayerGroundedState : PlayerState
         }
     
         return false;
+    }
+
+    private bool IsSwordUnlocked()
+    {
+        if(!player.skill.sword.swordUnlocked)
+            return false;
+
+        return true;
+    }
+
+    private bool IsParryUnlocked()
+    {
+        if(!player.skill.parry.parryUnlocked)
+            return false;
+        
+        return true;
+    }
+
+    private bool IsBlackHoleUnlocked()
+    {
+        if(!player.skill.blackHole.blackHoleUnlocked)
+            return false;
+        
+        return true;
     }
 }
