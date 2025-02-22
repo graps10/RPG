@@ -17,6 +17,22 @@ public class Parry_Skill : Skill
     [SerializeField] private UI_SkillTreeSlot parryWithMirageUnlockButton;
     public bool parryWithMirageUnlocked {get; private set;}
 
+    protected override void Start()
+    {
+        base.Start();
+
+        parryUnlockButton.GetComponent<Button>().onClick.AddListener(UnlockParry);
+        restoreUnlockButton.GetComponent<Button>().onClick.AddListener(UnlockParryRestore);
+        parryWithMirageUnlockButton.GetComponent<Button>().onClick.AddListener(UnlockParryWithMirage);
+    }
+
+    protected override void CheckUnlock()
+    {
+        UnlockParry();
+        UnlockParryRestore();
+        UnlockParryWithMirage();
+    }
+
     public override void UseSkill()
     {
         base.UseSkill();
@@ -26,15 +42,6 @@ public class Parry_Skill : Skill
             int restoreAmount = Mathf.RoundToInt(player.stats.GetMaxHealthValue() * restoreHealthPercentage);
             player.stats.IncreaseHealthBy(restoreAmount);
         }
-    }
-
-    protected override void Start()
-    {
-        base.Start();
-
-        parryUnlockButton.GetComponent<Button>().onClick.AddListener(UnlockParry);
-        restoreUnlockButton.GetComponent<Button>().onClick.AddListener(UnlockParryRestore);
-        parryWithMirageUnlockButton.GetComponent<Button>().onClick.AddListener(UnlockParryWithMirage);
     }
 
     public void MakeMirageOnParry(Transform _respawnTransform)

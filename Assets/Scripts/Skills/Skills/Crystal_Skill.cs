@@ -84,6 +84,16 @@ public class Crystal_Skill : Skill
     public void CurrentCrystalChooseRandomTarget() => currentCrystal.GetComponent<Crystal_Skill_Controller>()?.ChooseRandomEnemy();
 
     #region Unlock skill region
+
+    protected override void CheckUnlock()
+    {
+        UnlockCrystal();
+        UnlockCrystalMirage();
+        UnlockExplosiveCrystal();
+        UnlockMovingCrystal();
+        UnlockMultiStack();
+    }
+
     private void UnlockCrystal()
     {
         if(unlockCrystalButton.unlocked)

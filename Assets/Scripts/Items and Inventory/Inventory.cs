@@ -1,8 +1,9 @@
 using System.Collections.Generic;
-using Unity.VisualScripting;
+using UnityEditor;
+using UnityEditorInternal.Profiling.Memory.Experimental;
 using UnityEngine;
 
-public class Inventory : MonoBehaviour
+public class Inventory : MonoBehaviour, ISaveManager
 {
     public static Inventory instance;
 
@@ -35,6 +36,10 @@ public class Inventory : MonoBehaviour
     public float flaskCooldown {get; private set;}
     private float armorCooldown;
 
+    [Header("Data Base")]
+    public List<InventoryItem> loadedItems;
+    public List<ItemData_Equipment> loadedEquipment;
+
 
     void Awake() 
     {
@@ -65,6 +70,24 @@ public class Inventory : MonoBehaviour
 
     void AddStartingItems()
     {
+        foreach(ItemData_Equipment item in loadedEquipment)
+        {
+            EquipItem(item);
+        }
+
+        if(loadedItems.Count > 0)
+        {
+            foreach(InventoryItem item in loadedItems)
+            {
+                for (int i = 0; i < item.stackSize; i++)
+                {
+                    AddItem(item.data);
+                }
+            }
+
+            return;
+        }
+
         for (int i = 0; i < startingItems.Count; i++)
         {
             if(startingItems[i] != null)
@@ -159,7 +182,6 @@ public class Inventory : MonoBehaviour
 
     public List<InventoryItem> GetEquipmentList() => equipment;
     public List<InventoryItem> GetStashList() => stash;
-
     public ItemData_Equipment GetEquipment(EquipmentType _type)
     {
         ItemData_Equipment equipedItem = null;
@@ -172,6 +194,7 @@ public class Inventory : MonoBehaviour
 
         return equipedItem;
     }
+    
     public void AddItem(ItemData _item)
     {
         if (_item.itemType == ItemType.Equipment && CanAddItem())
@@ -240,6 +263,55 @@ public class Inventory : MonoBehaviour
         }
         else
             Debug.Log("Flask on cooldown");
+    }
+
+    public void LoadData(GameData _data)
+    {
+        foreach (KeyValuePair<string, int> pair in _data.inventory)
+        {
+            foreach(var item in GetItemDatabase())
+            {
+                if(item != null && item.itemID == pair.Key)
+                {
+                    InventoryItem itemToLoad = new InventoryItem(item);
+                    itemToLoad.stackSize = pair.Value;
+
+                    loadedItems.Add(itemToLoad);
+                }
+            }
+        }
+
+        foreach(string loadedItemID in _data.equipmentID)
+        {
+            foreach(var item in GetItemDatabase())
+            {
+                if(item != null && loadedItemID == item.itemID)
+                {
+                    loadedEquipment.Add(item as ItemData_Equipment);
+                }
+            }
+        }
+    }
+
+    public void SaveData(ref GameData _data)
+    {
+        _data.inventory.Clear();
+        _data.equipmentID.Clear();
+
+        foreach(KeyValuePair<ItemData, InventoryItem> pair in inventoryDictionary)
+        {
+            _data.inventory.Add(pair.Key.itemID, pair.Value.stackSize);
+        }
+
+        foreach(KeyValuePair<ItemData, InventoryItem> pair in stashDictionary)
+        {
+            _data.inventory.Add(pair.Key.itemID, pair.Value.stackSize);
+        }
+
+        foreach(KeyValuePair<ItemData_Equipment, InventoryItem> pair in equipmentDictionary)
+        {
+            _data.equipmentID.Add(pair.Key.itemID);
+        }
     }
 
     private void AddToStash(ItemData _item)
@@ -324,5 +396,20 @@ public class Inventory : MonoBehaviour
                     equipmentSlot[i].UpdateSlot(item.Value);
             }
         }
+    }
+
+    private List<ItemData> GetItemDatabase()
+    {
+        List<ItemData> itemDataBase = new List<ItemData>();
+        string[] assetNames = AssetDatabase.FindAssets("", new[] {"Assets/Data/Items"});
+
+        foreach(string SOName in assetNames)
+        {
+            var SOpath = AssetDatabase.GUIDToAssetPath(SOName);
+            var itemData = AssetDatabase.LoadAssetAtPath<ItemData>(SOpath);
+            itemDataBase.Add(itemData);
+        }
+
+        return itemDataBase;
     }
 }

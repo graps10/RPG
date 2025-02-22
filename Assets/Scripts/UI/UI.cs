@@ -60,6 +60,7 @@ public class UI : MonoBehaviour
             return;
         }
 
+        HideTootTips();
         SwitchTo(_menu);  
     }
 
@@ -72,5 +73,17 @@ public class UI : MonoBehaviour
         }
 
         SwitchTo(inGameUI);
+    }
+
+    private void HideTootTips()
+    {
+        if (skillTooltip.gameObject.activeSelf) 
+            skillTooltip.HideToolTip();
+
+        if (itemTooltip.gameObject.activeSelf) 
+            itemTooltip.HideToolTip();
+
+        if (statTooltip.gameObject.activeSelf) 
+            statTooltip.HideStatToolTip();
     }
 }

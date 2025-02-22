@@ -28,6 +28,11 @@ public class BlackHole_Skill : Skill
         base.Update();
     }
 
+    protected override void CheckUnlock()
+    {
+        UnlockBlackHole();
+    }
+
     public override bool CanUseSkill()
     {
         return base.CanUseSkill();

@@ -15,14 +15,6 @@ public class Dash_Skill : Skill
     [SerializeField] private UI_SkillTreeSlot cloneOnArrivalUnlockButton;
     public bool cloneOnArrivalUnlocked {get; private set;}
 
-
-    public override void UseSkill()
-    {
-        base.UseSkill();
-
-        Debug.Log("Created clone");
-    }
-
     protected override void Start()
     {
         base.Start();
@@ -30,6 +22,20 @@ public class Dash_Skill : Skill
         dashUnlockButton.GetComponent<Button>().onClick.AddListener(UnlockDash);
         cloneOnDashUnlockButton.GetComponent<Button>().onClick.AddListener(UnlockCloneOnDash);
         cloneOnArrivalUnlockButton.GetComponent<Button>().onClick.AddListener(UnlockCloneOnArrival);
+    }
+
+    protected override void CheckUnlock()
+    {
+        UnlockDash();
+        UnlockCloneOnDash();
+        UnlockCloneOnArrival();
+    }
+
+    public override void UseSkill()
+    {
+        base.UseSkill();
+
+        Debug.Log("Created clone");
     }
 
     public void CloneOnDash()

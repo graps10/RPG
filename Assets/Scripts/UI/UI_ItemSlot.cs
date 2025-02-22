@@ -52,6 +52,7 @@ public class UI_ItemSlot : MonoBehaviour, IPointerDownHandler, IPointerEnterHand
         if(Input.GetKey(KeyCode.LeftControl))
         {
             Inventory.instance.RemoveItem(item.data);
+            ui.itemTooltip.HideToolTip();
             return;
         }
 
