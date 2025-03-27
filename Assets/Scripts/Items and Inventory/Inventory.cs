@@ -197,6 +197,8 @@ public class Inventory : MonoBehaviour, ISaveManager
     
     public void AddItem(ItemData _item)
     {
+        if(_item == null) return;
+        
         if (_item.itemType == ItemType.Equipment && CanAddItem())
             AddToInventory(_item);
         else if(_item.itemType == ItemType.Material)

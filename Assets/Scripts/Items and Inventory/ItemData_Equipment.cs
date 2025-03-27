@@ -73,13 +73,16 @@ public class ItemData_Equipment : ItemData
         AddItemDescription(iceDamage, "Ice Damage");
         AddItemDescription(lightingDamage, "Lightning Damage");
 
-        for (int i = 0; i < itemEffects.Length; i++)
+        if (itemEffects != null)
         {
-            if(itemEffects[i].effectDescription.Length > 0)
+            for (int i = 0; i < itemEffects.Length; i++)
             {
-                sb.AppendLine();
-                sb.AppendLine("Unique: " + itemEffects[i].effectDescription);
-                descriptionLength++;
+                if (!string.IsNullOrEmpty(itemEffects[i]?.effectDescription))
+                {
+                    sb.AppendLine();
+                    sb.AppendLine("Unique: " + itemEffects[i].effectDescription);
+                    descriptionLength++;
+                }
             }
         }
 

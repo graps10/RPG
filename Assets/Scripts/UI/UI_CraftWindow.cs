@@ -12,11 +12,6 @@ public class UI_CraftWindow : MonoBehaviour
 
     [SerializeField] private Button craftButton;
 
-    void OnEnable()
-    {
-        
-    }
-
     public void SetupCraftWindow(ItemData_Equipment _data)
     {
         craftButton.onClick.RemoveAllListeners();
