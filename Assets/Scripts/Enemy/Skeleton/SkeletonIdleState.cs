@@ -15,12 +15,14 @@ public class SkeletonIdleState : SkeletonGroundedState
     {
         base.Update();
 
-        if(stateTimer <= 0)
+        if (stateTimer <= 0)
             stateMachine.ChangeState(enemy.moveState);
     }
 
     public override void Exit()
     {
         base.Exit();
+
+        AudioManager.instance.PlaySFX(22, enemy.transform);
     }
 }

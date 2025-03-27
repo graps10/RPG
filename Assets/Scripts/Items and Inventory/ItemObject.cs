@@ -24,11 +24,12 @@ public class ItemObject : MonoBehaviour
 
     public void PickupItem()
     {
-        if(!Inventory.instance.CanAddItem() && itemData.itemType == ItemType.Equipment)
+        if (!Inventory.instance.CanAddItem() && itemData.itemType == ItemType.Equipment)
         {
             rb.velocity = new Vector2(0, 7);
             return;
         }
+        AudioManager.instance.PlaySFX(16, transform);
         Inventory.instance.AddItem(itemData);
         Destroy(gameObject);
     }

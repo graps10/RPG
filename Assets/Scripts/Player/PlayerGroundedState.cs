@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlayerGroundedState : PlayerState
@@ -20,50 +21,55 @@ public class PlayerGroundedState : PlayerState
     {
         base.Update();
 
-        if(Input.GetKeyDown(KeyCode.R) && IsBlackHoleUnlocked())
-            stateMachine.ChangeState(player.blackHoleState);
+        if (Input.GetKeyDown(KeyCode.R) && IsBlackHoleUnlocked())
+        {
+            if (player.skill.blackHole.cooldownTimer > 0)
+                return;
 
-        if(Input.GetKeyDown(KeyCode.Mouse1) && HasNoSword() && IsSwordUnlocked())
+            stateMachine.ChangeState(player.blackHoleState);
+        }
+
+        if (Input.GetKeyDown(KeyCode.Mouse1) && HasNoSword() && IsSwordUnlocked())
             stateMachine.ChangeState(player.aimSword);
 
-        if(Input.GetKeyDown(KeyCode.Q) && HasSword() && IsParryUnlocked())
+        if (Input.GetKeyDown(KeyCode.Q) && HasSword() && IsParryUnlocked())
             stateMachine.ChangeState(player.counterAttack);
 
-        if(Input.GetKeyDown(KeyCode.Mouse0) && HasSword())
+        if (Input.GetKeyDown(KeyCode.Mouse0) && HasSword())
             stateMachine.ChangeState(player.primaryAttack);
-        
 
-        if(!player.IsGroundDetected())
+
+        if (!player.IsGroundDetected())
             stateMachine.ChangeState(player.airState);
-        
-        
-        if(Input.GetKeyDown(KeyCode.Space) && player.IsGroundDetected())
+
+
+        if (Input.GetKeyDown(KeyCode.Space) && player.IsGroundDetected())
             stateMachine.ChangeState(player.jumpState);
     }
 
     private bool HasNoSword()
     {
-        if(!player.sword)
+        if (!player.sword)
         {
             return true;
         }
-        
+
         player.sword.GetComponent<Sword_Skill_Controller>().ReturnSword();
         return false;
     }
     private bool HasSword()
     {
-        if(!player.sword)
+        if (!player.sword)
         {
             return true;
         }
-    
+
         return false;
     }
 
     private bool IsSwordUnlocked()
     {
-        if(!player.skill.sword.swordUnlocked)
+        if (!player.skill.sword.swordUnlocked)
             return false;
 
         return true;
@@ -71,17 +77,17 @@ public class PlayerGroundedState : PlayerState
 
     private bool IsParryUnlocked()
     {
-        if(!player.skill.parry.parryUnlocked)
+        if (!player.skill.parry.parryUnlocked)
             return false;
-        
+
         return true;
     }
 
     private bool IsBlackHoleUnlocked()
     {
-        if(!player.skill.blackHole.blackHoleUnlocked)
+        if (!player.skill.blackHole.blackHoleUnlocked)
             return false;
-        
+
         return true;
     }
 }

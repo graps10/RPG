@@ -13,7 +13,7 @@ public class Checkpoint : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D collision)
     {
-        if(collision.GetComponent<Player>() != null)
+        if (collision.GetComponent<Player>() != null)
         {
             ActivateCheckpoint();
         }
@@ -21,10 +21,13 @@ public class Checkpoint : MonoBehaviour
 
     public void ActivateCheckpoint()
     {
+        if (!activationStatus)
+            AudioManager.instance.PlaySFX(3, transform);
+
         activationStatus = true;
         anim.SetBool("active", true);
     }
-    
+
     [ContextMenu("Generate checkpoint id")]
     private void GenerateID()
     {

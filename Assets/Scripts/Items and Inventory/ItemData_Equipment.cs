@@ -86,21 +86,21 @@ public class ItemData_Equipment : ItemData
             }
         }
 
-        if(descriptionLength < 5)
+        if (descriptionLength < 5)
         {
-            for(int i = 0; i < 5 - descriptionLength; i++)
+            for (int i = 0; i < 5 - descriptionLength; i++)
             {
                 sb.AppendLine();
                 sb.Append("");
             }
         }
-        
+
         return sb.ToString();
     }
 
     public void Effect(Transform _enemyPosition)
     {
-        foreach(var item in itemEffects)
+        foreach (var item in itemEffects)
         {
             item.ExucuteEffect(_enemyPosition);
         }
@@ -108,7 +108,7 @@ public class ItemData_Equipment : ItemData
     public void AddModifiers()
     {
         PlayerStats playerStats = PlayerManager.instance.player.GetComponent<PlayerStats>();
-    
+
         playerStats.AddStats(
         strength, agility, intelligence, vitality,
         damage, critChance, critPower,
@@ -133,15 +133,15 @@ public class ItemData_Equipment : ItemData
 
     private void AddItemDescription(int _value, string _name)
     {
-        if(_value != 0)
+        if (_value != 0)
         {
-            if(sb.Length > 0)
+            if (sb.Length > 0)
                 sb.AppendLine();
-            
-            if(_value > 0)
+
+            if (_value > 0)
                 sb.Append("+ " + _value + " " + _name);
 
-            descriptionLength ++;
+            descriptionLength++;
         }
     }
 }

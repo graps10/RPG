@@ -10,14 +10,16 @@ public class PlayerAnimationTriggers : MonoBehaviour
     }
     private void AttackTrigger()
     {
+        AudioManager.instance.PlaySFX(1, null);
+
         Collider2D[] colliders = Physics2D.OverlapCircleAll(player.attackCheck.position, player.attackCheckRadius);
 
-        foreach(var hit in colliders)
+        foreach (var hit in colliders)
         {
-            if(hit.GetComponent<Enemy>() != null)
+            if (hit.GetComponent<Enemy>() != null)
             {
                 EnemyStats _target = hit.GetComponent<EnemyStats>();
-                
+
                 player.stats.DoDamage(_target);
 
                 WeaponEffect(_target.transform);
@@ -34,7 +36,7 @@ public class PlayerAnimationTriggers : MonoBehaviour
     {
         ItemData_Equipment weaponData = Inventory.instance.GetEquipment(EquipmentType.Weapon);
 
-        if(weaponData != null)
+        if (weaponData != null)
             weaponData.Effect(_target.transform);
     }
 }

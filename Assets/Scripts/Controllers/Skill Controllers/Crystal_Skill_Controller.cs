@@ -5,7 +5,7 @@ public class Crystal_Skill_Controller : MonoBehaviour
     private Animator anim => GetComponent<Animator>();
     private CircleCollider2D cd => GetComponent<CircleCollider2D>();
     private Player player;
-    
+
     private float crystalExistTimer;
 
     private bool canExplode;
@@ -34,7 +34,7 @@ public class Crystal_Skill_Controller : MonoBehaviour
         float radius = SkillManager.instance.blackHole.GetBlackHoleRadius();
 
         Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, radius, whatIsEnemy);
-        if(colliders.Length > 0)
+        if (colliders.Length > 0)
             closestTarget = colliders[Random.Range(0, colliders.Length)].transform;
     }
 
@@ -42,15 +42,15 @@ public class Crystal_Skill_Controller : MonoBehaviour
     {
         crystalExistTimer -= Time.deltaTime;
 
-        if(crystalExistTimer < 0)
+        if (crystalExistTimer < 0)
         {
             FinishCrystal();
         }
 
-        if(canMove)
+        if (canMove)
             FaceClosestTarget();
 
-        if(canGrow)
+        if (canGrow)
             transform.localScale = Vector2.Lerp(transform.localScale, new Vector2(3, 3), growSpeed * Time.deltaTime);
     }
 
@@ -72,15 +72,15 @@ public class Crystal_Skill_Controller : MonoBehaviour
     {
         Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, cd.radius);
 
-        foreach(var hit in colliders)
+        foreach (var hit in colliders)
         {
-            if(hit.GetComponent<Enemy>() != null)
+            if (hit.GetComponent<Enemy>() != null)
             {
                 player.stats.DoMagicalDamage(hit.GetComponent<CharacterStats>());
 
                 ItemData_Equipment equipedAmulet = Inventory.instance.GetEquipment(EquipmentType.Amulet);
-                
-                if(equipedAmulet != null)
+
+                if (equipedAmulet != null)
                     equipedAmulet.Effect(hit.transform);
             }
         }
@@ -88,11 +88,11 @@ public class Crystal_Skill_Controller : MonoBehaviour
 
     private void FaceClosestTarget()
     {
-        if(closestTarget != null)
+        if (closestTarget != null)
         {
             transform.position = Vector2.MoveTowards(transform.position, closestTarget.position, moveSpeed * Time.deltaTime);
 
-            if(Vector2.Distance(transform.position, closestTarget.position) < 1)
+            if (Vector2.Distance(transform.position, closestTarget.position) < 1)
                 FinishCrystal();
         }
     }

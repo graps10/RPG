@@ -18,7 +18,7 @@ public class Clone_Skill_Controller : MonoBehaviour
 
     private bool canDuplicateClone;
     private float chanceToDuplicate;
-    
+
 
     void Awake()
     {
@@ -30,19 +30,19 @@ public class Clone_Skill_Controller : MonoBehaviour
     {
         cloneTimer -= Time.deltaTime;
 
-        if(cloneTimer < 0)
+        if (cloneTimer < 0)
         {
-            sr.color = new Color(1,1,1, sr.color.a - (Time.deltaTime * colorLosingSpeed));
-            
-            if(sr.color.a <= 0)
+            sr.color = new Color(1, 1, 1, sr.color.a - (Time.deltaTime * colorLosingSpeed));
+
+            if (sr.color.a <= 0)
                 Destroy(gameObject);
         }
     }
 
     public void SetupClone(Transform _newTransform, float cloneDuration, bool canAttack, Vector3 _offset, Transform _closestEnemy, bool _canDuplicate, float _chanceToDuplicate, Player _player, float _attackMultiplier)
     {
-        if(canAttack)
-            anim.SetInteger("AttackNumber", Random.Range(1,4));
+        if (canAttack)
+            anim.SetInteger("AttackNumber", Random.Range(1, 4));
 
         attackMultiplier = _attackMultiplier;
         player = _player;
@@ -50,7 +50,7 @@ public class Clone_Skill_Controller : MonoBehaviour
         cloneTimer = cloneDuration;
 
         closestEnemy = _closestEnemy;
-        
+
         canDuplicateClone = _canDuplicate;
         chanceToDuplicate = _chanceToDuplicate;
         FaceClosestTarget();
@@ -64,9 +64,9 @@ public class Clone_Skill_Controller : MonoBehaviour
     {
         Collider2D[] colliders = Physics2D.OverlapCircleAll(attackCheck.position, attackCheckRadius);
 
-        foreach(var hit in colliders)
+        foreach (var hit in colliders)
         {
-            if(hit.GetComponent<Enemy>() != null)
+            if (hit.GetComponent<Enemy>() != null)
             {
                 //player.stats.DoDamage(hit.GetComponent<CharacterStats>());
 
@@ -75,17 +75,17 @@ public class Clone_Skill_Controller : MonoBehaviour
 
                 playerStats.CloneDoDamage(enemyStats, attackMultiplier);
 
-                if(player.skill.clone.canApplyOnHitEffect)
+                if (player.skill.clone.canApplyOnHitEffect)
                 {
                     ItemData_Equipment weaponData = Inventory.instance.GetEquipment(EquipmentType.Weapon);
 
-                    if(weaponData != null)
+                    if (weaponData != null)
                         weaponData.Effect(hit.transform);
                 }
 
-                if(canDuplicateClone)
+                if (canDuplicateClone)
                 {
-                    if(Random.Range(0, 100) < chanceToDuplicate)
+                    if (Random.Range(0, 100) < chanceToDuplicate)
                     {
                         SkillManager.instance.clone.CreateClone(hit.transform, new Vector3(.5f * facingDir, 0));
                     }
@@ -96,13 +96,13 @@ public class Clone_Skill_Controller : MonoBehaviour
 
     private void FaceClosestTarget()
     {
-        if(closestEnemy != null)
+        if (closestEnemy != null)
         {
-            if(transform.position.x > closestEnemy.position.x)
+            if (transform.position.x > closestEnemy.position.x)
             {
                 facingDir = -1;
-                transform.Rotate(0, 180,0);
-            } 
+                transform.Rotate(0, 180, 0);
+            }
         }
     }
 }

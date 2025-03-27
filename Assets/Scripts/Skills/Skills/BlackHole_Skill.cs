@@ -5,7 +5,9 @@ public class BlackHole_Skill : Skill
 {
     [SerializeField] private GameObject blackHolePrefab;
     [SerializeField] private UI_SkillTreeSlot blackHoleUnlockButton;
-    public bool blackHoleUnlocked {get; private set;
+    public bool blackHoleUnlocked
+    {
+        get; private set;
     }
     [SerializeField] private int amountOfAttacks = 4;
     [SerializeField] private float cloneCooldown = 0.3f;
@@ -16,7 +18,7 @@ public class BlackHole_Skill : Skill
     [SerializeField] private float shrinkSpeed;
 
     BlackHole_Skill_Controller currentBlackHole;
-    
+
     protected override void Start()
     {
         base.Start();
@@ -37,7 +39,7 @@ public class BlackHole_Skill : Skill
     {
         return base.CanUseSkill();
     }
-    
+
     public override void UseSkill()
     {
         base.UseSkill();
@@ -48,13 +50,16 @@ public class BlackHole_Skill : Skill
 
         currentBlackHole.SetupBlackHole(
             maxSize, growSpeed, shrinkSpeed, amountOfAttacks, cloneCooldown, blackHoleDuration);
+
+        AudioManager.instance.PlaySFX(4, player.transform);
+        AudioManager.instance.PlaySFX(5, player.transform);
     }
 
     public bool SkillCompleted()
     {
-        if(!currentBlackHole) return false;
+        if (!currentBlackHole) return false;
 
-        if(currentBlackHole.playerCanExitState)
+        if (currentBlackHole.playerCanExitState)
         {
             currentBlackHole = null;
             return true;
@@ -67,7 +72,7 @@ public class BlackHole_Skill : Skill
 
     private void UnlockBlackHole()
     {
-        if(blackHoleUnlockButton.unlocked)
+        if (blackHoleUnlockButton.unlocked)
             blackHoleUnlocked = true;
     }
 }

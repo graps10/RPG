@@ -16,7 +16,7 @@ public class Sword_Skill : Skill
 
     [Header("Bounce Info")]
     [SerializeField] private UI_SkillTreeSlot bounceUnlockButton;
-    public bool swordUnlocked {get; private set;}
+    public bool swordUnlocked { get; private set; }
     [SerializeField] private int bounceAmount;
     [SerializeField] private float bounceGravity;
     [SerializeField] private float bounceSpeed;
@@ -44,9 +44,9 @@ public class Sword_Skill : Skill
 
     [Header("Passive Skills")]
     [SerializeField] private UI_SkillTreeSlot timeStopUnlockButton;
-    public bool timeStopUnlocked {get; private set;}
+    public bool timeStopUnlocked { get; private set; }
     [SerializeField] private UI_SkillTreeSlot volnerableUnlockButton;
-    public bool volnerableUnlocked {get; private set;}
+    public bool volnerableUnlocked { get; private set; }
 
     private Vector2 finalDir;
 
@@ -81,7 +81,7 @@ public class Sword_Skill : Skill
 
     private void SetupGravity()
     {
-        if(swordType == SwordType.Bounce)
+        if (swordType == SwordType.Bounce)
             swordGravity = bounceGravity;
         else if (swordType == SwordType.Pierce)
             swordGravity = pierceGravity;
@@ -91,14 +91,14 @@ public class Sword_Skill : Skill
 
     protected override void Update()
     {
-        if(Input.GetKeyUp(KeyCode.Mouse1))
+        if (Input.GetKeyUp(KeyCode.Mouse1))
             finalDir = new Vector2(AimDirection().normalized.x * launchForce.x, AimDirection().normalized.y * launchForce.y);
 
-        if(Input.GetKey(KeyCode.Mouse1))
+        if (Input.GetKey(KeyCode.Mouse1))
         {
             for (int i = 0; i < dots.Length; i++)
             {
-                dots[i]. transform.position = DotsPosition(i * spaceBetweenDots);
+                dots[i].transform.position = DotsPosition(i * spaceBetweenDots);
             }
         }
     }
@@ -108,13 +108,13 @@ public class Sword_Skill : Skill
         GameObject newSword = Instantiate(swordPrefab, player.transform.position, transform.rotation);
         Sword_Skill_Controller newSwordScript = newSword.GetComponent<Sword_Skill_Controller>();
 
-        if(swordType == SwordType.Bounce)
+        if (swordType == SwordType.Bounce)
             newSwordScript.SetupBounce(true, bounceAmount, bounceSpeed);
         else if (swordType == SwordType.Pierce)
             newSwordScript.SetupPierce(pierceAmount);
         else if (swordType == SwordType.Spin)
             newSwordScript.SetupSpin(true, maxTravelDistance, spinDuration, hitCooldown);
-        
+
         newSwordScript.SetupSword(finalDir, swordGravity, player, freezeTimeDuration, returnSpeed);
 
         player.AssignNewSword(newSword);
@@ -136,40 +136,40 @@ public class Sword_Skill : Skill
 
     private void UnlockTimeStop()
     {
-        if(timeStopUnlockButton.unlocked)
+        if (timeStopUnlockButton.unlocked)
             timeStopUnlocked = true;
     }
 
     private void UnlockVolnerable()
     {
-        if(volnerableUnlockButton.unlocked)
+        if (volnerableUnlockButton.unlocked)
             volnerableUnlocked = true;
     }
 
     private void UnlockSword()
     {
-        if(swordUnlockButton.unlocked)
+        if (swordUnlockButton.unlocked)
         {
             swordType = SwordType.Regular;
             swordUnlocked = true;
-        }    
+        }
     }
 
     private void UnlockBounceSword()
     {
-        if(bounceUnlockButton.unlocked)
+        if (bounceUnlockButton.unlocked)
             swordType = SwordType.Bounce;
     }
 
     private void UnlockPierceSword()
     {
-        if(pierceUnlockButton.unlocked)
+        if (pierceUnlockButton.unlocked)
             swordType = SwordType.Pierce;
     }
 
     private void UnlockSpinSword()
     {
-        if(spinUnlockButton.unlocked)
+        if (spinUnlockButton.unlocked)
             swordType = SwordType.Spin;
     }
 
@@ -205,11 +205,11 @@ public class Sword_Skill : Skill
     private Vector2 DotsPosition(float t)
     {
         Vector2 position = (Vector2)player.transform.position + new Vector2(
-            AimDirection().normalized.x * launchForce.x, 
-            AimDirection().normalized.y * launchForce.y) * t + 0.5f * (Physics2D.gravity * swordGravity * (t* t));
+            AimDirection().normalized.x * launchForce.x,
+            AimDirection().normalized.y * launchForce.y) * t + 0.5f * (Physics2D.gravity * swordGravity * (t * t));
 
         return position;
     }
-    
+
     #endregion
 }

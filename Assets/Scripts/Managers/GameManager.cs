@@ -18,7 +18,7 @@ public class GameManager : MonoBehaviour, ISaveManager
 
     void Awake()
     {
-        if(instance != null)
+        if (instance != null)
             Destroy(instance.gameObject);
         else
             instance = this;
@@ -47,11 +47,11 @@ public class GameManager : MonoBehaviour, ISaveManager
         lostCurrencyX = _data.lostCurrencyX;
         lostCurrencyY = _data.lostCurrencyY;
 
-        if(lostCurrencyAmount > 0)
+        if (lostCurrencyAmount > 0)
         {
             GameObject newLostCurrency = Instantiate(lostCurrencyPrefab, new Vector3(lostCurrencyX, lostCurrencyY), Quaternion.identity);
             newLostCurrency.GetComponent<LostCurrencyController>().currency = lostCurrencyAmount;
-        }   
+        }
 
         lostCurrencyAmount = 0;
     }
@@ -74,7 +74,7 @@ public class GameManager : MonoBehaviour, ISaveManager
     }
 
     #endregion
-    
+
     #region Save
 
     public void SaveData(ref GameData _data)
@@ -88,14 +88,14 @@ public class GameManager : MonoBehaviour, ISaveManager
         _data.lostCurrencyAmount = lostCurrencyAmount;
         _data.lostCurrencyX = player.position.x;
         _data.lostCurrencyY = player.position.y;
-        Debug.Log(player.position.x);
+        // Debug.Log(player.position.x);
     }
 
     private void SaveCheckpoints(GameData _data)
     {
         if (FindClosestCheckPoint() == null) return;
-            _data.closestCheckpointId = FindClosestCheckPoint().id;
-        
+        _data.closestCheckpointId = FindClosestCheckPoint().id;
+
         _data.checkpoints.Clear();
 
         foreach (Checkpoint checkpoint in checkpoints)
@@ -105,10 +105,10 @@ public class GameManager : MonoBehaviour, ISaveManager
     }
 
     #endregion
-    
+
     private void PlacePlayerAtClosestCheckpoint(GameData _data)
     {
-        if(_data.closestCheckpointId == null) return;
+        if (_data.closestCheckpointId == null) return;
 
         foreach (Checkpoint checkpoint in checkpoints)
         {
@@ -119,13 +119,13 @@ public class GameManager : MonoBehaviour, ISaveManager
 
     private Checkpoint FindClosestCheckPoint()
     {
-        float closestDistance= Mathf.Infinity;
+        float closestDistance = Mathf.Infinity;
         Checkpoint closestCheckpoint = null;
 
-        foreach(Checkpoint checkpoint in checkpoints)
+        foreach (Checkpoint checkpoint in checkpoints)
         {
             float distanceToCheckpoint = Vector2.Distance(player.position, checkpoint.transform.position);
-            if(distanceToCheckpoint < closestDistance && checkpoint.activationStatus == true)
+            if (distanceToCheckpoint < closestDistance && checkpoint.activationStatus == true)
             {
                 closestDistance = distanceToCheckpoint;
                 closestCheckpoint = checkpoint;

@@ -7,11 +7,15 @@ public class PlayerMoveState : PlayerGroundedState
     public override void Enter()
     {
         base.Enter();
+
+        AudioManager.instance.PlaySFX(13, null);
     }
 
     public override void Exit()
     {
         base.Exit();
+
+        AudioManager.instance.StopSFX(13);
     }
 
     public override void Update()
@@ -20,7 +24,8 @@ public class PlayerMoveState : PlayerGroundedState
 
         player.SetVelocity(xInput * player.moveSpeed, rb.velocity.y);
 
-        if(xInput == 0 || player.IsWallDetected()){
+        if (xInput == 0 || player.IsWallDetected())
+        {
             stateMachine.ChangeState(player.idleState);
         }
     }

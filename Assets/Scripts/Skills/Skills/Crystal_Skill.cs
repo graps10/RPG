@@ -10,7 +10,7 @@ public class Crystal_Skill : Skill
 
     [Header("Crystal Skill")]
     [SerializeField] private UI_SkillTreeSlot unlockCrystalButton;
-    public bool crystalUnlocked {get; private set;}
+    public bool crystalUnlocked { get; private set; }
 
     [Header("Teleport Settings")]
     [SerializeField] private float teleportCooldown = 0.5f;
@@ -54,19 +54,19 @@ public class Crystal_Skill : Skill
     {
         base.UseSkill();
 
-        if(CanUseMultiCrystal()) return;
+        if (CanUseMultiCrystal()) return;
 
-        if(currentCrystal == null)
+        if (currentCrystal == null)
         {
             CreateCrystal();
         }
         else
         {
-            if(canMoveToEnemy || !canTeleport) return;
+            if (canMoveToEnemy || !canTeleport) return;
 
             PerformTeleport();
-            
-            if(cloneInsteadOfCrystal)
+
+            if (cloneInsteadOfCrystal)
                 HandleCloneCreation();
             else
                 HandleCrystalFinish();
@@ -77,7 +77,7 @@ public class Crystal_Skill : Skill
     {
         currentCrystal = Instantiate(crystalPrefab, player.transform.position, Quaternion.identity);
         Crystal_Skill_Controller currentCrystalScript = currentCrystal.GetComponent<Crystal_Skill_Controller>();
-        
+
         currentCrystalScript.SetupCrystal(crystalDuration, canExplode, canMoveToEnemy, moveSpeed, FindClosestEnemy(currentCrystal.transform), player);
     }
 
@@ -96,31 +96,31 @@ public class Crystal_Skill : Skill
 
     private void UnlockCrystal()
     {
-        if(unlockCrystalButton.unlocked)
+        if (unlockCrystalButton.unlocked)
             crystalUnlocked = true;
     }
 
     private void UnlockCrystalMirage()
     {
-        if(unlockCloneInsteadButton.unlocked)
+        if (unlockCloneInsteadButton.unlocked)
             cloneInsteadOfCrystal = true;
     }
 
     private void UnlockExplosiveCrystal()
     {
-        if(unlockExplosiveButton.unlocked)
+        if (unlockExplosiveButton.unlocked)
             canExplode = true;
     }
 
     private void UnlockMovingCrystal()
     {
-        if(unlockMovingCrystalButton.unlocked)
+        if (unlockMovingCrystalButton.unlocked)
             canMoveToEnemy = true;
     }
 
     private void UnlockMultiStack()
     {
-        if(unlockMultiStackButton.unlocked)
+        if (unlockMultiStackButton.unlocked)
             canUseMultiStacks = true;
     }
 
@@ -144,29 +144,29 @@ public class Crystal_Skill : Skill
     private void HandleCrystalFinish()
     {
         currentCrystal.GetComponent<Crystal_Skill_Controller>()?.FinishCrystal();
-        
+
         Invoke(nameof(UnlockTeleport), teleportCooldown);
     }
 
     private bool CanUseMultiCrystal()
     {
-        if(canUseMultiStacks)
+        if (canUseMultiStacks)
         {
-            if(crystalsLeft.Count > 0)
+            if (crystalsLeft.Count > 0)
             {
-                if(crystalsLeft.Count == amountOfStacks)
+                if (crystalsLeft.Count == amountOfStacks)
                     Invoke("ResetAbility", useTimeWindow);
-                
+
                 cooldown = 0;
 
                 GameObject crystalToSpawn = crystalsLeft[crystalsLeft.Count - 1];
                 GameObject newCrystal = Instantiate(crystalToSpawn, player.transform.position, Quaternion.identity);
-            
+
                 crystalsLeft.Remove(crystalToSpawn);
                 newCrystal.GetComponent<Crystal_Skill_Controller>().
                     SetupCrystal(crystalDuration, canExplode, canMoveToEnemy, moveSpeed, FindClosestEnemy(newCrystal.transform), player);
-            
-                if(crystalsLeft.Count <= 0)
+
+                if (crystalsLeft.Count <= 0)
                 {
                     cooldown = multiStackCooldown;
                     RefilCrystal();
@@ -181,7 +181,7 @@ public class Crystal_Skill : Skill
     private void RefilCrystal()
     {
         int amountToAdd = amountOfStacks - crystalsLeft.Count;
-        
+
         for (int i = 0; i < amountToAdd; i++)
         {
             crystalsLeft.Add(crystalPrefab);
@@ -190,7 +190,7 @@ public class Crystal_Skill : Skill
 
     private void ResetAbility()
     {
-        if(cooldownTimer > 0) return;
+        if (cooldownTimer > 0) return;
 
         cooldownTimer = multiStackCooldown;
         RefilCrystal();
