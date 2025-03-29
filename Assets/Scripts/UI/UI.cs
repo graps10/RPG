@@ -96,6 +96,14 @@ public class UI : MonoBehaviour, ISaveManager
             AM.PlaySFX(6, null);
             _menu.SetActive(true);
         }
+
+        if (GameManager.instance != null)
+        {
+            if (_menu == inGameUI)
+                GameManager.instance.PauseGame(false);
+            else
+                GameManager.instance.PauseGame(true);
+        }
     }
 
     public void SwitchWithKeyTo(GameObject _menu)

@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-public class Enemy : Entity 
+public class Enemy : Entity
 {
     [SerializeField] protected LayerMask whatIsPlayer;
 
@@ -17,15 +17,17 @@ public class Enemy : Entity
     public float battleTime;
     private float defaultMoveSpeed;
 
-    
+
     [Header("Attack Info")]
     public float attackDistance;
     public float attackCooldown;
+    public float minAttackCooldown;
+    public float maxAttackCooldown;
     [HideInInspector] public float lastTimeAttacked;
 
     public EnemyStateMachine stateMachine { get; private set; }
-    public string lastAnimBoolName {get; private set;}
-    
+    public string lastAnimBoolName { get; private set; }
+
     protected override void Awake()
     {
         base.Awake();
@@ -64,7 +66,7 @@ public class Enemy : Entity
 
     public virtual void FreezeTime(bool _timeFrozen)
     {
-        if(_timeFrozen)
+        if (_timeFrozen)
         {
             moveSpeed = 0;
             anim.speed = 0;
@@ -75,9 +77,9 @@ public class Enemy : Entity
             anim.speed = 1;
         }
     }
-    
+
     public virtual void FreezeTimeFor(float _duration) => StartCoroutine(FreezeTimeCoroutine(_duration));
-    
+
     protected virtual IEnumerator FreezeTimeCoroutine(float _seconds)
     {
         FreezeTime(true);
@@ -102,7 +104,7 @@ public class Enemy : Entity
 
     public virtual bool CanBeStunned()
     {
-        if(canBeStunned)
+        if (canBeStunned)
         {
             CloseCounterAttackWindow();
             return true;

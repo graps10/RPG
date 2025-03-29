@@ -23,22 +23,22 @@ public class PlayerStats : CharacterStats
 
     public void CloneDoDamage(CharacterStats _targetStats, float _multiplier)
     {
-        if(_targetStats == null) return;
-        
+        if (_targetStats == null) return;
+
         if (TargetCanAvoidAttack(_targetStats)) return;
 
         int totalDamage = damage.GetValue() + strength.GetValue();
 
-        if(_multiplier > 0)
+        if (_multiplier > 0)
             totalDamage = Mathf.RoundToInt(totalDamage * _multiplier);
-        
-        if(CanCrit())
+
+        if (CanCrit())
         {
             totalDamage = CalculateCriticalDamage(totalDamage);
         }
 
         totalDamage = CheckTargetArmor(_targetStats, totalDamage);
-        
+
         _targetStats.TakeDamage(totalDamage);
 
         DoMagicalDamage(_targetStats);
@@ -49,7 +49,7 @@ public class PlayerStats : CharacterStats
         base.Die();
 
         player.Die();
-        
+
         GameManager.instance.lostCurrencyAmount = PlayerManager.instance.currency;
         PlayerManager.instance.currency = 0;
 
@@ -60,9 +60,16 @@ public class PlayerStats : CharacterStats
     {
         base.DeacreaseHealthBy(_damage);
 
+        if (_damage > GetMaxHealthValue() * 0.3f)
+        {
+            player.SetupKnockbackPower(new Vector2(10, 6));
+            AudioManager.instance.PlaySFX(32, null);
+        }
+
+
         ItemData_Equipment currentArmor = Inventory.instance.GetEquipment(EquipmentType.Armor);
 
-        if(currentArmor != null)
+        if (currentArmor != null)
             currentArmor.Effect(player.transform);
     }
 
@@ -94,7 +101,7 @@ public class PlayerStats : CharacterStats
         iceDamage.AddModifier(_iceDamage);
         lightingDamage.AddModifier(_lightingDamage);
     }
-    
+
     public void RemoveStats(
         int _strength, int _agility, int _intelligence, int _vitality,
         int _damage, int _critChance, int _critPower,

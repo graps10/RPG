@@ -9,8 +9,8 @@ public class Entity : MonoBehaviour
     public Rigidbody2D rb { get; private set; }
     public EntityFX fx { get; private set; }
     public SpriteRenderer sr { get; private set; }
-    public CharacterStats stats {get; private set;}
-    public CapsuleCollider2D cd {get; private set;}
+    public CharacterStats stats { get; private set; }
+    public CapsuleCollider2D cd { get; private set; }
     #endregion
 
     [Header("KnockBack Info")]
@@ -28,15 +28,16 @@ public class Entity : MonoBehaviour
     [SerializeField] protected float wallCheckDistance;
     [SerializeField] protected LayerMask whatIsGround;
 
-    public int facingDir {get; private set; } = 1;
+    public int knockbackDir { get; private set; }
+    public int facingDir { get; private set; } = 1;
     protected bool facingRight = true;
 
     public Action onFlipped;
-    
+
 
     protected virtual void Awake()
     {
-        
+
     }
 
     protected virtual void Start()
@@ -59,34 +60,50 @@ public class Entity : MonoBehaviour
 
     }
 
+    public virtual void SetupKnockbackDir(Transform _damageDirection)
+    {
+        if (_damageDirection.position.x > transform.position.x)
+            knockbackDir = -1;
+        else if (_damageDirection.position.x < transform.position.x)
+            knockbackDir = 1;
+    }
+
     protected virtual void ReturnDefaultSpeed()
     {
         anim.speed = 1;
     }
 
+    public void SetupKnockbackPower(Vector2 _knockbackPower) => knockbackPower = _knockbackPower;
+
     protected virtual IEnumerator HitKnockback()
     {
         isKnocked = true;
 
-        rb.velocity = new Vector2(knockbackPower.x * -facingDir, knockbackPower.y);
+        rb.velocity = new Vector2(knockbackPower.x * knockbackDir, knockbackPower.y);
 
         yield return new WaitForSeconds(knockbackDuration);
 
         isKnocked = false;
+        SetupZeroKnockbackPower();
     }
 
     public virtual void DamageImpact() => StartCoroutine("HitKnockback");
 
+    protected virtual void SetupZeroKnockbackPower()
+    {
+
+    }
+
     #region Velocity
     public void SetZeroVelocity()
-    { 
-        if(isKnocked) return;
+    {
+        if (isKnocked) return;
 
-        rb.velocity = new Vector2(0,0);
-    } 
+        rb.velocity = new Vector2(0, 0);
+    }
     public void SetVelocity(float _xVelocity, float _yVelocity)
     {
-        if(isKnocked) return;
+        if (isKnocked) return;
 
         rb.velocity = new Vector2(_xVelocity, _yVelocity);
         FlipController(_xVelocity);
@@ -98,7 +115,8 @@ public class Entity : MonoBehaviour
 
     public virtual bool IsWallDetected() => Physics2D.Raycast(wallCheck.position, Vector2.right * facingDir, wallCheckDistance, whatIsGround);
 
-    protected virtual void OnDrawGizmos() {
+    protected virtual void OnDrawGizmos()
+    {
         Gizmos.DrawLine(groundCheck.position, new Vector2(groundCheck.position.x, groundCheck.position.y - groundCheckDistance));
         Gizmos.DrawLine(wallCheck.position, new Vector2(wallCheck.position.x + wallCheckDistance, wallCheck.position.y));
 
@@ -107,8 +125,9 @@ public class Entity : MonoBehaviour
     #endregion
 
     #region Flip
-    
-    public virtual void Flip(){
+
+    public virtual void Flip()
+    {
         facingDir *= -1;
         facingRight = !facingRight;
         transform.Rotate(0, 180, 0);
@@ -116,16 +135,20 @@ public class Entity : MonoBehaviour
         onFlipped?.Invoke();
     }
 
-    public virtual void FlipController(float _x){
-        if(_x > 0 && !facingRight){
+    public virtual void FlipController(float _x)
+    {
+        if (_x > 0 && !facingRight)
+        {
             Flip();
-        }else if(_x < 0 && facingRight){
+        }
+        else if (_x < 0 && facingRight)
+        {
             Flip();
         }
     }
     #endregion
     public virtual void Die()
     {
-        
+
     }
 }

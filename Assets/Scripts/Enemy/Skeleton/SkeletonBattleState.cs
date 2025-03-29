@@ -16,31 +16,36 @@ public class SkeletonBattleState : EnemyState
         base.Enter();
 
         player = PlayerManager.instance.player.transform;
+
+        if (player.GetComponent<PlayerStats>().isDead)
+            stateMachine.ChangeState(enemy.moveState);
     }
     public override void Update()
     {
         base.Update();
 
-        if(enemy.IsPlayerDetected())
+        if (enemy.IsPlayerDetected())
         {
             stateTimer = enemy.battleTime;
 
-            if(enemy.IsPlayerDetected().distance < enemy.attackDistance)
+            if (enemy.IsPlayerDetected().distance < enemy.attackDistance)
             {
-                if(CanAttack()){
+                if (CanAttack())
+                {
                     stateMachine.ChangeState(enemy.attackState);
                 }
             }
         }
         else
         {
-            if(stateTimer < 0 || Vector2.Distance(player.transform.position, enemy.transform.position) > 10){
+            if (stateTimer < 0 || Vector2.Distance(player.transform.position, enemy.transform.position) > 10)
+            {
                 stateMachine.ChangeState(enemy.idleState);
             }
-                
+
         }
 
-        if(player.position.x > enemy.transform.position.x)
+        if (player.position.x > enemy.transform.position.x)
             moveDir = 1;
         else if (player.position.x < enemy.transform.position.x)
             moveDir = -1;
@@ -54,8 +59,9 @@ public class SkeletonBattleState : EnemyState
 
     private bool CanAttack()
     {
-        if(Time.time >= enemy.lastTimeAttacked + enemy.attackCooldown)
+        if (Time.time >= enemy.lastTimeAttacked + enemy.attackCooldown)
         {
+            enemy.attackCooldown = Random.Range(enemy.minAttackCooldown, enemy.maxAttackCooldown);
             enemy.lastTimeAttacked = Time.time;
             return true;
         }

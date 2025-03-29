@@ -106,6 +106,13 @@ public class GameManager : MonoBehaviour, ISaveManager
 
     #endregion
 
+    public void PauseGame(bool _pause)
+    {
+        if (_pause)
+            Time.timeScale = 0;
+        else
+            Time.timeScale = 1;
+    }
     private void PlacePlayerAtClosestCheckpoint(GameData _data)
     {
         if (_data.closestCheckpointId == null) return;

@@ -197,7 +197,6 @@ public class Sword_Skill_Controller : MonoBehaviour
   {
     EnemyStats enemyStats = enemy.GetComponent<EnemyStats>();
     player.stats.DoDamage(enemyStats);
-
     if (player.skill.sword.timeStopUnlocked)
       enemy.FreezeTimeFor(freezeTimeDuration);
 

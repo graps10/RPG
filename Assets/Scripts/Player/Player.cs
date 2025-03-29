@@ -6,7 +6,7 @@ public class Player : Entity
     [Header("Attack Details")]
     public Vector2[] attackMovement;
     public float counterAttackDuration = 0.2f;
-    public bool isBusy {get; private set;}
+    public bool isBusy { get; private set; }
 
     [Header("Move Info")]
     public float moveSpeed = 8f;
@@ -21,8 +21,8 @@ public class Player : Entity
     private float defaultDashSpeed;
     public float dashDir { get; private set; }
 
-    public SkillManager skill {get; private set;}
-    public GameObject sword {get; private set;}
+    public SkillManager skill { get; private set; }
+    public GameObject sword { get; private set; }
 
     #region States
     public PlayerStateMachine stateMachine { get; private set; }
@@ -35,14 +35,14 @@ public class Player : Entity
     public PlayerWallSlideState wallSlide { get; private set; }
     public PlayerWallJumpState wallJump { get; private set; }
 
-    public PlayerPrimaryAttackState primaryAttack {get; private set;}
-    public PlayerCounterAttackState counterAttack {get; private set;}
-    
-    public PlayerAimSwordState aimSword {get; private set;}
-    public PlayerCatchSwordState catchSword {get; private set;}
-    public PlayerBlackHoleState blackHoleState {get; private set;}
-    
-    public PlayerDeadState deadState {get; private set;}
+    public PlayerPrimaryAttackState primaryAttack { get; private set; }
+    public PlayerCounterAttackState counterAttack { get; private set; }
+
+    public PlayerAimSwordState aimSword { get; private set; }
+    public PlayerCatchSwordState catchSword { get; private set; }
+    public PlayerBlackHoleState blackHoleState { get; private set; }
+
+    public PlayerDeadState deadState { get; private set; }
     #endregion
 
     protected override void Awake()
@@ -54,14 +54,14 @@ public class Player : Entity
         idleState = new PlayerIdleState(this, stateMachine, "Idle");
         moveState = new PlayerMoveState(this, stateMachine, "Move");
         jumpState = new PlayerJumpState(this, stateMachine, "Jump");
-        airState  = new PlayerAirState(this, stateMachine, "Jump");
+        airState = new PlayerAirState(this, stateMachine, "Jump");
         dashState = new PlayerDashState(this, stateMachine, "Dash");
         wallSlide = new PlayerWallSlideState(this, stateMachine, "WallSlide");
         wallJump = new PlayerWallJumpState(this, stateMachine, "Jump");
-        
+
         primaryAttack = new PlayerPrimaryAttackState(this, stateMachine, "Attack");
         counterAttack = new PlayerCounterAttackState(this, stateMachine, "CounterAttack");
-    
+
         aimSword = new PlayerAimSwordState(this, stateMachine, "AimSword");
         catchSword = new PlayerCatchSwordState(this, stateMachine, "CatchSword");
         blackHoleState = new PlayerBlackHoleState(this, stateMachine, "Jump");
@@ -84,16 +84,18 @@ public class Player : Entity
 
     protected override void Update()
     {
+        if (Time.timeScale == 0) return;
+
         base.Update();
 
         stateMachine.currentState.Update();
 
         CheckForDashInput();
 
-        if(Input.GetKeyDown(KeyCode.F) && skill.crystal.crystalUnlocked)
+        if (Input.GetKeyDown(KeyCode.F) && skill.crystal.crystalUnlocked)
             skill.crystal.CanUseSkill();
 
-        if(Input.GetKeyDown(KeyCode.E))
+        if (Input.GetKeyDown(KeyCode.E))
             Inventory.instance.UseFlask();
     }
 
@@ -123,6 +125,11 @@ public class Player : Entity
         dashSpeed = defaultDashSpeed;
     }
 
+    public override void SetupKnockbackDir(Transform _damageDirection)
+    {
+        knockbackPower = new Vector2(0, 0);
+    }
+
     public void AssignNewSword(GameObject _newSword)
     {
         sword = _newSword;
@@ -146,21 +153,22 @@ public class Player : Entity
 
     private void CheckForDashInput()
     {
-        if(IsWallDetected())
+        if (IsWallDetected())
             return;
 
-        if(skill.dash.dashUnlocked == false)
+        if (skill.dash.dashUnlocked == false)
             return;
 
-        if(stateMachine.currentState == blackHoleState || stateMachine.currentState == deadState)
+        if (stateMachine.currentState == blackHoleState || stateMachine.currentState == deadState)
             return;
-       
 
-        if(Input.GetKeyDown(KeyCode.LeftShift) && SkillManager.instance.dash.CanUseSkill()){
-            
+
+        if (Input.GetKeyDown(KeyCode.LeftShift) && SkillManager.instance.dash.CanUseSkill())
+        {
+
             dashDir = Input.GetAxisRaw("Horizontal");
 
-            if(dashDir == 0)
+            if (dashDir == 0)
                 dashDir = facingDir;
 
             stateMachine.ChangeState(dashState);
