@@ -1,4 +1,5 @@
 using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Audio;
 
@@ -98,6 +99,8 @@ public class AudioManager : MonoBehaviour
 
     private IEnumerator DecreaseVolume(AudioSource _audio)
     {
+        if (_audio == null) yield return null;
+
         float defaultVolume = _audio.volume;
 
         while (_audio.volume > 0.1f)

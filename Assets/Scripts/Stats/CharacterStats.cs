@@ -132,6 +132,8 @@ public class CharacterStats : MonoBehaviour
     {
         if (_targetStats == null) return;
 
+        bool criticalStrike = false;
+
         if (TargetCanAvoidAttack(_targetStats)) return;
 
         _targetStats.GetComponent<Entity>().SetupKnockbackDir(transform);
@@ -141,7 +143,10 @@ public class CharacterStats : MonoBehaviour
         if (CanCrit())
         {
             totalDamage = CalculateCriticalDamage(totalDamage);
+            criticalStrike = true;
         }
+
+        fx.CreateHitFX(_targetStats.transform, criticalStrike);
 
         totalDamage = CheckTargetArmor(_targetStats, totalDamage);
 
@@ -304,6 +309,9 @@ public class CharacterStats : MonoBehaviour
 
         CurrentHealth -= _damage;
         onHealthChanged?.Invoke();
+
+        if (_damage > 0)
+            fx.CreatePopUpText(_damage.ToString());
 
         if (CurrentHealth <= 0 && !isDead)
             Die();

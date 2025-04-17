@@ -32,7 +32,7 @@ public class Skill : MonoBehaviour
             cooldownTimer = cooldown;
             return true;
         }
-        Debug.Log("Skill is on cooldown");
+        player.fx.CreatePopUpText("Cooldown");
         return false;
     }
     public virtual void UseSkill()
