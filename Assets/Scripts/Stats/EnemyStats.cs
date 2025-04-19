@@ -33,11 +33,13 @@ public class EnemyStats : CharacterStats
     {
         base.Die();
 
-        enemy.Die();
+        if (enemy != null)
+        {
+            enemy.Die();
 
+            myDropSystem.GenerateDrop();
+        }
         PlayerManager.instance.currency += soulsDropAmount.GetValue();
-        myDropSystem.GenerateDrop();
-
         Destroy(gameObject, 5f);
     }
 

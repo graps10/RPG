@@ -117,6 +117,21 @@ public class Sword_Skill_Controller : MonoBehaviour
   {
     if (isBouncing && enemyTarget.Count > 0)
     {
+      // if (enemyTarget[targetIndex] == null) // new
+      // {
+      //   enemyTarget.RemoveAt(targetIndex);
+
+      //   if (enemyTarget.Count == 0)
+      //   {
+      //     isBouncing = false;
+      //     isReturning = true;
+      //     return;
+      //   }
+
+      //   if (targetIndex >= enemyTarget.Count)
+      //     targetIndex = 0;
+      // }
+
       transform.position = Vector2.MoveTowards(transform.position, enemyTarget[targetIndex].position, bounceSpeed * Time.deltaTime);
 
       if (Vector2.Distance(transform.position, enemyTarget[targetIndex].position) < 0.1f)

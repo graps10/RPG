@@ -272,7 +272,8 @@ public class CharacterStats : MonoBehaviour
         IsShocked = _shock;
         shockedTimer = ailmentsDuration;
 
-        fx.ShockFxFor(ailmentsDuration);
+        if (fx != null)
+            fx.ShockFxFor(ailmentsDuration);
     }
 
     public void SetupIgniteDamage(int _damage) => igniteDamage = _damage;
@@ -286,8 +287,12 @@ public class CharacterStats : MonoBehaviour
 
         DeacreaseHealthBy(_damage);
 
-        GetComponent<Entity>().DamageImpact();
-        fx.StartCoroutine("FlashFX");
+        if (fx != null)
+        {
+            GetComponent<Entity>().DamageImpact();
+            fx.StartCoroutine("FlashFX");
+        }
+
     }
 
     public void IncreaseHealthBy(int _amount)
@@ -312,7 +317,7 @@ public class CharacterStats : MonoBehaviour
         CurrentHealth -= _damage;
         onHealthChanged?.Invoke();
 
-        if (this.gameObject != null && _damage > 0)
+        if (gameObject != null && _damage > 0 && fx != null)
             fx.CreatePopUpText(_damage.ToString());
 
         if (CurrentHealth <= 0 && !isDead)

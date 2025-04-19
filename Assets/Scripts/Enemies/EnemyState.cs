@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class EnemyState 
+public class EnemyState
 {
     protected EnemyStateMachine stateMachine;
     protected Enemy enemyBase;
@@ -29,7 +29,6 @@ public class EnemyState
     public virtual void Update()
     {
         stateTimer -= Time.deltaTime;
-
     }
 
     public virtual void Exit()

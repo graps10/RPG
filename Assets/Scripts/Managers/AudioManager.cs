@@ -27,7 +27,11 @@ public class AudioManager : MonoBehaviour
         if (instance != null)
             Destroy(instance.gameObject);
         else
+        {
             instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+
 
         Invoke("AllowSFX", 0.5f);
     }

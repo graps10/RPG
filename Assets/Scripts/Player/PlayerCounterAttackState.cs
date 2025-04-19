@@ -24,18 +24,23 @@ public class PlayerCounterAttackState : PlayerState
         player.SetZeroVelocity();
 
         Collider2D[] colliders = Physics2D.OverlapCircleAll(player.attackCheck.position, player.attackCheckRadius);
-        foreach(var hit in colliders)
+        foreach (var hit in colliders)
         {
-            if(hit.GetComponent<Enemy>() != null)
+            if (hit.GetComponent<Arrow_Controller>() != null)
             {
-                if(hit.GetComponent<Enemy>().CanBeStunned())
+                hit.GetComponent<Arrow_Controller>().FlipArrow();
+                SuccessfulCounterAttack();
+            }
+
+            if (hit.GetComponent<Enemy>() != null)
+            {
+                if (hit.GetComponent<Enemy>().CanBeStunned())
                 {
-                    stateTimer = 10; // any value bigger than 1
-                    player.anim.SetBool("SuccessfulCounterAttack", true);
-                    
+                    SuccessfulCounterAttack();
+
                     player.skill.parry.UseSkill(); // to restore health on parry
 
-                    if(canCreateClone)
+                    if (canCreateClone)
                     {
                         canCreateClone = false;
                         player.skill.parry.MakeMirageOnParry(hit.transform);
@@ -44,11 +49,18 @@ public class PlayerCounterAttackState : PlayerState
             }
         }
 
-        if(stateTimer < 0 || triggerCalled)
+        if (stateTimer < 0 || triggerCalled)
             stateMachine.ChangeState(player.idleState);
     }
+
     public override void Exit()
     {
         base.Exit();
+    }
+
+    private void SuccessfulCounterAttack()
+    {
+        stateTimer = 10; // any value bigger than 1
+        player.anim.SetBool("SuccessfulCounterAttack", true);
     }
 }
