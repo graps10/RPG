@@ -106,40 +106,39 @@ public class Inventory : MonoBehaviour, ISaveManager
 
         return true;
     }
+
     public bool CanCraft(ItemData_Equipment _itemToCraft, List<InventoryItem> _requiredMaterials)
     {
-        List<InventoryItem> materialsToRemove = new List<InventoryItem>();
-
-        for (int i = 0; i < _requiredMaterials.Count; i++)
+        foreach (var requiredItem in _requiredMaterials)
         {
-            if (stashDictionary.TryGetValue(_requiredMaterials[i].data, out InventoryItem stashValue))
+            if (stashDictionary.TryGetValue(requiredItem.data, out InventoryItem stashItem))
             {
-                if (stashValue.stackSize < _requiredMaterials[i].stackSize)
+                if (stashItem.stackSize < requiredItem.stackSize)
                 {
-                    Debug.Log("Not enought materials");
+                    Debug.Log("Not enough materials: " + requiredItem.data.name);
                     return false;
-                }
-                else
-                {
-                    materialsToRemove.Add(stashValue);
                 }
             }
             else
             {
-                Debug.Log("Not enought materials");
+                Debug.Log("Materials are not found in stash: " + requiredItem.data.name);
                 return false;
             }
         }
 
-        for (int i = 0; i < materialsToRemove.Count; i++)
+        foreach (var requiredMaterial in _requiredMaterials)
         {
-            RemoveItem(materialsToRemove[i].data);
+            for (int i = 0; i < requiredMaterial.stackSize; i++)
+            {
+                RemoveItem(requiredMaterial.data);
+            }
         }
 
         AddItem(_itemToCraft);
-        Debug.Log("here is your item " + _itemToCraft.name);
+        Debug.Log("Craft is successful");
         return true;
     }
+
     public void EquipItem(ItemData _item)
     {
         ItemData_Equipment newEquipment = _item as ItemData_Equipment;
@@ -420,6 +419,6 @@ public class Inventory : MonoBehaviour, ISaveManager
 
         return itemDataBase;
     }
-    
+
 #endif
 }

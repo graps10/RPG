@@ -31,7 +31,7 @@ Transform:
   m_GameObject: {fileID: 233287652356747905}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 16.9, y: 2.8, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1.4, y: 1.4, z: 1.4}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -59,6 +59,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   knockbackPower: {x: 7, y: 12}
+  knockbackOffset: {x: 0.5, y: 2}
   knockbackDuration: 0.07
   attackCheck: {fileID: 5019735860372530236}
   attackCheckRadius: 1.2
@@ -78,7 +79,8 @@ MonoBehaviour:
   moveSpeed: 1.5
   idleTime: 2
   battleTime: 7
-  attackDistance: 2.2
+  agroDistance: 2
+  attackDistance: 2.5
   attackCooldown: 0.4
   minAttackCooldown: 0.35
   maxAttackCooldown: 0.55
@@ -96,12 +98,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   popupTextPrefab: {fileID: 1977449236418972448, guid: 33b9eeb0cfe94944eae7e7e240c2fad1, type: 3}
-  shakeMultiplier: 0
-  shakeSwordImpact: {x: 0, y: 0, z: 0}
-  shakeHighDamage: {x: 0, y: 0, z: 0}
-  afterImagePrefab: {fileID: 8562539158533867421, guid: 085c1223596a7d14b831bd845bcc886f, type: 3}
-  colorLoseRate: 0
-  afterImageCooldown: 0
   flashDuration: 0.2
   hitMat: {fileID: 2100000, guid: 7947b23ac27a33b4598dd7e23abe4469, type: 2}
   igniteColor:
@@ -118,7 +114,6 @@ MonoBehaviour:
   shockFx: {fileID: 515936096828245314}
   hitFX: {fileID: 1699656547998446530, guid: 3786c0af4259414428e82c63db846bb3, type: 3}
   criticalHitFX: {fileID: 1057830787675581550, guid: 8ab1744b468a47d4fad32bb8f781d610, type: 3}
-  dustFX: {fileID: 0}
 --- !u!50 &5662558861325632104
 Rigidbody2D:
   serializedVersion: 4
@@ -254,13 +249,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3b08a18df41db074da2b02a4ca061947, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  possibleAmountOfItems: 5
-  possibleDrop:
-  - {fileID: 11400000, guid: 31c49433047bf6d49aed80da8565d32a, type: 2}
-  - {fileID: 11400000, guid: a7c301e88a476cd4b8f7a81884d042d2, type: 2}
-  - {fileID: 11400000, guid: e2fac72d89a1ca949b1846de1228d215, type: 2}
-  - {fileID: 11400000, guid: a44e92d867b7c66498a9a7949d3d82d2, type: 2}
-  - {fileID: 11400000, guid: 53b3c5738a9759749b156026fd98478c, type: 2}
+  maxItemsToDrop: 0
+  itemPool: []
   dropPrefab: {fileID: 1914593840508665066, guid: e6e381a1def9d2c4599315b197d60c1c, type: 3}
 --- !u!1 &388911931758306081
 GameObject:
@@ -346,7 +336,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2052026511026434786}
-  m_Layer: 7
+  m_Layer: 0
   m_Name: GroundCheck
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -378,7 +368,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1924785131605743631}
   - component: {fileID: 7766398952735783595}
-  m_Layer: 7
+  m_Layer: 0
   m_Name: Counter_Image
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -394,9 +384,9 @@ Transform:
   m_GameObject: {fileID: 702168520467546208}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.25, z: 0}
-  m_LocalScale: {x: 0.85, y: 0.85, z: 0.85}
-  m_ConstrainProportionsScale: 0
+  m_LocalPosition: {x: 0.5, y: 0.45, z: 0}
+  m_LocalScale: {x: 0.2, y: 0.2, z: 0.2}
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 2150991003184545092}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -440,9 +430,9 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -236184071
   m_SortingLayer: 5
-  m_SortingOrder: -10
-  m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
-  m_Color: {r: 1, g: 0, b: 0, a: 0.6862745}
+  m_SortingOrder: 1
+  m_Sprite: {fileID: 21300000, guid: 0baffc71d7d33814d82b7e3451a2529c, type: 3}
+  m_Color: {r: 1, g: 0, b: 0, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -461,7 +451,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8744841946057157505}
-  m_Layer: 7
+  m_Layer: 0
   m_Name: WallCheck
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -477,7 +467,7 @@ Transform:
   m_GameObject: {fileID: 1014189343854966034}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.125, z: 0}
+  m_LocalPosition: {x: 0.15, y: -0.125, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -495,7 +485,7 @@ GameObject:
   - component: {fileID: 2786706121812457550}
   - component: {fileID: 7213740763239233386}
   - component: {fileID: 5384782554122984933}
-  m_Layer: 7
+  m_Layer: 0
   m_Name: Animator
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -602,7 +592,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 11bdd5af4936e584998238abc2df2064, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemy: {fileID: 2762583471415981110}
 --- !u!1 &2484332565230435118
 GameObject:
   m_ObjectHideFlags: 0
@@ -640,7 +629,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0.9}
   m_SizeDelta: {x: 521, y: 292.8}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!223 &6457850575462241076
@@ -927,7 +916,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5019735860372530236}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: AttackCheck
   m_TagString: Untagged
   m_Icon: {fileID: 0}

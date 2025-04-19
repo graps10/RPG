@@ -1,6 +1,11 @@
 using System.Collections;
 using UnityEngine;
 
+[RequireComponent(typeof(Rigidbody2D))]
+[RequireComponent(typeof(CapsuleCollider2D))]
+[RequireComponent(typeof(EnemyStats))]
+[RequireComponent(typeof(EntityFX))]
+[RequireComponent(typeof(ItemDrop))]
 public class Enemy : Entity
 {
     [SerializeField] protected LayerMask whatIsPlayer;
@@ -19,6 +24,7 @@ public class Enemy : Entity
 
 
     [Header("Attack Info")]
+    public float agroDistance = 2;
     public float attackDistance;
     public float attackCooldown;
     public float minAttackCooldown;
@@ -117,7 +123,19 @@ public class Enemy : Entity
     }
     public virtual void AnimationTrigger() => stateMachine.currentState.AnimationFinishTrigger();
 
-    public virtual RaycastHit2D IsPlayerDetected() => Physics2D.Raycast(wallCheck.position, Vector2.right * facingDir, 50, whatIsPlayer);
+    public virtual RaycastHit2D IsPlayerDetected()
+    {
+        RaycastHit2D playerDetected = Physics2D.Raycast(wallCheck.position, Vector2.right * facingDir, 50, whatIsPlayer);
+        RaycastHit2D wallDetected = Physics2D.Raycast(wallCheck.position, Vector2.right * facingDir, 50, whatIsGround);
+
+        if (wallDetected)
+        {
+            if (wallDetected.distance < playerDetected.distance)
+                return default(RaycastHit2D);
+        }
+
+        return playerDetected;
+    }
 
     protected override void OnDrawGizmos()
     {

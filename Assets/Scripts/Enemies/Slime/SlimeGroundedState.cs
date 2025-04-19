@@ -1,11 +1,11 @@
 using UnityEngine;
 
-public class SkeletonGroundedState : EnemyState
+public class SlimeGroundedState : EnemyState
 {
-    protected Enemy_Skeleton enemy;
-
+    protected Enemy_Slime enemy;
     protected Transform player;
-    public SkeletonGroundedState(Enemy _enemyBase, EnemyStateMachine _stateMachine, string _animBoolName, Enemy_Skeleton _enemy) : base(_enemyBase, _stateMachine, _animBoolName)
+
+    public SlimeGroundedState(Enemy _enemyBase, EnemyStateMachine _stateMachine, string _animBoolName, Enemy_Slime _enemy) : base(_enemyBase, _stateMachine, _animBoolName)
     {
         this.enemy = _enemy;
     }
@@ -20,7 +20,7 @@ public class SkeletonGroundedState : EnemyState
     {
         base.Update();
 
-        if(enemy.IsPlayerDetected() || Vector2.Distance(enemy.transform.position, player.position) < 2)
+        if (enemy.IsPlayerDetected() || Vector2.Distance(enemy.transform.position, player.position) < enemy.agroDistance)
             stateMachine.ChangeState(enemy.battleState);
     }
     public override void Exit()

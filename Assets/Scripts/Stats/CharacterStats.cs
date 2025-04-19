@@ -132,6 +132,8 @@ public class CharacterStats : MonoBehaviour
     {
         if (_targetStats == null) return;
 
+        if (_targetStats.isInvincible) return;
+
         bool criticalStrike = false;
 
         if (TargetCanAvoidAttack(_targetStats)) return;
@@ -310,7 +312,7 @@ public class CharacterStats : MonoBehaviour
         CurrentHealth -= _damage;
         onHealthChanged?.Invoke();
 
-        if (_damage > 0)
+        if (this.gameObject != null && _damage > 0)
             fx.CreatePopUpText(_damage.ToString());
 
         if (CurrentHealth <= 0 && !isDead)

@@ -105,7 +105,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1358481089
-  m_SortingLayer: 4
+  m_SortingLayer: 6
   m_SortingOrder: -1
   m_Sprite: {fileID: -3318188226485093758, guid: ae72133dacba6ec4eb33ecde48f50e56, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -133,6 +133,11 @@ MonoBehaviour:
   colorLosingSpeed: 1
   attackCheck: {fileID: 6765167212472899786}
   attackCheckRadius: 0.8
+  whatIsEnemy:
+    serializedVersion: 2
+    m_Bits: 128
+  closestEnemyCheckRadius: 15
+  closestEnemy: {fileID: 0}
 --- !u!95 &1210481674022446367
 Animator:
   serializedVersion: 5

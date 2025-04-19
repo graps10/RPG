@@ -14,6 +14,7 @@ public class Entity : MonoBehaviour
 
     [Header("KnockBack Info")]
     [SerializeField] protected Vector2 knockbackPower;
+    [SerializeField] protected Vector2 knockbackOffset;
     [SerializeField] protected float knockbackDuration = 0.07f;
     protected bool isKnocked;
 
@@ -36,7 +37,7 @@ public class Entity : MonoBehaviour
 
     protected virtual void Awake()
     {
-
+        stats = GetComponent<CharacterStats>();
     }
 
     protected virtual void Start()
@@ -44,7 +45,6 @@ public class Entity : MonoBehaviour
         sr = GetComponentInChildren<SpriteRenderer>();
         anim = GetComponentInChildren<Animator>();
         rb = GetComponent<Rigidbody2D>();
-        stats = GetComponent<CharacterStats>();
         cd = GetComponent<CapsuleCollider2D>();
     }
 
@@ -66,6 +66,8 @@ public class Entity : MonoBehaviour
             knockbackDir = 1;
     }
 
+    public virtual void CancelKnockBack() => isKnocked = false;
+
     protected virtual void ReturnDefaultSpeed()
     {
         anim.speed = 1;
@@ -77,7 +79,11 @@ public class Entity : MonoBehaviour
     {
         isKnocked = true;
 
-        rb.velocity = new Vector2(knockbackPower.x * knockbackDir, knockbackPower.y);
+        float xOffset = UnityEngine.Random.Range(knockbackOffset.x, knockbackOffset.y);
+
+        // if(knockbackPower.x > 0 || knockbackPower.y > 0) This makes player immune to freeze effect when he takes hit
+
+        rb.velocity = new Vector2((knockbackPower.x + xOffset) * knockbackDir, knockbackPower.y);
 
         yield return new WaitForSeconds(knockbackDuration);
 
