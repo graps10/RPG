@@ -13,8 +13,8 @@ public class Entity : MonoBehaviour
     #endregion
 
     [Header("KnockBack Info")]
-    [SerializeField] protected Vector2 knockbackPower;
-    [SerializeField] protected Vector2 knockbackOffset;
+    [SerializeField] protected Vector2 knockbackPower = new Vector2(7, 12);
+    [SerializeField] protected Vector2 knockbackOffset = new Vector2(0.5f, 2f);
     [SerializeField] protected float knockbackDuration = 0.07f;
     protected bool isKnocked;
 

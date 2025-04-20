@@ -314,13 +314,15 @@ public class CharacterStats : MonoBehaviour
         if (isVulnerable)
             _damage = Mathf.RoundToInt(_damage * 1.1f);
 
+        if (isDead) return;
+
         CurrentHealth -= _damage;
         onHealthChanged?.Invoke();
 
-        if (gameObject != null && _damage > 0 && fx != null)
-            fx.CreatePopUpText(_damage.ToString());
+        if (_damage > 0)
+            fx?.CreatePopUpText(_damage.ToString());
 
-        if (CurrentHealth <= 0 && !isDead)
+        if (CurrentHealth <= 0)
             Die();
     }
 

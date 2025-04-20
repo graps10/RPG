@@ -11,6 +11,8 @@ public class Arrow_Controller : MonoBehaviour
     [SerializeField] private bool canMove = true;
     [SerializeField] private bool flipped;
 
+    private CharacterStats myStats;
+
     void Update()
     {
         if (canMove)
@@ -21,13 +23,21 @@ public class Arrow_Controller : MonoBehaviour
     {
         if (collision.gameObject.layer == LayerMask.NameToLayer(targetLayerName))
         {
-            collision.GetComponent<CharacterStats>()?.TakeDamage(damage);
+            //collision.GetComponent<CharacterStats>()?.TakeDamage(damage);
+
+            myStats.DoDamage(collision.GetComponent<CharacterStats>());
             StuckInto(collision);
         }
         else if (collision.gameObject.layer == LayerMask.NameToLayer("Ground"))
         {
             StuckInto(collision);
         }
+    }
+
+    public void SetupArrow(CharacterStats _myStats, float _speed)
+    {
+        myStats = _myStats;
+        xVelocity = _speed;
     }
 
     public void FlipArrow()
