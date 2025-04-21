@@ -16,6 +16,7 @@ public class PlayerCatchSwordState : PlayerState
 
         player.fx.PlayDustFX();
         player.fx.ScreenShake(player.fx.shakeSwordImpact);
+        Debug.Log("Catch");
 
         if (player.transform.position.x > sword.position.x && player.facingDir == 1)
             player.Flip();

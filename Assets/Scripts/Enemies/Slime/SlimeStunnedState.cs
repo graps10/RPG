@@ -12,7 +12,7 @@ public class SlimeStunnedState : EnemyState
     {
         base.Enter();
 
-        enemy.fx.InvokeRepeating("RedColorBlink", 0, .1f);
+        enemy.fx?.InvokeRepeating("RedColorBlink", 0, .1f);
 
         stateTimer = enemy.stunDuration;
 

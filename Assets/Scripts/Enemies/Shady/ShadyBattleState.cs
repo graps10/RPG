@@ -1,14 +1,15 @@
 using UnityEngine;
 
-public class ArcherBattleState : EnemyState
+public class ShadyBattleState : EnemyState
 {
     private Transform player;
-    private Enemy_Archer enemy;
+    private Enemy_Shady enemy;
     protected int moveDir;
 
+    private float defaultSpeed;
     private bool flippedOnce;
 
-    public ArcherBattleState(Enemy _enemyBase, EnemyStateMachine _stateMachine, string _animBoolName, Enemy_Archer _enemy) : base(_enemyBase, _stateMachine, _animBoolName)
+    public ShadyBattleState(Enemy _enemyBase, EnemyStateMachine _stateMachine, string _animBoolName, Enemy_Shady _enemy) : base(_enemyBase, _stateMachine, _animBoolName)
     {
         this.enemy = _enemy;
     }
@@ -24,6 +25,10 @@ public class ArcherBattleState : EnemyState
 
 
         stateTimer = enemy.battleTime;
+
+        defaultSpeed = enemy.moveSpeed;
+        enemy.moveSpeed = enemy.battleStateMoveSpeed;
+
         flippedOnce = false;
     }
     public override void Update()
@@ -33,26 +38,25 @@ public class ArcherBattleState : EnemyState
         HandleBattleBehavior();
         CalculateMoveDirection();
 
-        if (enemy.IsPlayerDetected())
-        {
-            if (enemy.IsPlayerDetected().distance < enemy.attackDistance - 0.5f)
-            {
-                enemy.anim.SetFloat("xVelocity", 0);
-                return;
-            }
-            else
-            {
-                enemy.anim.SetFloat("xVelocity", moveDir);
-                enemy.SetVelocity(enemy.moveSpeed * moveDir, rb.velocity.y);
-            }
-        }
+        // if (enemy.IsPlayerDetected())
+        // {
+        //     if (enemy.IsPlayerDetected().distance < enemy.attackDistance - 0.5f)
+        //     {
+        //         enemy.anim.SetFloat("xVelocity", 0);
+        //         return;
+        //     }
+        //     else
+        //         enemy.anim.SetFloat("xVelocity", moveDir);
+        // }
 
-        // enemy.SetVelocity(enemy.moveSpeed * moveDir, rb.velocity.y);
+        enemy.SetVelocity(enemy.moveSpeed * moveDir, rb.velocity.y);
     }
 
     public override void Exit()
     {
         base.Exit();
+
+        enemy.moveSpeed = defaultSpeed;
     }
 
     private void HandleBattleBehavior()
@@ -61,17 +65,8 @@ public class ArcherBattleState : EnemyState
         {
             stateTimer = enemy.battleTime;
 
-            if (enemy.IsPlayerDetected().distance < enemy.safeDistance)
-            {
-                if (CanJump())
-                    stateMachine.ChangeState(enemy.jumpState);
-            }
-
             if (enemy.IsPlayerDetected().distance < enemy.attackDistance)
-            {
-                if (CanAttack())
-                    stateMachine.ChangeState(enemy.attackState);
-            }
+                enemy.stats.KillEntity(); // this enters dead state which triggers explosion + drop items and souls
         }
         else
         {
@@ -104,19 +99,5 @@ public class ArcherBattleState : EnemyState
             moveDir = 1;
         else if (player.position.x < enemy.transform.position.x)
             moveDir = -1;
-    }
-
-    private bool CanJump()
-    {
-        if (enemy.GroundBehind() == false || enemy.WallBehind() == true)
-            return false;
-
-        if (Time.time >= enemy.lastTimeJumped + enemy.jumpCooldown)
-        {
-            enemy.lastTimeJumped = Time.time;
-            return true;
-        }
-
-        return false;
     }
 }
