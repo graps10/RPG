@@ -14,7 +14,7 @@ public class UI_InGame : MonoBehaviour
     [SerializeField] private Image blackHoleImage;
     [SerializeField] private Image flaskImage;
 
-    
+
     [Header("Souls Info")]
     [SerializeField] private TextMeshProUGUI currentSouls;
     [SerializeField] private float soulsAmount;
@@ -24,8 +24,8 @@ public class UI_InGame : MonoBehaviour
 
     void Start()
     {
-        if(playerStats != null)
-            playerStats.onHealthChanged += UpdateHealthUI; 
+        if (playerStats != null)
+            playerStats.onHealthChanged += UpdateHealthUI;
 
         skills = SkillManager.instance;
     }
@@ -34,28 +34,16 @@ public class UI_InGame : MonoBehaviour
     {
         UpdateSoulsUI();
 
-        if (Input.GetKeyDown(KeyCode.LeftShift) && skills.dash.dashUnlocked)
-            SetCooldownOf(dashImage);
+        UpdateSkillCooldownUI(dashImage, skills.dash.cooldownTimer, skills.dash.cooldown);
+        UpdateSkillCooldownUI(parryImage, skills.parry.cooldownTimer, skills.parry.cooldown);
+        UpdateSkillCooldownUI(crystalImage, skills.crystal.cooldownTimer, skills.crystal.cooldown);
+        UpdateSkillCooldownUI(swordImage, skills.sword.cooldownTimer, skills.sword.cooldown);
+        UpdateSkillCooldownUI(blackHoleImage, skills.blackHole.cooldownTimer, skills.blackHole.cooldown);
 
-        if (Input.GetKeyDown(KeyCode.Q) && skills.parry.parryUnlocked)
-            SetCooldownOf(parryImage);
-
-        if (Input.GetKeyDown(KeyCode.F) && skills.crystal.crystalUnlocked)
-            SetCooldownOf(crystalImage);
-
-        if (Input.GetKeyDown(KeyCode.Mouse1) && skills.sword.swordUnlocked)
-            SetCooldownOf(swordImage);
-
-        if (Input.GetKeyDown(KeyCode.R) && skills.blackHole.blackHoleUnlocked)
-            SetCooldownOf(blackHoleImage);
 
         if (Input.GetKeyDown(KeyCode.E) && Inventory.instance.GetEquipment(EquipmentType.Flask) != null)
             SetCooldownOf(flaskImage);
 
-        CheckCooldownOf(dashImage, skills.dash.cooldown);
-        CheckCooldownOf(parryImage, skills.parry.cooldown);
-        CheckCooldownOf(crystalImage, skills.crystal.cooldown);
-        CheckCooldownOf(blackHoleImage, skills.blackHole.cooldown);
         CheckCooldownOf(flaskImage, Inventory.instance.flaskCooldown);
     }
 
@@ -75,15 +63,23 @@ public class UI_InGame : MonoBehaviour
         slider.value = playerStats.CurrentHealth;
     }
 
+    private void UpdateSkillCooldownUI(Image image, float currentTimer, float maxCooldown)
+    {
+        if (currentTimer > 0)
+            image.fillAmount = currentTimer / maxCooldown;
+        else
+            image.fillAmount = 0;
+    }
+
     private void SetCooldownOf(Image _image)
     {
-        if(_image.fillAmount <= 0)
+        if (_image.fillAmount <= 0)
             _image.fillAmount = 1;
     }
 
     private void CheckCooldownOf(Image _image, float _cooldown)
     {
-        if(_image.fillAmount > 0)
+        if (_image.fillAmount > 0)
             _image.fillAmount -= 1 / _cooldown * Time.deltaTime;
     }
 }

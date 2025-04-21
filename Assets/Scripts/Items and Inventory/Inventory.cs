@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using UnityEditor;
-using UnityEditorInternal.Profiling.Memory.Experimental;
 using UnityEngine;
 
 public class Inventory : MonoBehaviour, ISaveManager
@@ -30,8 +29,8 @@ public class Inventory : MonoBehaviour, ISaveManager
     private UI_StatSlot[] statSlot;
 
     [Header("Items Cooldown")]
-    private float lastTimeUsedFlask;
     private float lastTimeUsedArmor;
+    public float lastTimeUsedFlask { get; private set; }
 
     public float flaskCooldown { get; private set; }
     private float armorCooldown;
@@ -40,6 +39,8 @@ public class Inventory : MonoBehaviour, ISaveManager
     public List<ItemData> itemDataBase;
     public List<InventoryItem> loadedItems;
     public List<ItemData_Equipment> loadedEquipment;
+
+    private PlayerManager PM => PlayerManager.instance;
 
 
     void Awake()
@@ -253,18 +254,23 @@ public class Inventory : MonoBehaviour, ISaveManager
     {
         ItemData_Equipment currentFlask = GetEquipment(EquipmentType.Flask);
 
-        if (currentFlask == null) return;
+        if (currentFlask == null)
+        {
+            PM.player.fx.CreatePopUpText("Empty flask slot");
+            return;
+        }
+        // RemoveUsedFlask(currentFlask);
 
-        bool canuseFlask = Time.time > lastTimeUsedFlask + flaskCooldown;
+        bool canUseFlask = Time.time > lastTimeUsedFlask + flaskCooldown;
 
-        if (canuseFlask)
+        if (canUseFlask)
         {
             flaskCooldown = currentFlask.itemCooldown;
             currentFlask.Effect(null);
             lastTimeUsedFlask = Time.time;
         }
         else
-            Debug.Log("Flask on cooldown");
+            PM.player.fx.CreatePopUpText("Cooldown");
     }
 
     public void LoadData(GameData _data)
@@ -398,6 +404,14 @@ public class Inventory : MonoBehaviour, ISaveManager
                     equipmentSlot[i].UpdateSlot(item.Value);
             }
         }
+    }
+
+    private void RemoveUsedFlask(ItemData_Equipment currentFlask)
+    {
+        UnequipItem(currentFlask);
+        RemoveItem(currentFlask);
+
+        equipmentSlot[3].CleanUpSlot();
     }
 
 #if UNITY_EDITOR

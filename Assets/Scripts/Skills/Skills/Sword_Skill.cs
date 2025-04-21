@@ -1,6 +1,4 @@
-using System;
 using UnityEngine;
-using UnityEngine.Animations;
 using UnityEngine.UI;
 
 public enum SwordType
