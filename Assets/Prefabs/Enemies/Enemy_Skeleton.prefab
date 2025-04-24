@@ -62,7 +62,7 @@ MonoBehaviour:
   knockbackOffset: {x: 0.5, y: 2}
   knockbackDuration: 0.07
   attackCheck: {fileID: 5019735860372530236}
-  attackCheckRadius: 1.2
+  attackCheckRadius: 1.4
   groundCheck: {fileID: 2052026511026434786}
   groundCheckDistance: 1
   wallCheck: {fileID: 8744841946057157505}
@@ -210,7 +210,7 @@ MonoBehaviour:
     baseValue: 0
     modifiers: 
   maxHealth:
-    baseValue: 1000
+    baseValue: 100
     modifiers: 
   armor:
     baseValue: 0
