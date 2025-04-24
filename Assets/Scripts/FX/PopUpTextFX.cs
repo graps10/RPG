@@ -1,7 +1,7 @@
 using TMPro;
 using UnityEngine;
 
-public class PopUpTextFX : MonoBehaviour
+public class PopUpTextFX : MonoBehaviour, PooledObject
 {
     private TextMeshPro myText;
 
@@ -11,11 +11,20 @@ public class PopUpTextFX : MonoBehaviour
     [SerializeField] private float lifeTime;
 
     private float textTimer;
+    private float defaultSpeed;
 
-    void Start()
+    void Awake() => myText = GetComponent<TextMeshPro>();
+
+    public void OnSpawn()
     {
-        myText = GetComponent<TextMeshPro>();
+        defaultSpeed = speed;
         textTimer = lifeTime;
+    }
+    public void OnReturnToPool()
+    {
+        transform.position = Vector2.zero;
+        speed = defaultSpeed;
+        myText.color = new Color(myText.color.r, myText.color.g, myText.color.b, 1);
     }
 
     void Update()
@@ -33,7 +42,7 @@ public class PopUpTextFX : MonoBehaviour
                 speed = disappearanceSpeed;
 
             if (myText.color.a <= 0)
-                Destroy(gameObject);
+                PoolManager.instance.Return("text", gameObject);
         }
     }
 }

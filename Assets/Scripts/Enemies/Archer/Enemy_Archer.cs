@@ -3,7 +3,6 @@ using UnityEngine;
 public class Enemy_Archer : Enemy
 {
     [Header("Archer Specific")]
-    [SerializeField] private GameObject arrowPrefab;
     [SerializeField] private float arrowSpeed;
     public Vector2 jumpVelocity;
     public float jumpCooldown;
@@ -66,8 +65,7 @@ public class Enemy_Archer : Enemy
     {
         Quaternion arrowRotation = Quaternion.Euler(0, facingDir == 1 ? 0 : 180, 0);
 
-        GameObject newArrow = Instantiate(arrowPrefab, attackCheck.position, arrowRotation);
-
+        GameObject newArrow = PoolManager.instance.Spawn("arrow", attackCheck.position, arrowRotation);
         newArrow.GetComponent<Arrow_Controller>().SetupArrow(stats, arrowSpeed * facingDir);
     }
 

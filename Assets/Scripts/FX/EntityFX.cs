@@ -7,9 +7,6 @@ public class EntityFX : MonoBehaviour
     protected Player player;
     protected SpriteRenderer sr;
 
-    [Header("Pop Up Text")]
-    [SerializeField] private GameObject popupTextPrefab;
-
     [Header("Flash FX")]
     [SerializeField] private float flashDuration;
     [SerializeField] private Material hitMat;
@@ -24,10 +21,6 @@ public class EntityFX : MonoBehaviour
     [SerializeField] private ParticleSystem igniteFx;
     [SerializeField] private ParticleSystem chillFx;
     [SerializeField] private ParticleSystem shockFx;
-
-    [Header("Hit Fx")]
-    [SerializeField] private GameObject hitFX;
-    [SerializeField] private GameObject criticalHitFX;
 
     private GameObject myHealthBar;
 
@@ -47,9 +40,10 @@ public class EntityFX : MonoBehaviour
         float randomY = Random.Range(1.5f, 3);
 
         Vector3 positionOffset = new Vector3(randomX, randomY, 0);
-        GameObject newText = Instantiate(popupTextPrefab, transform.position + positionOffset, Quaternion.identity);
+        GameObject newText = PoolManager.instance.Spawn("text", transform.position + positionOffset, Quaternion.identity);
 
-        newText.GetComponent<TextMeshPro>().text = _text;
+        if (newText)
+            newText.GetComponent<TextMeshPro>().text = _text;
     }
 
     public void MakeTransparent(bool _transparent)
@@ -75,11 +69,11 @@ public class EntityFX : MonoBehaviour
 
         Vector3 hitFXRotation = new Vector3(0, 0, zRotation);
 
-        GameObject hitPrefab = hitFX;
+        string poolKey = "hitFX";
 
         if (_critical)
         {
-            hitPrefab = criticalHitFX;
+            poolKey = "criticalHitFX";
 
             float yRotation = 0f;
             zRotation = Random.Range(-45, 45);
@@ -91,10 +85,11 @@ public class EntityFX : MonoBehaviour
         }
 
 
-        GameObject newHitFX = Instantiate(hitPrefab, _target.position + new Vector3(xPosition, yPosition), Quaternion.identity);
+        GameObject newHitFX = PoolManager.instance.Spawn(poolKey, _target.position + new Vector3(xPosition, yPosition), Quaternion.identity);
+
         newHitFX.transform.Rotate(hitFXRotation);
 
-        Destroy(newHitFX, 0.5f);
+        StartCoroutine(ReturnFXAfterDelay(poolKey, newHitFX, 0.5f));
     }
 
     public void IgniteFxFor(float _seconds)
@@ -121,6 +116,12 @@ public class EntityFX : MonoBehaviour
         Invoke("CancelColorChange", _seconds);
     }
 
+    private IEnumerator ReturnFXAfterDelay(string poolKey, GameObject hitFX, float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        PoolManager.instance.Return(poolKey, hitFX);
+    }
+
     private IEnumerator FlashFX()
     {
         sr.material = hitMat;
@@ -134,6 +135,7 @@ public class EntityFX : MonoBehaviour
 
         sr.material = originalMat;
     }
+
     private void RedColorBlink()
     {
         if (sr.color != Color.white)
@@ -141,6 +143,7 @@ public class EntityFX : MonoBehaviour
         else
             sr.color = Color.red;
     }
+
     private void CancelColorChange()
     {
         CancelInvoke();

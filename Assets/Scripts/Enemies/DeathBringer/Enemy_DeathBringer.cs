@@ -72,7 +72,7 @@ public class Enemy_DeathBringer : Enemy
 
         Vector3 spellPosition = new Vector3(player.transform.position.x + xOffset, player.transform.position.y + spellCastOffset.y);
 
-        GameObject newSpell = Instantiate(spellPrefab, spellPosition, Quaternion.identity);
+        GameObject newSpell = PoolManager.instance.Spawn("deathBringerSpell", spellPosition, Quaternion.identity);
         newSpell.GetComponent<DeathBringerSpell_Controller>().SetupSpell(stats);
     }
 

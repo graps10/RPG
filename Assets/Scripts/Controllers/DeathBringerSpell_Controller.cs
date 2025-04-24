@@ -24,7 +24,7 @@ public class DeathBringerSpell_Controller : MonoBehaviour
         }
     }
 
-    private void SelfDestroy() => Destroy(gameObject);
+    private void SelfDestroy() => PoolManager.instance.Return("deathBringerSpell", gameObject);
 
     private void OnDrawGizmos()
     {
