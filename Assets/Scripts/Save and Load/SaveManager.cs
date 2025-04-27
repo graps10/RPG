@@ -22,7 +22,7 @@ public class SaveManager : MonoBehaviour
 
     void Awake()
     {
-        if(instance != null)
+        if (instance != null)
             Destroy(instance.gameObject);
         else
             instance = this;
@@ -42,7 +42,7 @@ public class SaveManager : MonoBehaviour
     {
         gameData = dataHandler.Load();
 
-        if(this.gameData == null)
+        if (this.gameData == null)
         {
             Debug.Log("No saved data found");
             NewGame();
@@ -68,7 +68,7 @@ public class SaveManager : MonoBehaviour
 
     public bool HasSavedData()
     {
-        if(dataHandler.Load() != null)
+        if (dataHandler.Load() != null)
             return true;
 
         return false;
@@ -82,7 +82,7 @@ public class SaveManager : MonoBehaviour
     private List<ISaveManager> FindAllSaveManagers()
     {
         IEnumerable<ISaveManager> saveManagers = FindObjectsOfType<MonoBehaviour>().OfType<ISaveManager>();
-    
+
         return new List<ISaveManager>(saveManagers);
     }
 }

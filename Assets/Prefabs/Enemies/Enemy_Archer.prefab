@@ -31,7 +31,7 @@ Transform:
   m_GameObject: {fileID: 50979775065540776}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 14.3, y: 2.21, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -182,7 +182,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 13b235a1f856cf9438d82ac55c31f333, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  popupTextPrefab: {fileID: 1977449236418972448, guid: 33b9eeb0cfe94944eae7e7e240c2fad1, type: 3}
+  hitFXPrefab: {fileID: 1699656547998446530, guid: 3786c0af4259414428e82c63db846bb3, type: 3}
+  criticalHitFXPrefab: {fileID: 1057830787675581550, guid: 8ab1744b468a47d4fad32bb8f781d610, type: 3}
   flashDuration: 0.2
   hitMat: {fileID: 2100000, guid: 7947b23ac27a33b4598dd7e23abe4469, type: 2}
   igniteColor:
@@ -197,8 +198,6 @@ MonoBehaviour:
   igniteFx: {fileID: 9163520908989604016}
   chillFx: {fileID: 8841039427499579928}
   shockFx: {fileID: 4587973918378667573}
-  hitFX: {fileID: 1699656547998446530, guid: 3786c0af4259414428e82c63db846bb3, type: 3}
-  criticalHitFX: {fileID: 1057830787675581550, guid: 8ab1744b468a47d4fad32bb8f781d610, type: 3}
 --- !u!114 &1055091641041975665
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -211,8 +210,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3b08a18df41db074da2b02a4ca061947, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxItemsToDrop: 0
-  itemPool: []
+  maxItemsToDrop: 3
+  itemPool:
+  - {fileID: 11400000, guid: 31c49433047bf6d49aed80da8565d32a, type: 2}
+  - {fileID: 11400000, guid: a7c301e88a476cd4b8f7a81884d042d2, type: 2}
   dropPrefab: {fileID: 1914593840508665066, guid: e6e381a1def9d2c4599315b197d60c1c, type: 3}
 --- !u!114 &7656670257762040362
 MonoBehaviour:
@@ -253,7 +254,6 @@ MonoBehaviour:
   minAttackCooldown: 1
   maxAttackCooldown: 2
   lastTimeAttacked: 0
-  arrowPrefab: {fileID: 556793171102493986, guid: 3987992e824b7154d819f73b20be679c, type: 3}
   arrowSpeed: 7
   jumpVelocity: {x: 25, y: 20}
   jumpCooldown: 1

@@ -1,17 +1,10 @@
 using UnityEngine;
 
-public class ItemObject : MonoBehaviour
+public class ItemObject : MonoBehaviour, IReturnedObject
 {
     [SerializeField] private Rigidbody2D rb;
     [SerializeField] private ItemData itemData;
     [SerializeField] private Vector2 velocity;
-
-    // void Update() {
-    //     if(Input.GetKeyDown(KeyCode.M))
-    //     {
-    //         rb.velocity = velocity;
-    //     }
-    // }
 
     public void SetupItem(ItemData _itemData, Vector2 _velocity)
     {
@@ -22,6 +15,13 @@ public class ItemObject : MonoBehaviour
         SetupVisual();
     }
 
+    public void OnReturnToPool()
+    {
+        transform.position = Vector2.zero;
+        itemData = null;
+        gameObject.SetActive(false);
+    }
+
     public void PickupItem()
     {
         if (!Inventory.instance.CanAddItem() && itemData.itemType == ItemType.Equipment)
@@ -30,9 +30,11 @@ public class ItemObject : MonoBehaviour
             PlayerManager.instance.player.fx.CreatePopUpText("Inventory is full");
             return;
         }
+
         AudioManager.instance.PlaySFX(16, transform);
         Inventory.instance.AddItem(itemData);
-        Destroy(gameObject);
+
+        PoolManager.instance.Return("drop", gameObject);
     }
 
     private void SetupVisual()

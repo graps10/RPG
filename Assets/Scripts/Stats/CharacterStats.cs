@@ -103,6 +103,7 @@ public class CharacterStats : MonoBehaviour
         if (IsIgnited) ApplyIgniteDamage();
     }
 
+    public void MakeInvincible(bool _invincible) => isInvincible = _invincible;
     public void MakeVulnerableFor(float _duration) => StartCoroutine(VulnerableCoroutine(_duration));
 
     private IEnumerator VulnerableCoroutine(float _duration)
@@ -226,7 +227,7 @@ public class CharacterStats : MonoBehaviour
             IsIgnited = _ignite;
             ignitedTimer = ailmentsDuration;
 
-            fx.IgniteFxFor(ailmentsDuration);
+            fx?.IgniteFxFor(ailmentsDuration);
         }
 
         if (_chill && canApplyChill)
@@ -237,7 +238,7 @@ public class CharacterStats : MonoBehaviour
             float slowPercantage = 0.2f;
             GetComponent<Entity>().SlowEntityBy(slowPercantage, ailmentsDuration);
 
-            fx.ChillFxFor(ailmentsDuration);
+            fx?.ChillFxFor(ailmentsDuration);
         }
 
         if (_shock && canApplyShock)
@@ -281,14 +282,17 @@ public class CharacterStats : MonoBehaviour
     public void SetupShockStrikeDamage(int _damage) => shockDamage = _damage;
 
     #endregion
+
     public virtual void TakeDamage(int _damage)
     {
         if (isInvincible) return;
 
         DeacreaseHealthBy(_damage);
 
-        if (fx != null)
+
+        if (fx != null && _damage > 0)
         {
+            fx.CreatePopUpText(_damage.ToString());
             GetComponent<Entity>().DamageImpact();
             fx.StartCoroutine("FlashFX");
         }
@@ -319,9 +323,6 @@ public class CharacterStats : MonoBehaviour
         CurrentHealth -= _damage;
         onHealthChanged?.Invoke();
 
-        if (_damage > 0)
-            fx?.CreatePopUpText(_damage.ToString());
-
         if (CurrentHealth <= 0)
             Die();
     }
@@ -338,8 +339,6 @@ public class CharacterStats : MonoBehaviour
         if (!isDead)
             Die();
     }
-
-    public void MakeInvincible(bool _invincible) => isInvincible = _invincible;
 
     #region Stat calculations
 
@@ -426,7 +425,7 @@ public class CharacterStats : MonoBehaviour
 
         if (closestEnemy != null)
         {
-            GameObject newShockStrike = PoolManager.instance.Spawn("shockStrike", transform.position, Quaternion.identity);
+            GameObject newShockStrike = PoolManager.instance.Spawn("shockStrike", transform.position, Quaternion.identity, shockStrikePrefab);
 
             if (newShockStrike)
                 newShockStrike.GetComponent<ShockStrike_Controller>().

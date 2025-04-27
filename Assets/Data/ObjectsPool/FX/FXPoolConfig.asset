@@ -10,9 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 06812537e082f0f45b2388ab44d6f738, type: 3}
-  m_Name: CriticalHitsFXPoolConfig
+  m_Name: FXPoolConfig
   m_EditorClassIdentifier: 
-  key: criticalHitFX
-  prefab: {fileID: 1057830787675581550, guid: 8ab1744b468a47d4fad32bb8f781d610, type: 3}
+  key: fx
+  prefabs:
+  - {fileID: 1244835694717432849, guid: bcadf8eee9e29404b86303067fee6617, type: 3}
+  - {fileID: 1945852406485171177, guid: dce775d7096755c4cad2fd372e8b7371, type: 3}
   initialSize: 10
   allowExpand: 1

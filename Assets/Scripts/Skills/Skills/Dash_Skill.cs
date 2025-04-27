@@ -5,15 +5,15 @@ public class Dash_Skill : Skill
 {
     [Header("Dash")]
     [SerializeField] private UI_SkillTreeSlot dashUnlockButton;
-    public bool dashUnlocked {get; private set;}
+    public bool dashUnlocked { get; private set; }
 
     [Header("Clone on dash")]
     [SerializeField] private UI_SkillTreeSlot cloneOnDashUnlockButton;
-    public bool cloneOnDashUnlocked {get; private set;}
+    public bool cloneOnDashUnlocked { get; private set; }
 
     [Header("Clone on arrival")]
     [SerializeField] private UI_SkillTreeSlot cloneOnArrivalUnlockButton;
-    public bool cloneOnArrivalUnlocked {get; private set;}
+    public bool cloneOnArrivalUnlocked { get; private set; }
 
     protected override void Start()
     {
@@ -35,36 +35,36 @@ public class Dash_Skill : Skill
     {
         base.UseSkill();
 
-        Debug.Log("Created clone");
+        // Debug.Log("Created clone");
     }
 
     public void CloneOnDash()
     {
-        if(cloneOnDashUnlocked)
+        if (cloneOnDashUnlocked)
             SkillManager.instance.clone.CreateClone(player.transform, Vector3.zero);
     }
 
     public void CloneOnArrival()
     {
-        if(cloneOnArrivalUnlocked)
+        if (cloneOnArrivalUnlocked)
             SkillManager.instance.clone.CreateClone(player.transform, Vector3.zero);
     }
 
     private void UnlockDash()
     {
-        if(dashUnlockButton.unlocked)
+        if (dashUnlockButton.unlocked)
             dashUnlocked = true;
     }
 
     private void UnlockCloneOnDash()
     {
-        if(cloneOnDashUnlockButton.unlocked)
+        if (cloneOnDashUnlockButton.unlocked)
             cloneOnDashUnlocked = true;
     }
 
     private void UnlockCloneOnArrival()
     {
-        if(cloneOnArrivalUnlockButton.unlocked)
+        if (cloneOnArrivalUnlockButton.unlocked)
             cloneOnArrivalUnlocked = true;
     }
 }

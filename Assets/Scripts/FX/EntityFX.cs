@@ -7,6 +7,10 @@ public class EntityFX : MonoBehaviour
     protected Player player;
     protected SpriteRenderer sr;
 
+    [Header("Hits FX")]
+    [SerializeField] private GameObject hitFXPrefab;
+    [SerializeField] private GameObject criticalHitFXPrefab;
+
     [Header("Flash FX")]
     [SerializeField] private float flashDuration;
     [SerializeField] private Material hitMat;
@@ -69,11 +73,11 @@ public class EntityFX : MonoBehaviour
 
         Vector3 hitFXRotation = new Vector3(0, 0, zRotation);
 
-        string poolKey = "hitFX";
+        GameObject hitFX = hitFXPrefab;
 
         if (_critical)
         {
-            poolKey = "criticalHitFX";
+            hitFX = criticalHitFXPrefab;
 
             float yRotation = 0f;
             zRotation = Random.Range(-45, 45);
@@ -85,11 +89,11 @@ public class EntityFX : MonoBehaviour
         }
 
 
-        GameObject newHitFX = PoolManager.instance.Spawn(poolKey, _target.position + new Vector3(xPosition, yPosition), Quaternion.identity);
+        GameObject newHitFX = PoolManager.instance.Spawn("hitFX", _target.position + new Vector3(xPosition, yPosition), Quaternion.identity, hitFX);
 
         newHitFX.transform.Rotate(hitFXRotation);
 
-        StartCoroutine(ReturnFXAfterDelay(poolKey, newHitFX, 0.5f));
+        PoolManager.instance.Return("hitFX", newHitFX, 0.5f);
     }
 
     public void IgniteFxFor(float _seconds)
@@ -114,12 +118,6 @@ public class EntityFX : MonoBehaviour
 
         InvokeRepeating("ShockColorFx", 0, 0.3f);
         Invoke("CancelColorChange", _seconds);
-    }
-
-    private IEnumerator ReturnFXAfterDelay(string poolKey, GameObject hitFX, float delay)
-    {
-        yield return new WaitForSeconds(delay);
-        PoolManager.instance.Return(poolKey, hitFX);
     }
 
     private IEnumerator FlashFX()

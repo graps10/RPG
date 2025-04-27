@@ -10,9 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 06812537e082f0f45b2388ab44d6f738, type: 3}
-  m_Name: DeathBringerSpell
+  m_Name: DeathBringerSpellConfig
   m_EditorClassIdentifier: 
   key: deathBringerSpell
-  prefab: {fileID: 3428880875411675170, guid: 8fbd4d45312589e40885ac4cc83c9296, type: 3}
+  prefabs:
+  - {fileID: 3428880875411675170, guid: 8fbd4d45312589e40885ac4cc83c9296, type: 3}
   initialSize: 5
   allowExpand: 0

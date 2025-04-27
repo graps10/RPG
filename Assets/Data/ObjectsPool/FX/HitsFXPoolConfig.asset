@@ -13,6 +13,8 @@ MonoBehaviour:
   m_Name: HitsFXPoolConfig
   m_EditorClassIdentifier: 
   key: hitFX
-  prefab: {fileID: 1699656547998446530, guid: 3786c0af4259414428e82c63db846bb3, type: 3}
-  initialSize: 10
-  allowExpand: 1
+  prefabs:
+  - {fileID: 1699656547998446530, guid: 3786c0af4259414428e82c63db846bb3, type: 3}
+  - {fileID: 1057830787675581550, guid: 8ab1744b468a47d4fad32bb8f781d610, type: 3}
+  initialSize: 50
+  allowExpand: 0

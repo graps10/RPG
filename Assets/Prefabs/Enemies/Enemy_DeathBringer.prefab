@@ -794,7 +794,7 @@ Transform:
   m_GameObject: {fileID: 8809330246300682694}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 17.87, y: 3.29, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -945,7 +945,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 13b235a1f856cf9438d82ac55c31f333, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  popupTextPrefab: {fileID: 1977449236418972448, guid: 33b9eeb0cfe94944eae7e7e240c2fad1, type: 3}
+  hitFXPrefab: {fileID: 1699656547998446530, guid: 3786c0af4259414428e82c63db846bb3, type: 3}
+  criticalHitFXPrefab: {fileID: 1057830787675581550, guid: 8ab1744b468a47d4fad32bb8f781d610, type: 3}
   flashDuration: 0.2
   hitMat: {fileID: 2100000, guid: 7947b23ac27a33b4598dd7e23abe4469, type: 2}
   igniteColor:
@@ -960,8 +961,6 @@ MonoBehaviour:
   igniteFx: {fileID: 5715256293113028488, guid: 6de6a38999560394c8dee6adf3b06f93, type: 3}
   chillFx: {fileID: 1905653191365372923, guid: 232bb00d0f9b2f64a85b16bb88dac708, type: 3}
   shockFx: {fileID: 698393417793007381, guid: 3a4709d650a25f44b9abb73ba8f4aaed, type: 3}
-  hitFX: {fileID: 1699656547998446530, guid: 3786c0af4259414428e82c63db846bb3, type: 3}
-  criticalHitFX: {fileID: 1057830787675581550, guid: 8ab1744b468a47d4fad32bb8f781d610, type: 3}
 --- !u!114 &5400747530869089353
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -9,15 +9,21 @@ public class PlayerManager : MonoBehaviour, ISaveManager
 
     void Awake()
     {
-        if(instance != null)
+        if (instance != null)
             Destroy(instance.gameObject);
         else
             instance = this;
     }
 
+    public void SpawnPlayer(Transform _spawnSpot)
+    {
+        player.transform.position = _spawnSpot.position;
+        player.gameObject.SetActive(true);
+    }
+
     public bool HasEnoughMoney(int _price)
     {
-        if(_price > currency)
+        if (_price > currency)
         {
             Debug.Log("Not enough money");
             return false;

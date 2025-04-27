@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: PopupTextPoolConfig
   m_EditorClassIdentifier: 
   key: text
-  prefab: {fileID: 1977449236418972448, guid: 33b9eeb0cfe94944eae7e7e240c2fad1, type: 3}
-  initialSize: 15
+  prefabs:
+  - {fileID: 1977449236418972448, guid: 33b9eeb0cfe94944eae7e7e240c2fad1, type: 3}
+  initialSize: 50
   allowExpand: 0

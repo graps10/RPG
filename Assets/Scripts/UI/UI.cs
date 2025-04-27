@@ -50,7 +50,7 @@ public class UI : MonoBehaviour, ISaveManager
         if (Input.GetKeyDown(KeyCode.K))
             SwitchWithKeyTo(skillTreeUI);
 
-        if (Input.GetKeyDown(KeyCode.O))
+        if (Input.GetKeyDown(KeyCode.Escape))
             SwitchWithKeyTo(optionsUI);
     }
 

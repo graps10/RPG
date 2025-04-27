@@ -12,12 +12,12 @@ public class IceAndFire_Effect : ItemEffect
 
         bool thirdAttack = player.primaryAttack.comboCounter == 2;
 
-        if(thirdAttack)
+        if (thirdAttack)
         {
-            GameObject newIceAndFire = Instantiate(iceAndFirePrefab, _respawnPosition.position, player.transform.rotation);
+            GameObject newIceAndFire = PoolManager.instance.Spawn("fx", _respawnPosition.position, player.transform.rotation, iceAndFirePrefab);
             newIceAndFire.GetComponent<Rigidbody2D>().velocity = new Vector2(xVelocity * player.facingDir, 0);
-        
-            Destroy(newIceAndFire, 10f);
+
+            PoolManager.instance.Return("fx", newIceAndFire, 10f);
         }
     }
 }

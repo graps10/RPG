@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -9,15 +10,12 @@ public class PoolManager : MonoBehaviour
     private Dictionary<string, ObjectPool> pools = new();
     private Dictionary<string, Transform> poolParents = new();
 
-    private void Awake()
+    void Awake()
     {
-        if (instance != null && instance != this)
-        {
-            Destroy(gameObject);
-            return;
-        }
-        instance = this;
-        DontDestroyOnLoad(gameObject);
+        if (instance != null)
+            Destroy(instance.gameObject);
+        else
+            instance = this;
 
         InitializePools();
     }
@@ -35,26 +33,35 @@ public class PoolManager : MonoBehaviour
         }
     }
 
-    public GameObject Spawn(string key, Vector3 position, Quaternion rotation)
+    public GameObject Spawn(string _key, Vector3 _position, Quaternion _rotation, GameObject _specificPrefab = null)
     {
-        if (pools.TryGetValue(key, out var pool))
+        if (pools.TryGetValue(_key, out var pool))
         {
-            return pool.Spawn(position, rotation);
+            return pool.Spawn(_position, _rotation, _specificPrefab);
         }
-        Debug.LogWarning($"Pool with key '{key}' not found.");
+        Debug.LogWarning($"Pool with key '{_key}' not found.");
         return null;
     }
 
-    public void Return(string key, GameObject obj)
+    public void Return(string _key, GameObject _obj)
     {
-        if (pools.TryGetValue(key, out var pool))
+        if (pools.TryGetValue(_key, out var pool))
         {
-            pool.Return(obj);
+            pool.Return(_obj);
         }
         else
         {
-            Debug.LogWarning($"Return failed. Pool with key '{key}' not found.");
-            Destroy(obj);
+            Debug.LogWarning($"Return failed. Pool with key '{_key}' not found.");
+            Destroy(_obj);
         }
+    }
+
+    public void Return(string _key, GameObject _obj, float _delay) => StartCoroutine(ReturnToPoolRoutine(_key, _obj, _delay));
+
+    private IEnumerator ReturnToPoolRoutine(string _key, GameObject _obj, float _delay)
+    {
+        yield return new WaitForSeconds(_delay);
+
+        Return(_key, _obj);
     }
 }

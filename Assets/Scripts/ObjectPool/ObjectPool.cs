@@ -1,44 +1,58 @@
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 public class ObjectPool
 {
-    private Queue<GameObject> poolQueue = new();
     private PoolConfig config;
     private Transform poolParent;
+    private Dictionary<GameObject, Queue<GameObject>> prefabSpecificPools = new();
 
-    public ObjectPool(PoolConfig config, Transform parent = null)
+    public ObjectPool(PoolConfig _config, Transform _parent = null)
     {
-        this.config = config;
-        this.poolParent = parent;
+        config = _config;
+        poolParent = _parent;
 
-        for (int i = 0; i < config.initialSize; i++)
+        foreach (var prefab in _config.prefabs)
         {
-            var obj = CreateNewObject();
-            poolQueue.Enqueue(obj);
+            prefabSpecificPools[prefab] = new Queue<GameObject>();
+            for (int i = 0; i < _config.initialSize; i++)
+            {
+                var obj = CreateNewObject(prefab);
+                prefabSpecificPools[prefab].Enqueue(obj);
+            }
         }
     }
 
-    private GameObject CreateNewObject()
+    private GameObject CreateNewObject(GameObject _prefab)
     {
-        var obj = Object.Instantiate(config.prefab);
+        var obj = Object.Instantiate(_prefab);
         obj.SetActive(false);
         obj.transform.SetParent(poolParent);
         return obj;
     }
 
-    public GameObject Spawn(Vector3 position, Quaternion rotation)
+    public GameObject Spawn(Vector3 _position, Quaternion _rotation, GameObject _specificPrefab = null)
     {
-        GameObject obj = poolQueue.Count > 0 ? poolQueue.Dequeue() :
-                        (config.allowExpand ? CreateNewObject() : null);
+        GameObject prefabToUse;
+
+        if (_specificPrefab != null && config.prefabs.Contains(_specificPrefab))
+            prefabToUse = _specificPrefab;
+        else
+            prefabToUse = config.prefabs[Random.Range(0, config.prefabs.Count)];
+
+
+        Queue<GameObject> specificQueue = prefabSpecificPools[prefabToUse];
+        GameObject obj = specificQueue.Count > 0 ? specificQueue.Dequeue() :
+                        (config.allowExpand ? CreateNewObject(prefabToUse) : null);
 
         if (obj == null) return null;
 
-        obj.transform.position = position;
-        obj.transform.rotation = rotation;
+        obj.transform.position = _position;
+        obj.transform.rotation = _rotation;
         obj.SetActive(true);
 
-        if (obj.TryGetComponent<PooledObject>(out var pooled))
+        if (obj.TryGetComponent<IPooledObject>(out var pooled))
         {
             pooled.OnSpawn();
         }
@@ -46,15 +60,23 @@ public class ObjectPool
         return obj;
     }
 
-    public void Return(GameObject obj)
+    public void Return(GameObject _obj)
     {
-        if (obj.TryGetComponent<PooledObject>(out var pooled))
+        if (_obj == null) return;
+
+        if (_obj.TryGetComponent<IReturnedObject>(out var pooled))
         {
             pooled.OnReturnToPool();
         }
 
-        obj.transform.SetParent(poolParent);
-        obj.SetActive(false);
-        poolQueue.Enqueue(obj);
+        GameObject originalPrefab = config.prefabs.FirstOrDefault(
+            p => p.name.Replace("(Clone)", "") == _obj.name.Replace("(Clone)", ""));
+
+        if (originalPrefab != null)
+        {
+            _obj.transform.SetParent(poolParent);
+            _obj.SetActive(false);
+            prefabSpecificPools[originalPrefab].Enqueue(_obj);
+        }
     }
 }

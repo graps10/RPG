@@ -1,7 +1,6 @@
-using System.Collections;
 using UnityEngine;
 
-public class ShockStrike_Controller : MonoBehaviour, PooledObject
+public class ShockStrike_Controller : MonoBehaviour, IReturnedObject
 {
     [SerializeField] private CharacterStats targetStats;
     [SerializeField] private float speed;
@@ -21,10 +20,9 @@ public class ShockStrike_Controller : MonoBehaviour, PooledObject
         targetStats = _targetStats;
     }
 
-    public void OnSpawn() { }
-
     public void OnReturnToPool()
     {
+        Debug.Log("Shock strike");
         triggered = false;
         targetStats = null;
 
@@ -63,11 +61,6 @@ public class ShockStrike_Controller : MonoBehaviour, PooledObject
         targetStats.ApplyShock(true);
 
         targetStats.TakeDamage(damage);
-        StartCoroutine(ReturnFXAfterDelay("shockStrike", gameObject, 0.4f));
-    }
-    private IEnumerator ReturnFXAfterDelay(string poolKey, GameObject fx, float delay)
-    {
-        yield return new WaitForSeconds(delay);
-        PoolManager.instance.Return(poolKey, fx);
+        PoolManager.instance.Return("shockStrike", gameObject, 0.4f);
     }
 }

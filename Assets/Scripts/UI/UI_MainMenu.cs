@@ -8,27 +8,23 @@ public class UI_MainMenu : MonoBehaviour
     [SerializeField] private GameObject continueButton;
     [SerializeField] private UI_FadeScreen fadeScreen;
 
-    void Start()
-    {
-        if(SaveManager.instance.HasSavedData() == false)
-            continueButton.SetActive(false);
-    }
+    // void Start()
+    // {
+    //     if(SaveManager.instance.HasSavedData() == false)
+    //         continueButton.SetActive(false);
+    // }
 
-    public void ContinueGame()
-    {
-        StartCoroutine(LoadSceneWithFadeEffect(1.5f));
-    }
+    public void PlayGame() => StartCoroutine(LoadSceneWithFadeEffect(1.5f));
+
+    public void ContinueGame() => StartCoroutine(LoadSceneWithFadeEffect(1.5f));
 
     public void NewGame()
     {
         SaveManager.instance.DeleteSavedData();
-         StartCoroutine(LoadSceneWithFadeEffect(1.5f));
+        StartCoroutine(LoadSceneWithFadeEffect(1.5f));
     }
 
-    public void ExitGame()
-    {
-        Application.Quit();
-    }
+    public void ExitGame() => Application.Quit();
 
     IEnumerator LoadSceneWithFadeEffect(float _delay)
     {

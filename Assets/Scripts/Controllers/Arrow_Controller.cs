@@ -1,7 +1,6 @@
-using System.Collections;
 using UnityEngine;
 
-public class Arrow_Controller : MonoBehaviour, PooledObject
+public class Arrow_Controller : MonoBehaviour, IPooledObject
 {
     [SerializeField] private int damage;
     [SerializeField] private string targetLayerName = "Player";
@@ -29,7 +28,7 @@ public class Arrow_Controller : MonoBehaviour, PooledObject
         canMove = true;
         flipped = false;
 
-        StartCoroutine(ReturnToPoolRoutine());
+        PoolManager.instance.Return("arrow", gameObject, 6f);
     }
 
     public void OnReturnToPool()
@@ -80,12 +79,5 @@ public class Arrow_Controller : MonoBehaviour, PooledObject
         rb.isKinematic = true;
         rb.constraints = RigidbodyConstraints2D.FreezeAll;
         transform.parent = collision.transform;
-    }
-
-    private IEnumerator ReturnToPoolRoutine()
-    {
-        yield return new WaitForSeconds(Random.Range(5, 7));
-
-        PoolManager.instance.Return("arrow", gameObject);
     }
 }

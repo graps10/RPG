@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: ShockStrikesPoolConfig
   m_EditorClassIdentifier: 
   key: shockStrike
-  prefab: {fileID: 8912282936253123872, guid: 4d37f0b7dda799247959915ab3f3ee67, type: 3}
-  initialSize: 15
+  prefabs:
+  - {fileID: 8912282936253123872, guid: 4d37f0b7dda799247959915ab3f3ee67, type: 3}
+  initialSize: 50
   allowExpand: 0

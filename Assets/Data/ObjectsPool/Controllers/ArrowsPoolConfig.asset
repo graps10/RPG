@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: ArrowsPoolConfig
   m_EditorClassIdentifier: 
   key: arrow
-  prefab: {fileID: 556793171102493986, guid: 3987992e824b7154d819f73b20be679c, type: 3}
-  initialSize: 5
+  prefabs:
+  - {fileID: 556793171102493986, guid: 3987992e824b7154d819f73b20be679c, type: 3}
+  initialSize: 20
   allowExpand: 1

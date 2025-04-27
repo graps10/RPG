@@ -1,7 +1,7 @@
 using TMPro;
 using UnityEngine;
 
-public class PopUpTextFX : MonoBehaviour, PooledObject
+public class PopUpTextFX : MonoBehaviour, IPooledObject
 {
     private TextMeshPro myText;
 

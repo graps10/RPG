@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fd22128612ca7f84da4284eca292d12e, type: 3}
+  m_Name: Config_Boss
+  m_EditorClassIdentifier: 
+  type: 1
+  chunkPrefab: {fileID: 752500295555284995, guid: f5a891b79a0276d43b70e28074f8cab7, type: 3}
+  triggerPrefab: {fileID: 3170309531860426361, guid: 19f416de832e72e438731aa5c3301b3a, type: 3}
+  chunkLength: 72
+  minEnemies: 1
+  maxEnemies: 1
+  enemyTypes:
+  - prefab: {fileID: 8809330246300682694, guid: af1d4be28526f8547879feba27b2ddb8, type: 3}
+    spawnChance: 1
+  bossPrefab: {fileID: 8809330246300682694, guid: af1d4be28526f8547879feba27b2ddb8, type: 3}

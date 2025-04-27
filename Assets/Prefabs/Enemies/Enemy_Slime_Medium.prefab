@@ -752,7 +752,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 13b235a1f856cf9438d82ac55c31f333, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  popupTextPrefab: {fileID: 1977449236418972448, guid: 33b9eeb0cfe94944eae7e7e240c2fad1, type: 3}
+  hitFXPrefab: {fileID: 1699656547998446530, guid: 3786c0af4259414428e82c63db846bb3, type: 3}
+  criticalHitFXPrefab: {fileID: 1057830787675581550, guid: 8ab1744b468a47d4fad32bb8f781d610, type: 3}
   flashDuration: 0.2
   hitMat: {fileID: 2100000, guid: 7947b23ac27a33b4598dd7e23abe4469, type: 2}
   igniteColor:
@@ -767,8 +768,6 @@ MonoBehaviour:
   igniteFx: {fileID: 1427048706113579005}
   chillFx: {fileID: 1905653191365372923, guid: 232bb00d0f9b2f64a85b16bb88dac708, type: 3}
   shockFx: {fileID: 698393417793007381, guid: 3a4709d650a25f44b9abb73ba8f4aaed, type: 3}
-  hitFX: {fileID: 1699656547998446530, guid: 3786c0af4259414428e82c63db846bb3, type: 3}
-  criticalHitFX: {fileID: 1057830787675581550, guid: 8ab1744b468a47d4fad32bb8f781d610, type: 3}
 --- !u!114 &4795927575025898893
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -781,8 +780,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3b08a18df41db074da2b02a4ca061947, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxItemsToDrop: 0
-  itemPool: []
+  maxItemsToDrop: 2
+  itemPool:
+  - {fileID: 11400000, guid: a7c301e88a476cd4b8f7a81884d042d2, type: 2}
   dropPrefab: {fileID: 1914593840508665066, guid: e6e381a1def9d2c4599315b197d60c1c, type: 3}
 --- !u!114 &4078269123703412013
 MonoBehaviour:
@@ -804,7 +804,7 @@ MonoBehaviour:
   groundCheck: {fileID: 5249591278188963554}
   groundCheckDistance: 0.6
   wallCheck: {fileID: 1653228933321457918}
-  wallCheckDistance: 0.9
+  wallCheckDistance: 1
   whatIsGround:
     serializedVersion: 2
     m_Bits: 8
