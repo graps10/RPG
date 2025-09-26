@@ -163,11 +163,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damage: 25
-  targetLayerName: Player
-  xVelocity: 8
-  rb: {fileID: 2188773904758215784}
-  canMove: 1
-  flipped: 0
+  whatIsPlayer:
+    serializedVersion: 2
+    m_Bits: 64
+  whatIsEnemy:
+    serializedVersion: 2
+    m_Bits: 128
+  whatIsGround:
+    serializedVersion: 2
+    m_Bits: 8
 --- !u!1 &8440309971849272674
 GameObject:
   m_ObjectHideFlags: 0

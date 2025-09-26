@@ -1,42 +1,51 @@
+using Enemies;
+using Enemies.Base;
+using Items_and_Inventory;
+using Managers;
+using Skills;
+using Stats;
 using UnityEngine;
 
-public class PlayerAnimationTriggers : MonoBehaviour
+namespace Player
 {
-    [SerializeField] private Player player;
-
-    private void AnimatinTrigger()
+    public class PlayerAnimationTriggers : MonoBehaviour
     {
-        player.AnimationTrigger();
-    }
-    private void AttackTrigger()
-    {
-        AudioManager.instance.PlaySFX(1, null);
+        [SerializeField] private Player player;
 
-        Collider2D[] colliders = Physics2D.OverlapCircleAll(player.attackCheck.position, player.attackCheckRadius);
-
-        foreach (var hit in colliders)
+        private void AnimationTrigger()
         {
-            if (hit.GetComponent<Enemy>() != null)
+            player.AnimationTrigger();
+        }
+    
+        private void AttackTrigger()
+        {
+            AudioManager.Instance.PlaySFX(1, null);
+
+            Collider2D[] colliders = 
+                Physics2D.OverlapCircleAll(player.GetAttackCheckTransform().position, player.GetAttackCheckRadius());
+
+            foreach (var hit in colliders)
             {
-                EnemyStats _target = hit.GetComponent<EnemyStats>();
-
-                player.stats.DoDamage(_target);
-
-                WeaponEffect(_target.transform);
+                if (hit.GetComponent<Enemy>() != null)
+                {
+                    EnemyStats _target = hit.GetComponent<EnemyStats>();
+                    player.Stats.DoDamage(_target);
+                    WeaponEffect(_target.transform);
+                }
             }
         }
-    }
 
-    private void ThrowSword()
-    {
-        SkillManager.instance.sword.CreateSword();
-    }
+        private void ThrowSword()
+        {
+            SkillManager.Instance.Sword.CreateSword();
+        }
 
-    private void WeaponEffect(Transform _target)
-    {
-        ItemData_Equipment weaponData = Inventory.instance.GetEquipment(EquipmentType.Weapon);
+        private void WeaponEffect(Transform target)
+        {
+            ItemData_Equipment weaponData = Inventory.Instance.GetEquipment(EquipmentType.Weapon);
 
-        if (weaponData != null)
-            weaponData.Effect(_target.transform);
+            if (weaponData != null)
+                weaponData.Effect(target.transform);
+        }
     }
 }

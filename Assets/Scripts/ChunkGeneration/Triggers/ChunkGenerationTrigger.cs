@@ -1,19 +1,22 @@
 using UnityEngine;
 
-public class ChunkGenerationTrigger : ChunkTrigger
+namespace ChunkGeneration.Triggers
 {
-    public override void Initialize(ChunkController controller)
+    public class ChunkGenerationTrigger : ChunkTrigger
     {
-        base.Initialize(controller);
-        trigger.enabled = true;
-    }
-
-    public override void OnTriggerExit2D(Collider2D collision)
-    {
-        if (collision.GetComponent<Player>() != null)
+        public override void Initialize(ChunkController controller)
         {
-            chunkController.OnPlayerExitedLastChunk();
-            trigger.enabled = false;
+            base.Initialize(controller);
+            trigger.enabled = true;
+        }
+
+        public override void OnTriggerExit2D(Collider2D collision)
+        {
+            if (collision.GetComponent<Player.Player>() != null)
+            {
+                chunkController.OnPlayerExitedLastChunk();
+                trigger.enabled = false;
+            }
         }
     }
 }

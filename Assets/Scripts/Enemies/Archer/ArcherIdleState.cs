@@ -1,28 +1,11 @@
-public class ArcherIdleState : ArcherGroundedState
+using Enemies.Base;
+using Enemies.Base.States;
+
+namespace Enemies.Archer
 {
-    public ArcherIdleState(Enemy _enemyBase, EnemyStateMachine _stateMachine, string _animBoolName, Enemy_Archer _enemy) : base(_enemyBase, _stateMachine, _animBoolName, _enemy)
+    public class ArcherIdleState : EnemyIdleState<EnemyArcher>
     {
-    }
-
-    public override void Enter()
-    {
-        base.Enter();
-
-        stateTimer = enemy.idleTime;
-    }
-
-    public override void Update()
-    {
-        base.Update();
-
-        if (stateTimer <= 0)
-            stateMachine.ChangeState(enemy.moveState);
-    }
-
-    public override void Exit()
-    {
-        base.Exit();
-
-        // AudioManager.instance.PlaySFX(22, enemy.transform);
+        public ArcherIdleState(EnemyArcher enemy, EnemyStateMachine stateMachine, int animBoolName) : 
+            base(enemy, stateMachine, animBoolName) { }
     }
 }

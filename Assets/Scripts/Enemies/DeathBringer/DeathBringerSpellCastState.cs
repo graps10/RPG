@@ -1,54 +1,57 @@
+using Enemies.Base;
 using UnityEngine;
 
-public class DeathBringerSpellCastState : EnemyState
+namespace Enemies.DeathBringer
 {
-    private Enemy_DeathBringer enemy;
-
-    private int amountOfSpells;
-    private float spellTimer;
-
-    public DeathBringerSpellCastState(Enemy _enemyBase, EnemyStateMachine _stateMachine, string _animBoolName, Enemy_DeathBringer _enemy) : base(_enemyBase, _stateMachine, _animBoolName)
+    public class DeathBringerSpellCastState : EnemyState<EnemyDeathBringer>
     {
-        this.enemy = _enemy;
-    }
+        protected const float ENTER_SPELL_TIMER = 0.5f;
+        
+        private int _amountOfSpells;
+        private float _spellTimer;
 
-    public override void Enter()
-    {
-        base.Enter();
 
-        amountOfSpells = enemy.amountOfSpells;
-        spellTimer = 0.5f;
-    }
+        public DeathBringerSpellCastState(EnemyDeathBringer enemy, EnemyStateMachine stateMachine, int animBoolName) : 
+            base(enemy, stateMachine, animBoolName) { }
 
-    public override void Update()
-    {
-        base.Update();
-
-        spellTimer -= Time.deltaTime;
-
-        if (CanCast())
-            enemy.CastSpell();
-
-        if (amountOfSpells <= 0)
-            stateMachine.ChangeState(enemy.teleportState);
-    }
-
-    public override void Exit()
-    {
-        base.Exit();
-
-        enemy.lastTimeCast = Time.time;
-    }
-
-    private bool CanCast()
-    {
-        if (amountOfSpells > 0 && spellTimer < 0)
+        public override void Enter()
         {
-            amountOfSpells--;
-            spellTimer = enemy.spellCooldown;
-            return true;
+            base.Enter();
+
+            _amountOfSpells = enemy.GetAmountOfSpells();
+            _spellTimer = ENTER_SPELL_TIMER;
         }
 
-        return false;
+        public override void Update()
+        {
+            base.Update();
+
+            _spellTimer -= Time.deltaTime;
+
+            if (CanCast())
+                enemy.CastSpell();
+
+            if (_amountOfSpells <= 0)
+                stateMachine.ChangeState(enemy.TeleportState);
+        }
+
+        public override void Exit()
+        {
+            base.Exit();
+
+            enemy.lastTimeCast = Time.time;
+        }
+
+        private bool CanCast()
+        {
+            if (_amountOfSpells > 0 && _spellTimer < 0)
+            {
+                _amountOfSpells--;
+                _spellTimer = enemy.GetSpellCooldown();
+                return true;
+            }
+
+            return false;
+        }
     }
 }

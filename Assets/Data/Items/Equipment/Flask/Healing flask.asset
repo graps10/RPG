@@ -12,11 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 234ad358cd538084c86934309d4542c4, type: 3}
   m_Name: Healing flask
   m_EditorClassIdentifier: 
-  itemType: 1
-  itemName: Healing flask
-  icon: {fileID: -410334530, guid: a9ca9a41598dd2e44b125928045c518f, type: 3}
-  itemID: 8e44877b707ab364586b5733909184b1
-  dropChance: 100
+  ItemType: 1
+  ItemName: Healing flask
+  Icon: {fileID: -410334530, guid: a9ca9a41598dd2e44b125928045c518f, type: 3}
+  ItemID: 8e44877b707ab364586b5733909184b1
+  DropChance: 0
   equipmentType: 3
   itemCooldown: 3
   itemEffects:

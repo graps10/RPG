@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 06812537e082f0f45b2388ab44d6f738, type: 3}
+  m_Name: FXPoolConfig
+  m_EditorClassIdentifier: 
+  Key: fx
+  Prefabs:
+  - {fileID: 814629493188087900, guid: 6de6a38999560394c8dee6adf3b06f93, type: 3}
+  - {fileID: 365283283224506203, guid: 232bb00d0f9b2f64a85b16bb88dac708, type: 3}
+  - {fileID: 6518187248204357967, guid: 056a572510164184ebee343683941d08, type: 3}
+  - {fileID: 3047873494746436171, guid: 6659b6581c686854aa5c98fd0a469758, type: 3}
+  - {fileID: 7695768987535175251, guid: 9cc1d1864cc0272429a50d7217750433, type: 3}
+  InitialSize: 10
+  AllowExpand: 1

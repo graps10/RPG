@@ -1,33 +1,37 @@
+using Skills.Skills;
 using UnityEngine;
 
-public class SkillManager : MonoBehaviour
+namespace Skills
 {
-    public static SkillManager instance;
-
-    public Dash_Skill dash { get; private set; }
-    public Clone_Skill clone { get; private set; }
-    public Sword_Skill sword { get; private set; }
-    public BlackHole_Skill blackHole { get; private set; }
-    public Crystal_Skill crystal { get; private set; }
-    public Parry_Skill parry { get; private set; }
-    public Dodge_Skill dodge { get; private set; }
-
-    void Awake()
+    public class SkillManager : MonoBehaviour
     {
-        if (instance != null)
-            Destroy(instance.gameObject);
-        else
-            instance = this;
-    }
+        public static SkillManager Instance;
 
-    void Start()
-    {
-        dash = GetComponent<Dash_Skill>();
-        clone = GetComponent<Clone_Skill>();
-        sword = GetComponent<Sword_Skill>();
-        blackHole = GetComponent<BlackHole_Skill>();
-        crystal = GetComponent<Crystal_Skill>();
-        parry = GetComponent<Parry_Skill>();
-        dodge = GetComponent<Dodge_Skill>();
+        public DashSkill Dash { get; private set; }
+        public CloneSkill Clone { get; private set; }
+        public SwordSkill Sword { get; private set; }
+        public BlackHoleSkill BlackHole { get; private set; }
+        public CrystalSkill Crystal { get; private set; }
+        public ParrySkill Parry { get; private set; }
+        public DodgeSkill Dodge { get; private set; }
+
+        private void Awake()
+        {
+            if (Instance != null)
+                Destroy(Instance.gameObject);
+            else
+                Instance = this;
+        }
+
+        private void Start()
+        {
+            Dash = GetComponent<DashSkill>();
+            Clone = GetComponent<CloneSkill>();
+            Sword = GetComponent<SwordSkill>();
+            BlackHole = GetComponent<BlackHoleSkill>();
+            Crystal = GetComponent<CrystalSkill>();
+            Parry = GetComponent<ParrySkill>();
+            Dodge = GetComponent<DodgeSkill>();
+        }
     }
 }

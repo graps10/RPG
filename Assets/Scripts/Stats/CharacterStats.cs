@@ -1,483 +1,476 @@
 using System.Collections;
+using Components.FX;
+using Controllers.Skill_Controllers;
+using Enemies.Base;
+using Managers;
 using UnityEngine;
 
-public enum StatType
+namespace Stats
 {
-    // Major Stats
-    strength,
-    agility,
-    intelligence,
-    vitality,
-
-    // Offensive Stats
-    damage,
-    critChance,
-    critPower,
-
-    // Defensive Stats
-    health,
-    armor,
-    evasion,
-    magicResistance,
-
-    // Magic Stats
-    fireDamage,
-    iceDamage,
-    lightingDamage,
-}
-
-public class CharacterStats : MonoBehaviour
-{
-    private EntityFX fx;
-
-    [Header("Major Stats")]
-    [SerializeField] public Stat strength;
-    [SerializeField] public Stat agility;
-    [SerializeField] public Stat intelligence;
-    [SerializeField] public Stat vitality;
-
-    [Header("Offensive Stats")]
-    [SerializeField] public Stat damage;
-    [SerializeField] public Stat critChance;
-    [SerializeField] public Stat critPower;
-
-    [Header("Defensive Stats")]
-    [SerializeField] public Stat maxHealth;
-    [SerializeField] public Stat armor;
-    [SerializeField] public Stat evasion;
-    [SerializeField] public Stat magicResistance;
-
-    [Header("Magic Stats")]
-    [SerializeField] public Stat fireDamage;
-    [SerializeField] public Stat iceDamage;
-    [SerializeField] public Stat lightingDamage;
-
-    public bool IsIgnited { get; private set; }
-    public bool IsChilled { get; private set; }
-    public bool IsShocked { get; private set; }
-
-    [SerializeField] private float ailmentsDuration = 4;
-
-    private float ignitedTimer;
-    private float chilledTimer;
-    private float shockedTimer;
-
-    private float igniteDamageCooldown = 0.3f;
-    private float igniteDamageTimer;
-    private int igniteDamage;
-
-    [SerializeField] private GameObject shockStrikePrefab;
-    private int shockDamage;
-
-
-    public int CurrentHealth { get; private set; }
-
-    public System.Action onHealthChanged;
-    public bool isDead { get; private set; }
-    public bool isInvincible { get; private set; }
-    private bool isVulnerable;
-
-    protected virtual void Start()
+    public enum StatType
     {
-        critPower.SetDefaultValue(150);
-        CurrentHealth = GetMaxHealthValue();
+        // Major Stats
+        strength,
+        agility,
+        intelligence,
+        vitality,
 
-        fx = GetComponent<EntityFX>();
+        // Offensive Stats
+        damage,
+        critChance,
+        critPower,
+
+        // Defensive Stats
+        health,
+        armor,
+        evasion,
+        magicResistance,
+
+        // Magic Stats
+        fireDamage,
+        iceDamage,
+        lightingDamage,
     }
 
-    protected virtual void Update()
+    public class CharacterStats : MonoBehaviour
     {
-        ignitedTimer -= Time.deltaTime;
-        chilledTimer -= Time.deltaTime;
-        shockedTimer -= Time.deltaTime;
+        #region Constants
 
-        igniteDamageTimer -= Time.deltaTime;
+        private const float Ignite_Chance = 0.3f;
+        private const float Ignite_Damage_Cooldown = 0.3f;
+        private const float Chill_Chance = 0.5f;
+        private const float Shock_Chance = 0.5f;
 
-        if (ignitedTimer < 0) IsIgnited = false;
+        private const float Ignite_Damage_Multiplier = 0.2f;
+        private const float Shock_Damage_Multiplier = 0.1f;
 
-        if (chilledTimer < 0) IsChilled = false;
+        private const float Chill_Slow_Percentage = 0.2f;
+        private const float Vulnerable_Damage_Multiplier = 1.1f;
 
-        if (shockedTimer < 0) IsShocked = false;
+        private const int Vitality_Health_Multiplier = 5;
+        private const int Shock_Evasion_Penalty = 20;
+        private const float Armor_Reduction_Multiplier_When_Chilled = 0.8f;
+        private const int Intelligence_Resistance_Multiplier = 3;
+        
+        private const float Crit_Power_Multiplier = 0.01f;
+        private const float Min_Shock_Strike_Distance = 1f;
+        private const float Shock_Strike_Radius = 25f;
 
+        #endregion
+        
+        [Header("Major Stats")]
+        [SerializeField] public Stat strength;
+        [SerializeField] public Stat agility;
+        [SerializeField] public Stat intelligence;
+        [SerializeField] public Stat vitality;
 
-        if (IsIgnited) ApplyIgniteDamage();
-    }
+        [Header("Offensive Stats")]
+        [SerializeField] public Stat damage;
+        [SerializeField] public Stat critChance;
+        [SerializeField] public Stat critPower;
 
-    public void MakeInvincible(bool _invincible) => isInvincible = _invincible;
-    public void MakeVulnerableFor(float _duration) => StartCoroutine(VulnerableCoroutine(_duration));
+        [Header("Defensive Stats")]
+        [SerializeField] public Stat maxHealth;
+        [SerializeField] public Stat armor;
+        [SerializeField] public Stat evasion;
+        [SerializeField] public Stat magicResistance;
 
-    private IEnumerator VulnerableCoroutine(float _duration)
-    {
-        isVulnerable = true;
+        [Header("Magic Stats")]
+        [SerializeField] public Stat fireDamage;
+        [SerializeField] public Stat iceDamage;
+        [SerializeField] public Stat lightingDamage;
 
-        yield return new WaitForSeconds(_duration);
+        [SerializeField] private float ailmentsDuration = 4;
+        [SerializeField] private GameObject shockStrikePrefab;
+        
+        public int CurrentHealth { get; private set; }
+        public bool IsDead { get; private set; }
+        
+        public System.Action OnHealthChanged;
+        
+        private bool _isIgnited;
+        private bool _isChilled;
+        private bool _isShocked;
+        
+        private bool _isInvincible;
+        private bool _isVulnerable;
+        
+        private float _ignitedTimer;
+        private float _chilledTimer;
+        private float _shockedTimer;
+        
+        private float _igniteDamageTimer;
+        private int _igniteDamage;
+        
+        private int _shockDamage;
+        
+        private EntityFX _fx;
 
-        isVulnerable = false;
-    }
-
-    public virtual void IncreaseStatBy(int _modifier, float _duration, Stat _statToModify)
-    {
-        StartCoroutine(StatModCoroutine(_modifier, _duration, _statToModify));
-    }
-
-    private IEnumerator StatModCoroutine(int _modifier, float _duration, Stat _statToModify)
-    {
-        _statToModify.AddModifier(_modifier);
-
-        yield return new WaitForSeconds(_duration);
-
-        _statToModify.RemoveModifier(_modifier);
-    }
-
-    public virtual void DoDamage(CharacterStats _targetStats)
-    {
-        if (_targetStats == null) return;
-
-        if (_targetStats.isInvincible) return;
-
-        bool criticalStrike = false;
-
-        if (TargetCanAvoidAttack(_targetStats)) return;
-
-        _targetStats.GetComponent<Entity>().SetupKnockbackDir(transform);
-
-        int totalDamage = damage.GetValue() + strength.GetValue();
-
-        if (CanCrit())
+        protected virtual void Start()
         {
-            totalDamage = CalculateCriticalDamage(totalDamage);
-            criticalStrike = true;
-        }
-
-        fx.CreateHitFX(_targetStats.transform, criticalStrike);
-
-        totalDamage = CheckTargetArmor(_targetStats, totalDamage);
-
-        _targetStats.TakeDamage(totalDamage);
-
-        DoMagicalDamage(_targetStats);
-    }
-
-    #region Magical Damage and ailments
-
-    public virtual void DoMagicalDamage(CharacterStats _targetStats)
-    {
-        int _fireDamage = fireDamage.GetValue();
-        int _iceDamage = iceDamage.GetValue();
-        int _lightingDamage = lightingDamage.GetValue();
-
-        int totalMagicalDamage = _fireDamage + _iceDamage + _lightingDamage + intelligence.GetValue();
-
-        totalMagicalDamage = CheckTargetResistance(_targetStats, totalMagicalDamage);
-        _targetStats.TakeDamage(totalMagicalDamage);
-
-        if (Mathf.Max(_fireDamage, _iceDamage, _lightingDamage) <= 0) return;
-
-        AttemptToApplyAilments(_targetStats, _fireDamage, _iceDamage, _lightingDamage);
-    }
-
-    void AttemptToApplyAilments(CharacterStats _targetStats, int _fireDamage, int _iceDamage, int _lightingDamage)
-    {
-        bool canApplyIgnite = _fireDamage > _iceDamage && _fireDamage > _lightingDamage;
-        bool canApplyChill = _iceDamage > _fireDamage && _iceDamage > _lightingDamage;
-        bool canApplyShock = _lightingDamage > _fireDamage && _lightingDamage > _iceDamage;
-
-        while (!canApplyIgnite && !canApplyChill && !canApplyShock)
-        {
-            if (Random.value < 0.3f && _fireDamage > 0)
-            {
-                canApplyIgnite = true;
-                _targetStats.ApplyAilments(canApplyIgnite, canApplyChill, canApplyShock);
-                return;
-            }
-
-            if (Random.value < 0.5f && _iceDamage > 0)
-            {
-                canApplyChill = true;
-                _targetStats.ApplyAilments(canApplyIgnite, canApplyChill, canApplyShock);
-                return;
-            }
-
-            if (Random.value < 0.5f && _lightingDamage > 0)
-            {
-                canApplyShock = true;
-                _targetStats.ApplyAilments(canApplyIgnite, canApplyChill, canApplyShock);
-                return;
-            }
-        }
-
-        if (canApplyIgnite)
-            _targetStats.SetupIgniteDamage(Mathf.RoundToInt(_fireDamage * 0.2f));
-
-        if (canApplyShock)
-            _targetStats.SetupShockStrikeDamage(Mathf.RoundToInt(_lightingDamage * 0.1f));
-
-
-        _targetStats.ApplyAilments(canApplyIgnite, canApplyChill, canApplyShock);
-    }
-
-    public void ApplyAilments(bool _ignite, bool _chill, bool _shock)
-    {
-        bool canApplyIgnite = !IsIgnited && !IsChilled && !IsShocked;
-        bool canApplyChill = !IsIgnited && !IsChilled && !IsShocked;
-        bool canApplyShock = !IsIgnited && !IsChilled;
-
-        if (_ignite && canApplyIgnite)
-        {
-            IsIgnited = _ignite;
-            ignitedTimer = ailmentsDuration;
-
-            fx?.IgniteFxFor(ailmentsDuration);
-        }
-
-        if (_chill && canApplyChill)
-        {
-            IsChilled = _chill;
-            chilledTimer = ailmentsDuration;
-
-            float slowPercantage = 0.2f;
-            GetComponent<Entity>().SlowEntityBy(slowPercantage, ailmentsDuration);
-
-            fx?.ChillFxFor(ailmentsDuration);
-        }
-
-        if (_shock && canApplyShock)
-        {
-            if (!IsShocked)
-            {
-                ApplyShock(_shock);
-            }
-            else
-            {
-                if (GetComponent<Player>() != null) return;
-
-                HitNearestTargetWithShockStrike();
-            }
-        }
-    }
-
-    void ApplyIgniteDamage()
-    {
-        if (igniteDamageTimer < 0)
-        {
-            DeacreaseHealthBy(igniteDamage);
-
-            igniteDamageTimer = igniteDamageCooldown;
-        }
-    }
-
-    public void ApplyShock(bool _shock)
-    {
-        if (IsShocked) return;
-
-        IsShocked = _shock;
-        shockedTimer = ailmentsDuration;
-
-        if (fx != null)
-            fx.ShockFxFor(ailmentsDuration);
-    }
-
-    public void SetupIgniteDamage(int _damage) => igniteDamage = _damage;
-
-    public void SetupShockStrikeDamage(int _damage) => shockDamage = _damage;
-
-    #endregion
-
-    public virtual void TakeDamage(int _damage)
-    {
-        if (isInvincible) return;
-
-        DeacreaseHealthBy(_damage);
-
-
-        if (fx != null && _damage > 0)
-        {
-            fx.CreatePopUpText(_damage.ToString());
-            GetComponent<Entity>().DamageImpact();
-            fx.StartCoroutine("FlashFX");
-        }
-
-    }
-
-    public void IncreaseHealthBy(int _amount)
-    {
-        CurrentHealth += _amount;
-        onHealthChanged?.Invoke();
-
-        if (CurrentHealth > GetMaxHealthValue())
+            /*critPower.SetDefaultValue(150);*/
             CurrentHealth = GetMaxHealthValue();
-    }
 
-    public virtual void OnEvasion()
-    {
-
-    }
-
-    protected virtual void DeacreaseHealthBy(int _damage)
-    {
-        if (isVulnerable)
-            _damage = Mathf.RoundToInt(_damage * 1.1f);
-
-        if (isDead) return;
-
-        CurrentHealth -= _damage;
-        onHealthChanged?.Invoke();
-
-        if (CurrentHealth <= 0)
-            Die();
-    }
-
-    public int GetMaxHealthValue() => maxHealth.GetValue() + vitality.GetValue() * 5;
-
-    protected virtual void Die()
-    {
-        isDead = true;
-    }
-
-    public void KillEntity()
-    {
-        if (!isDead)
-            Die();
-    }
-
-    #region Stat calculations
-
-    protected bool TargetCanAvoidAttack(CharacterStats _targetStats)
-    {
-        int totalEvasion = _targetStats.evasion.GetValue() + _targetStats.agility.GetValue();
-
-        if (IsShocked)
-            totalEvasion += 20;
-
-        if (Random.Range(0, 100) < totalEvasion)
-        {
-            _targetStats.OnEvasion();
-            return true;
+            _fx = GetComponent<EntityFX>();
         }
 
-        return false;
-    }
-
-    protected int CheckTargetArmor(CharacterStats _targetStats, int totalDamage)
-    {
-        if (_targetStats.IsChilled)
-            totalDamage -= Mathf.RoundToInt(_targetStats.armor.GetValue() * 0.8f);
-        else
-            totalDamage -= _targetStats.armor.GetValue();
-
-        totalDamage = Mathf.Clamp(totalDamage, 0, int.MaxValue);
-        return totalDamage;
-    }
-
-    private int CheckTargetResistance(CharacterStats _targetStats, int totalMagicalDamage)
-    {
-        totalMagicalDamage -= _targetStats.magicResistance.GetValue() + (_targetStats.intelligence.GetValue() * 3);
-        totalMagicalDamage = Mathf.Clamp(totalMagicalDamage, 0, int.MaxValue);
-        return totalMagicalDamage;
-    }
-
-    protected bool CanCrit()
-    {
-        int totalCriticalChance = critChance.GetValue() + agility.GetValue();
-
-        if (Random.Range(0, 100) < totalCriticalChance)
+        protected virtual void Update()
         {
-            return true;
+            _ignitedTimer -= Time.deltaTime;
+            _chilledTimer -= Time.deltaTime;
+            _shockedTimer -= Time.deltaTime;
+
+            _igniteDamageTimer -= Time.deltaTime;
+
+            if (_ignitedTimer < 0) _isIgnited = false;
+            if (_chilledTimer < 0) _isChilled = false;
+            if (_shockedTimer < 0) _isShocked = false;
+            
+            if (_isIgnited) ApplyIgniteDamage();
         }
 
-        return false;
-    }
+        public void MakeInvincible(bool invincible) => _isInvincible = invincible;
+        public void MakeVulnerableFor(float duration) 
+            => StartCoroutine(VulnerableCoroutine(duration));
 
-    protected int CalculateCriticalDamage(int _damage)
-    {
-        float totalCritPower = (critPower.GetValue() + strength.GetValue()) * 0.01f;
-
-        float critDamage = _damage * totalCritPower;
-
-        return Mathf.RoundToInt(critDamage);
-    }
-
-    private void HitNearestTargetWithShockStrike()
-    {
-        Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, 25);
-
-        float closestDistance = Mathf.Infinity;
-        Transform closestEnemy = null;
-
-        foreach (var hit in colliders)
+        private IEnumerator VulnerableCoroutine(float duration)
         {
-            if (hit.GetComponent<Enemy>() != null &&
-            Vector2.Distance(transform.position, hit.transform.position) > 1)
+            _isVulnerable = true;
+            yield return new WaitForSeconds(duration);
+            _isVulnerable = false;
+        }
+
+        public virtual void IncreaseStatBy(int modifier, float duration, Stat statToModify)
+        {
+            StartCoroutine(StatModCoroutine(modifier, duration, statToModify));
+        }
+
+        private static IEnumerator StatModCoroutine(int modifier, float duration, Stat statToModify)
+        {
+            statToModify.AddModifier(modifier);
+            yield return new WaitForSeconds(duration);
+            statToModify.RemoveModifier(modifier);
+        }
+
+        public virtual void DoDamage(CharacterStats targetStats)
+        {
+            if (targetStats == null) return;
+            if (targetStats._isInvincible) return;
+
+            bool criticalStrike = false;
+
+            if (TargetCanAvoidAttack(targetStats)) return;
+
+            targetStats.GetComponent<Entity.Entity>().SetupKnockbackDir(transform);
+
+            int totalDamage = damage.GetValue() + strength.GetValue();
+
+            if (CanCrit())
             {
-                float distanceToEnemy = Vector2.Distance(transform.position, hit.transform.position);
+                totalDamage = CalculateCriticalDamage(totalDamage);
+                criticalStrike = true;
+            }
 
-                if (distanceToEnemy < closestDistance)
+            _fx.CreateHitFX(targetStats.transform, criticalStrike);
+
+            totalDamage = CheckTargetArmor(targetStats, totalDamage);
+
+            targetStats.TakeDamage(totalDamage);
+
+            DoMagicalDamage(targetStats);
+        }
+
+        #region Magical Damage and ailments
+
+        public virtual void DoMagicalDamage(CharacterStats targetStats)
+        {
+            int _fireDamage = fireDamage.GetValue();
+            int _iceDamage = iceDamage.GetValue();
+            int _lightingDamage = lightingDamage.GetValue();
+
+            int totalMagicalDamage = _fireDamage + _iceDamage + _lightingDamage + intelligence.GetValue();
+
+            totalMagicalDamage = CheckTargetResistance(targetStats, totalMagicalDamage);
+            targetStats.TakeDamage(totalMagicalDamage);
+
+            if (Mathf.Max(_fireDamage, _iceDamage, _lightingDamage) <= 0) return;
+
+            AttemptToApplyAilments(targetStats, _fireDamage, _iceDamage, _lightingDamage);
+        }
+
+        private void AttemptToApplyAilments(CharacterStats _targetStats, int _fireDamage, int _iceDamage, int _lightingDamage)
+        {
+            bool canApplyIgnite = _fireDamage > _iceDamage && _fireDamage > _lightingDamage;
+            bool canApplyChill = _iceDamage > _fireDamage && _iceDamage > _lightingDamage;
+            bool canApplyShock = _lightingDamage > _fireDamage && _lightingDamage > _iceDamage;
+
+            while (!canApplyIgnite && !canApplyChill && !canApplyShock)
+            {
+                if (Random.value < Ignite_Chance && _fireDamage > 0)
                 {
-                    closestDistance = distanceToEnemy;
-                    closestEnemy = hit.transform;
+                    canApplyIgnite = true;
+                    _targetStats.ApplyAilments(canApplyIgnite, canApplyChill, canApplyShock);
+                    return;
                 }
 
+                if (Random.value < Chill_Chance && _iceDamage > 0)
+                {
+                    canApplyChill = true;
+                    _targetStats.ApplyAilments(canApplyIgnite, canApplyChill, canApplyShock);
+                    return;
+                }
+
+                if (Random.value < Shock_Chance && _lightingDamage > 0)
+                {
+                    canApplyShock = true;
+                    _targetStats.ApplyAilments(canApplyIgnite, canApplyChill, canApplyShock);
+                    return;
+                }
             }
 
-            if (closestEnemy == null)
-                closestEnemy = transform;
+            if (canApplyIgnite)
+                _targetStats.SetupIgniteDamage(Mathf.RoundToInt(_fireDamage * Ignite_Damage_Multiplier));
+
+            if (canApplyShock)
+                _targetStats.SetupShockStrikeDamage(Mathf.RoundToInt(_lightingDamage * Shock_Damage_Multiplier));
+            
+            _targetStats.ApplyAilments(canApplyIgnite, canApplyChill, canApplyShock);
         }
 
-        if (closestEnemy != null)
+        private void ApplyAilments(bool _ignite, bool _chill, bool _shock)
         {
-            GameObject newShockStrike = PoolManager.instance.Spawn("shockStrike", transform.position, Quaternion.identity, shockStrikePrefab);
+            bool canApplyIgnite = !_isIgnited && !_isChilled && !_isShocked;
+            bool canApplyChill = !_isIgnited && !_isChilled && !_isShocked;
+            bool canApplyShock = !_isIgnited && !_isChilled;
 
-            if (newShockStrike)
-                newShockStrike.GetComponent<ShockStrike_Controller>().
-                Setup(shockDamage, closestEnemy.GetComponent<CharacterStats>());
+            if (_ignite && canApplyIgnite)
+            {
+                _isIgnited = _ignite;
+                _ignitedTimer = ailmentsDuration;
+
+                _fx?.IgniteFxFor(ailmentsDuration);
+            }
+
+            if (_chill && canApplyChill)
+            {
+                _isChilled = _chill;
+                _chilledTimer = ailmentsDuration;
+                
+                GetComponent<Entity.Entity>().SlowEntityBy(Chill_Slow_Percentage, ailmentsDuration);
+
+                _fx?.ChillFxFor(ailmentsDuration);
+            }
+
+            if (_shock && canApplyShock)
+            {
+                if (!_isShocked)
+                    ApplyShock(_shock);
+                else
+                {
+                    if (GetComponent<Player.Player>() != null) 
+                        return;
+                    
+                    HitNearestTargetWithShockStrike();
+                }
+            }
         }
-    }
 
-    #endregion
-
-    public Stat GetStat(StatType _statType)
-    {
-        switch (_statType)
+        private void ApplyIgniteDamage()
         {
-            // Major Stats
-            case StatType.strength:
-                return strength;
-            case StatType.agility:
-                return agility;
-            case StatType.intelligence:
-                return intelligence;
-            case StatType.vitality:
-                return vitality;
+            if (_igniteDamageTimer < 0)
+            {
+                DecreaseHealthBy(_igniteDamage);
 
-            // Offensive Stats
-            case StatType.damage:
-                return damage;
-            case StatType.critChance:
-                return critChance;
-            case StatType.critPower:
-                return critPower;
+                _igniteDamageTimer = Ignite_Damage_Cooldown;
+            }
+        }
 
-            // Defensive Stats
-            case StatType.health:
-                return maxHealth;
-            case StatType.armor:
-                return armor;
-            case StatType.evasion:
-                return evasion;
-            case StatType.magicResistance:
-                return magicResistance;
+        public void ApplyShock(bool shock)
+        {
+            if (_isShocked) return;
 
-            // Magic Stats
-            case StatType.fireDamage:
-                return fireDamage;
-            case StatType.iceDamage:
-                return iceDamage;
-            case StatType.lightingDamage:
-                return lightingDamage;
+            _isShocked = shock;
+            _shockedTimer = ailmentsDuration;
 
-            // Default case for safety
-            default:
-                throw new System.ArgumentOutOfRangeException($"Unhandled StatType: {_statType}");
+            if (_fx != null)
+                _fx.ShockFxFor(ailmentsDuration);
+        }
+
+        public void SetupIgniteDamage(int damage) => _igniteDamage = damage;
+
+        public void SetupShockStrikeDamage(int damage) => _shockDamage = damage;
+
+        #endregion
+
+        public virtual void TakeDamage(int damage)
+        {
+            if (_isInvincible) return;
+
+            DecreaseHealthBy(damage);
+        
+            if (_fx != null && damage > 0)
+            {
+                _fx.CreatePopUpText(damage.ToString());
+                GetComponent<Entity.Entity>().DamageImpact();
+                _fx.StartCoroutine("FlashFX");
+            }
+        }
+
+        public void IncreaseHealthBy(int amount)
+        {
+            CurrentHealth += amount;
+            OnHealthChanged?.Invoke();
+
+            if (CurrentHealth > GetMaxHealthValue())
+                CurrentHealth = GetMaxHealthValue();
+        }
+
+        protected virtual void OnEvasion() { }
+
+        protected virtual void DecreaseHealthBy(int _damage)
+        {
+            if (_isVulnerable)
+                _damage = Mathf.RoundToInt(_damage * Vulnerable_Damage_Multiplier);
+
+            if (IsDead) return;
+
+            CurrentHealth -= _damage;
+            OnHealthChanged?.Invoke();
+
+            if (CurrentHealth <= 0)
+                Die();
+        }
+
+        public int GetMaxHealthValue() => maxHealth.GetValue() + vitality.GetValue() * Vitality_Health_Multiplier;
+
+        protected virtual void Die()
+        {
+            IsDead = true;
+        }
+
+        public void KillEntity()
+        {
+            if (!IsDead)
+                Die();
+        }
+
+        #region Stat calculations
+
+        protected bool TargetCanAvoidAttack(CharacterStats targetStats)
+        {
+            int totalEvasion = targetStats.evasion.GetValue() + targetStats.agility.GetValue();
+
+            if (_isShocked)
+                totalEvasion += Shock_Evasion_Penalty;
+
+            if (Random.Range(0, 100) < totalEvasion)
+            {
+                targetStats.OnEvasion();
+                return true;
+            }
+
+            return false;
+        }
+
+        protected int CheckTargetArmor(CharacterStats targetStats, int totalDamage)
+        {
+            if (targetStats._isChilled)
+                totalDamage -= Mathf.RoundToInt(targetStats.armor.GetValue() * Armor_Reduction_Multiplier_When_Chilled);
+            else
+                totalDamage -= targetStats.armor.GetValue();
+
+            totalDamage = Mathf.Clamp(totalDamage, 0, int.MaxValue);
+            return totalDamage;
+        }
+
+        private int CheckTargetResistance(CharacterStats targetStats, int totalMagicalDamage)
+        {
+            totalMagicalDamage -= targetStats.magicResistance.GetValue() 
+                                  + (targetStats.intelligence.GetValue() * Intelligence_Resistance_Multiplier);
+            
+            totalMagicalDamage = Mathf.Clamp(totalMagicalDamage, 0, int.MaxValue);
+            return totalMagicalDamage;
+        }
+
+        protected bool CanCrit()
+        {
+            int totalCriticalChance = critChance.GetValue() + agility.GetValue();
+
+            if (Random.Range(0, 100) < totalCriticalChance)
+                return true;
+
+            return false;
+        }
+
+        protected int CalculateCriticalDamage(int damage)
+        {
+            float totalCritPower = (critPower.GetValue() + strength.GetValue()) * Crit_Power_Multiplier;
+            float critDamage = damage * totalCritPower;
+
+            return Mathf.RoundToInt(critDamage);
+        }
+
+        private void HitNearestTargetWithShockStrike()
+        {
+            Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, Shock_Strike_Radius);
+
+            float closestDistance = Mathf.Infinity;
+            Transform closestEnemy = null;
+
+            foreach (var hit in colliders)
+            {
+                if (hit.GetComponent<Enemy>() != null &&
+                    Vector2.Distance(transform.position, hit.transform.position) > Min_Shock_Strike_Distance)
+                {
+                    float distanceToEnemy = Vector2.Distance(transform.position, hit.transform.position);
+
+                    if (distanceToEnemy < closestDistance)
+                    {
+                        closestDistance = distanceToEnemy;
+                        closestEnemy = hit.transform;
+                    }
+                }
+
+                if (closestEnemy == null)
+                    closestEnemy = transform;
+            }
+
+            if (closestEnemy != null)
+            {
+                GameObject newShockStrike = PoolManager.Instance.Spawn("shockStrike", transform.position, Quaternion.identity, shockStrikePrefab);
+
+                if (newShockStrike)
+                    newShockStrike.GetComponent<ShockStrikeController>().
+                        Setup(_shockDamage, closestEnemy.GetComponent<CharacterStats>());
+            }
+        }
+
+        #endregion
+
+        public Stat GetStat(StatType _statType)
+        {
+            return _statType switch
+            {
+                // Major Stats
+                StatType.strength => strength,
+                StatType.agility => agility,
+                StatType.intelligence => intelligence,
+                StatType.vitality => vitality,
+                // Offensive Stats
+                StatType.damage => damage,
+                StatType.critChance => critChance,
+                StatType.critPower => critPower,
+                // Defensive Stats
+                StatType.health => maxHealth,
+                StatType.armor => armor,
+                StatType.evasion => evasion,
+                StatType.magicResistance => magicResistance,
+                // Magic Stats
+                StatType.fireDamage => fireDamage,
+                StatType.iceDamage => iceDamage,
+                StatType.lightingDamage => lightingDamage,
+                _ => throw new System.ArgumentOutOfRangeException($"Unhandled StatType: {_statType}")
+            };
         }
     }
 }

@@ -1,119 +1,146 @@
+using Controllers;
+using Core;
+using Core.Interfaces;
+using Enemies.Base;
+using Managers;
 using UnityEngine;
 
-public class Enemy_DeathBringer : Enemy
+namespace Enemies.DeathBringer
 {
-    public bool bossFightBegun;
-
-    [Header("Teleport Specific")]
-    [SerializeField] private BoxCollider2D arena;
-    [SerializeField] private Vector2 surroundingCheckSize;
-    public float chanceToTeleport = 25;
-    public float defaultChanceToTeleport = 25;
-
-    [Header("Spell Cast Specific")]
-    [SerializeField] private GameObject spellPrefab;
-    [SerializeField] private Vector2 spellCastOffset;
-    [SerializeField] private float spellStateCooldown;
-    public int amountOfSpells;
-    public float spellCooldown;
-    [HideInInspector] public float lastTimeCast;
-
-
-    #region States
-    public DeathBringerTeleportState teleportState { get; private set; }
-    public DeathBringerIdleState idleState { get; private set; }
-    public DeathBringerBattleState battleState { get; private set; }
-    public DeathBringerAttackState attackState { get; private set; }
-    public DeathBringerSpellCastState spellCastState { get; private set; }
-    public DeathBringerDeadState deadState { get; private set; }
-    #endregion
-
-    protected override void Awake()
+    public class EnemyDeathBringer : Enemy, IAttackable, ITeleportable, ISpellCaster
     {
-        base.Awake();
+        [Header("Teleport Specific")]
+        [SerializeField] private BoxCollider2D teleportArea;
+        [SerializeField] private Vector2 surroundingCheckSize;
+        [SerializeField] private float chanceToTeleport = 25;
+        [SerializeField] private float defaultChanceToTeleport = 25;
+        [SerializeField] private float teleportGroundCheckDistance = 100f;
+        [SerializeField] private float teleportPositionPadding = 3f;
 
-        teleportState = new DeathBringerTeleportState(this, stateMachine, "Teleport", this);
-        idleState = new DeathBringerIdleState(this, stateMachine, "Idle", this);
-        battleState = new DeathBringerBattleState(this, stateMachine, "Battle", this);
-        attackState = new DeathBringerAttackState(this, stateMachine, "Attack", this);
-        spellCastState = new DeathBringerSpellCastState(this, stateMachine, "SpellCast", this);
-        deadState = new DeathBringerDeadState(this, stateMachine, "Idle", this);
-    }
+        [Header("Spell Cast Specific")]
+        [SerializeField] private GameObject spellPrefab;
+        [SerializeField] private Vector2 spellCastOffset;
+        [SerializeField] private float spellStateCooldown;
+        [SerializeField] private int amountOfSpells;
+        [SerializeField] private float spellCooldown;
+        [HideInInspector] public float lastTimeCast;
 
-    protected override void Start()
-    {
-        base.Start();
+        #region States
+        public EnemyState AttackState { get; private set; }
+        public EnemyState TeleportState { get; private set; }
+        public EnemyState SpellCastState { get; private set; }
+        
+        #endregion
+        
+        private bool _bossFightBegun;
 
-        stateMachine.Initialize(idleState);
-    }
-
-    public override void Die()
-    {
-        base.Die();
-
-        stateMachine.ChangeState(deadState);
-    }
-
-    protected override void OnDrawGizmos()
-    {
-        base.OnDrawGizmos();
-
-        Gizmos.DrawLine(transform.position, new Vector3(transform.position.x, transform.position.y - GroundBelow().distance));
-        Gizmos.DrawWireCube(transform.position, surroundingCheckSize);
-    }
-
-    public void CastSpell()
-    {
-        Player player = PlayerManager.instance.player;
-        float xOffset = 0;
-
-        if (player.rb.velocity.x != 0)
-            xOffset = player.facingDir * spellCastOffset.x;
-
-        Vector3 spellPosition = new Vector3(player.transform.position.x + xOffset, player.transform.position.y + spellCastOffset.y);
-
-        GameObject newSpell = PoolManager.instance.Spawn("deathBringerSpell", spellPosition, Quaternion.identity);
-        newSpell.GetComponent<DeathBringerSpell_Controller>().SetupSpell(stats);
-    }
-
-    public void FindPosition()
-    {
-        float x = Random.Range(arena.bounds.min.x + 3, arena.bounds.max.x - 3);
-        float y = Random.Range(arena.bounds.min.y + 3, arena.bounds.max.y - 3);
-
-        transform.position = new Vector3(x, y);
-        transform.position = new Vector3(transform.position.x, transform.position.y - GroundBelow().distance + (cd.size.y / 2));
-
-        if (!GroundBelow() || SomethingIsAround())
+        protected override void Awake()
         {
-            Debug.Log("Looking for new position");
-            FindPosition();
-        }
-    }
-
-    public bool CanTeleport()
-    {
-        if (Random.Range(0, 100) <= chanceToTeleport)
-        {
-            chanceToTeleport = defaultChanceToTeleport;
-            return true;
+            base.Awake();
+            
+            IdleState = new DeathBringerIdleState(this, StateMachine, AnimatorHashes.EnemyIdleState);
+            BattleState = new DeathBringerBattleState(this, StateMachine, AnimatorHashes.EnemyBattleState);
+            AttackState = new DeathBringerAttackState(this, StateMachine, AnimatorHashes.EnemyAttackState);
+            TeleportState = new DeathBringerTeleportState(this, StateMachine, AnimatorHashes.EnemyTeleportState);
+            SpellCastState = new DeathBringerSpellCastState(this, StateMachine, AnimatorHashes.EnemySpellCastState);
+            DeadState = new DeathBringerDeadState(this, StateMachine, AnimatorHashes.EnemyIdleState);
         }
 
-
-        return false;
-    }
-
-    public bool CanDoSpellCast()
-    {
-        if (Time.time >= lastTimeCast + spellStateCooldown)
+        protected override void Start()
         {
-            return true;
+            base.Start();
+
+            StateMachine.Initialize(IdleState);
+        }
+        
+        public bool CanAttack()
+        {
+            if (Time.time >= GetLastTimeAttacked() + GetAttackCooldown())
+            { 
+                SetAttackCooldown(Random.Range(GetAttackCooldownRange().x, GetAttackCooldownRange().y));
+                SetLastTimeAttacked(Time.time);
+                return true;
+            }
+
+            return false;
+        }
+        
+        public void CastSpell()
+        {
+            Player.Player player = PlayerManager.Instance.PlayerGameObject;
+            float xOffset = 0;
+
+            if (player.Rb.velocity.x != 0)
+                xOffset = player.FacingDir * spellCastOffset.x;
+
+            Vector3 spellPosition = new Vector3(player.transform.position.x + xOffset, player.transform.position.y + spellCastOffset.y);
+
+            GameObject newSpell = PoolManager.Instance.Spawn("deathBringerSpell", spellPosition, Quaternion.identity);
+            newSpell.GetComponent<DeathBringerSpellController>().SetupSpell(Stats);
         }
 
-        return false;
+        public bool CanTeleport()
+        {
+            if (Random.Range(0, 100) <= chanceToTeleport)
+            {
+                chanceToTeleport = defaultChanceToTeleport;
+                return true;
+            }
+        
+            return false;
+        }
+
+        public bool CanCastSpell()
+        {
+            if (Time.time >= lastTimeCast + spellStateCooldown)
+            {
+                return true;
+            }
+
+            return false;
+        }
+        
+        public override void Die()
+        {
+            base.Die();
+
+            StateMachine.ChangeState(DeadState);
+        }
+        
+        public void FindAvailableTeleportPosition()
+        {
+            float x = Random.Range(teleportArea.bounds.min.x + teleportPositionPadding, 
+                teleportArea.bounds.max.x - teleportPositionPadding);
+            float y = Random.Range(teleportArea.bounds.min.y + teleportPositionPadding, 
+                teleportArea.bounds.max.y - teleportPositionPadding);
+
+            transform.position = new Vector3(x, y);
+            transform.position = new Vector3(transform.position.x, transform.position.y - GroundBelow().distance + (Cd.size.y / 2));
+
+            if (!GroundBelow() || SomethingIsAround())
+                FindAvailableTeleportPosition();
+        }
+    
+        public void IncreaseChangeToTeleport(int value) => chanceToTeleport += value;
+        
+        public int GetAmountOfSpells() => amountOfSpells;
+        public float GetSpellCooldown() => spellCooldown;
+        
+        public void SetBossFightBegin(bool begun) => _bossFightBegun = begun; // bullshit code
+        public bool IsBossFightBegun() => _bossFightBegun;
+
+        private RaycastHit2D GroundBelow() 
+            => Physics2D.Raycast(transform.position, Vector2.down, teleportGroundCheckDistance, whatIsGround);
+
+        private bool SomethingIsAround() 
+            => Physics2D.BoxCast(transform.position, surroundingCheckSize, 0, Vector2.zero, 0, whatIsGround);
+        
+        protected override void OnDrawGizmos()
+        {
+            base.OnDrawGizmos();
+
+            Gizmos.DrawLine(transform.position, new Vector3(transform.position.x, transform.position.y - GroundBelow().distance));
+            Gizmos.DrawWireCube(transform.position, surroundingCheckSize);
+        }
     }
-
-    private RaycastHit2D GroundBelow() => Physics2D.Raycast(transform.position, Vector2.down, 100, whatIsGround);
-
-    private bool SomethingIsAround() => Physics2D.BoxCast(transform.position, surroundingCheckSize, 0, Vector2.zero, 0, whatIsGround);
 }

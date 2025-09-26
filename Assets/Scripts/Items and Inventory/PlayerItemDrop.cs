@@ -1,60 +1,54 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerItemDrop : ItemDrop
+namespace Items_and_Inventory
 {
-    [Header("Player's Drop")]
-    [SerializeField] private float chanceToLooseItems;
-    [SerializeField] private float chanceToLooseMaterials;
-    
-    private List<InventoryItem> equipment => inventory.GetEquipmentList();
-    private List<InventoryItem> stash => inventory.GetStashList();
-    
-    private List<InventoryItem> itemsToUnequipment = new List<InventoryItem>();
-    private List<InventoryItem> materialsToLoose = new List<InventoryItem>();
-
-    Inventory inventory => Inventory.instance;
-
-    public override void GenerateDrop()
+    public class PlayerItemDrop : ItemDrop
     {
-        GenerateEquipmentToDrop();
-        GenerateMaterialsToDrop();
+        [Header("Player's Drop")]
+        [SerializeField] private float chanceToLooseItems;
+        [SerializeField] private float chanceToLooseMaterials;
+        
+        private List<InventoryItem> _itemsToUnequipment = new();
+        private List<InventoryItem> _materialsToLoose = new();
 
-        itemsToUnequipment.Clear();
-        materialsToLoose.Clear();
-    }
-
-    private void GenerateEquipmentToDrop()
-    {
-        foreach (InventoryItem item in equipment)
+        public override void GenerateDrop()
         {
-            if (Random.Range(0, 100) <= chanceToLooseItems)
+            GenerateEquipmentToDrop();
+            GenerateMaterialsToDrop();
+
+            _itemsToUnequipment.Clear();
+            _materialsToLoose.Clear();
+        }
+
+        private void GenerateEquipmentToDrop()
+        {
+            foreach (InventoryItem item in Inventory.Instance.GetEquipment())
             {
-                DropItem(item.data);
-                itemsToUnequipment.Add(item);
+                if (Random.Range(0, 100) <= chanceToLooseItems)
+                {
+                    DropItem(item.GetData());
+                    _itemsToUnequipment.Add(item);
+                }
             }
+
+            for (int i = 0; i < _itemsToUnequipment.Count; i++)
+                Inventory.Instance.UnequipItem(_itemsToUnequipment[i].GetData() as ItemData_Equipment);
         }
 
-        for (int i = 0; i < itemsToUnequipment.Count; i++)
+        private void GenerateMaterialsToDrop()
         {
-            inventory.UnequipItem(itemsToUnequipment[i].data as ItemData_Equipment);
-        }
-    }
-
-    private void GenerateMaterialsToDrop()
-    {
-        foreach (InventoryItem item in stash)
-        {
-            if (Random.Range(0, 100) <= chanceToLooseMaterials)
+            foreach (InventoryItem item in Inventory.Instance.GetStash())
             {
-                DropItem(item.data);
-                materialsToLoose.Add(item);
+                if (Random.Range(0, 100) <= chanceToLooseMaterials)
+                {
+                    DropItem(item.GetData());
+                    _materialsToLoose.Add(item);
+                }
             }
-        }
 
-        for (int i = 0; i < materialsToLoose.Count; i++)
-        {
-            inventory.RemoveItem(materialsToLoose[i].data);
+            for (int i = 0; i < _materialsToLoose.Count; i++)
+                Inventory.Instance.RemoveItem(_materialsToLoose[i].GetData());
         }
     }
 }

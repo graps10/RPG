@@ -1,67 +1,83 @@
+using System;
+using Enemies.Base;
+using Managers;
+using UI_Elements;
 using UnityEngine;
 
-public class Skill : MonoBehaviour
+namespace Skills
 {
-    public float cooldown;
-    public float cooldownTimer;
-
-    protected Player player;
-
-    protected virtual void Start()
+    public class Skill : MonoBehaviour
     {
-        player = PlayerManager.instance.player;
+        private const float Enemy_Search_Radius = 25f;
+        
+        [SerializeField] private float cooldownDuration;
 
-        CheckUnlock();
-    }
+        protected Player.Player player;
+        protected float cooldownRemaining;
 
-    protected virtual void Update()
-    {
-        cooldownTimer -= Time.deltaTime;
-    }
-
-    protected virtual void CheckUnlock()
-    {
-
-    }
-
-    public virtual bool CanUseSkill()
-    {
-        if (cooldownTimer < 0)
+        protected virtual void Start()
         {
-            UseSkill();
-            cooldownTimer = cooldown;
-            return true;
+            player = PlayerManager.Instance.PlayerGameObject;
+
+            CheckUnlock();
         }
-        player.fx.CreatePopUpText("Cooldown");
-        return false;
-    }
-    public virtual void UseSkill()
-    {
 
-    }
-
-    protected virtual Transform FindClosestEnemy(Transform _checkTransform)
-    {
-        Collider2D[] colliders = Physics2D.OverlapCircleAll(_checkTransform.position, 25);
-
-        float closestDistance = Mathf.Infinity;
-        Transform closestEnemy = null;
-
-        foreach (var hit in colliders)
+        protected virtual void Update()
         {
-            if (hit.GetComponent<Enemy>() != null)
-            {
-                float distanceToEnemy = Vector2.Distance(_checkTransform.position, hit.transform.position);
+            cooldownRemaining -= Time.deltaTime;
+        }
+        
+        public float GetCooldownDuration() => cooldownDuration; 
+        public float GetCooldownRemaining() => cooldownRemaining;
 
+        protected virtual void CheckUnlock() { }
+
+        protected static void TryUnlock(SkillTreeSlot button, ref bool skillFlag, Action completeCallback = null)
+        {
+            if (button == null || !button.Unlocked) 
+                return;
+            
+            skillFlag = true;
+            completeCallback?.Invoke();
+        }
+
+        public virtual bool CanUseSkill()
+        {
+            if (cooldownRemaining < 0)
+            {
+                UseSkill();
+                cooldownRemaining = cooldownDuration;
+                return true;
+            }
+        
+            player.Fx.CreatePopUpText("Cooldown");
+            return false;
+        }
+        
+        public virtual void UseSkill() { }
+
+        protected void SetCooldownDuration(float value) => cooldownDuration = value;
+        
+        protected virtual Transform FindClosestEnemy(Transform checkTransform)
+        {
+            Collider2D[] colliders = Physics2D.OverlapCircleAll(checkTransform.position, Enemy_Search_Radius);
+
+            float closestDistance = Mathf.Infinity;
+            Transform closestEnemy = null;
+
+            foreach (var hit in colliders)
+            {
+                if (hit.GetComponent<Enemy>() == null) continue;
+            
+                float distanceToEnemy = Vector2.Distance(checkTransform.position, hit.transform.position);
                 if (distanceToEnemy < closestDistance)
                 {
                     closestDistance = distanceToEnemy;
                     closestEnemy = hit.transform;
                 }
-
             }
-        }
 
-        return closestEnemy;
+            return closestEnemy;
+        }
     }
 }

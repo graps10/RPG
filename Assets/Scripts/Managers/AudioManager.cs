@@ -1,122 +1,126 @@
 using System.Collections;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Audio;
 
-public class AudioManager : MonoBehaviour
+namespace Managers
 {
-    public static AudioManager instance;
-
-    public AudioMixer mixer;
-    public float multiplier = 25f;
-
-    private float bgmVolume;
-    private float sfxVolume;
-
-    [SerializeField] private float sfxMinDistance;
-    [SerializeField] private AudioSource[] sfx;
-    [SerializeField] private AudioSource[] bgm;
-
-    public bool playBGM;
-    private int bgmIndex;
-
-    private bool canPlaySFX;
-
-    void Awake()
+    public class AudioManager : MonoBehaviour
     {
-        if (instance != null)
-            Destroy(instance.gameObject);
-        else
+        public static AudioManager Instance;
+        
+        private const string Mixer_BGM = "bgm";
+        private const string Mixer_SFX = "sfx";
+        
+        private const float Volume_Threshold = 0.1f;
+        private const float Volume_Decrease_Rate = 0.25f;
+        private const float Volume_Decrease_Interval = 0.6f;
+        
+        private static Vector2 sfxPitchRange = new(0.85f, 1.1f);
+        
+        [SerializeField] private AudioMixer mixer;
+        [SerializeField] private AudioSource[] sfx;
+        [SerializeField] private AudioSource[] bgm;
+        [SerializeField] private float sfxMinDistance;
+        [SerializeField] private float volumeScaleFactor;
+        [SerializeField] bool shouldPlayBGM;
+
+        private float _bgmVolume;
+        private float _sfxVolume;
+    
+        private int _bgmIndex;
+        private bool _canPlaySFX;
+        
+        private void Awake()
         {
-            instance = this;
-            DontDestroyOnLoad(gameObject);
-        }
-
-
-        Invoke("AllowSFX", 0.5f);
-    }
-
-    void Start()
-    {
-        mixer.SetFloat("bgm", Mathf.Log10(bgmVolume) * multiplier);
-        mixer.SetFloat("sfx", Mathf.Log10(sfxVolume) * multiplier);
-    }
-
-    void Update()
-    {
-        if (!playBGM)
-            StopAllBGM();
-        else
-        {
-            if (!bgm[bgmIndex].isPlaying)
-                PlayBGM(bgmIndex);
-        }
-    }
-
-    public void SetupBGMVolume(float _savedBGMVolume) => bgmVolume = _savedBGMVolume;
-    public void SetupSFXVolume(float _savedSFXVolume) => sfxVolume = _savedSFXVolume;
-
-    public void PlaySFX(int _sfxIndex, Transform _source)
-    {
-        // if (sfx[_sfxIndex].isPlaying)
-        //     return;
-
-        if (!canPlaySFX) return;
-
-        if (_source != null && Vector2.Distance(PlayerManager.instance.player.transform.position, _source.position) > sfxMinDistance)
-            return;
-
-        if (_sfxIndex < sfx.Length)
-        {
-            sfx[_sfxIndex].pitch = Random.Range(0.85f, 1.1f);
-            sfx[_sfxIndex].Play();
-        }
-    }
-
-    public void StopSFX(int _index) => sfx[_index].Stop();
-
-    public void PlayRandomBGM()
-    {
-        bgmIndex = Random.Range(0, bgm.Length);
-        PlayBGM(bgmIndex);
-    }
-
-    public void PlayBGM(int _bgmIndex)
-    {
-        bgmIndex = _bgmIndex;
-
-        StopAllBGM();
-        bgm[bgmIndex].Play();
-    }
-
-    public void StopAllBGM()
-    {
-        for (int i = 0; i < bgm.Length; i++)
-        {
-            bgm[i].Stop();
-        }
-    }
-
-    public void StopSFXWithDelay(int _index) => StartCoroutine(DecreaseVolume(sfx[_index]));
-
-    private void AllowSFX() => canPlaySFX = true;
-
-    private IEnumerator DecreaseVolume(AudioSource _audio)
-    {
-        if (_audio == null) yield return null;
-
-        float defaultVolume = _audio.volume;
-
-        while (_audio.volume > 0.1f)
-        {
-            _audio.volume -= _audio.volume * 0.25f;
-            yield return new WaitForSeconds(0.6f);
-
-            if (_audio.volume <= 0.1f)
+            if (Instance != null)
+                Destroy(Instance.gameObject);
+            else
             {
-                _audio.Stop();
-                _audio.volume = defaultVolume;
-                break;
+                Instance = this;
+                DontDestroyOnLoad(gameObject);
+            }
+        
+            AllowSFX(true);
+        }
+
+        private void Start()
+        {
+            mixer.SetFloat(Mixer_BGM, Mathf.Log10(_bgmVolume) * volumeScaleFactor);
+            mixer.SetFloat(Mixer_SFX, Mathf.Log10(_sfxVolume) * volumeScaleFactor);
+        }
+
+        private void Update()
+        {
+            if (!shouldPlayBGM)
+                StopAllBGM();
+            else
+            {
+                if (!bgm[_bgmIndex].isPlaying)
+                    PlayBGM(_bgmIndex);
+            }
+        }
+        
+        public AudioMixer GetMixer() => mixer;
+        public float GetVolumeScaleFactor() => volumeScaleFactor;
+
+        public void SetupBGMVolume(float savedBGMVolume) => _bgmVolume = savedBGMVolume;
+        public void SetupSFXVolume(float savedSFXVolume) => _sfxVolume = savedSFXVolume;
+        public void AllowSFX(bool allow) => _canPlaySFX = allow;
+
+        public void PlayBGM(int bgmIndex)
+        {
+            _bgmIndex = bgmIndex;
+
+            StopAllBGM();
+            bgm[_bgmIndex].Play();
+        }
+        
+        public void PlaySFX(int sfxIndex, Transform source)
+        {
+            if (!_canPlaySFX) return;
+
+            if (source != null && Vector2.Distance(PlayerManager.Instance.PlayerGameObject.transform.position, source.position) > sfxMinDistance)
+                return;
+
+            if (sfxIndex < sfx.Length)
+            {
+                sfx[sfxIndex].pitch = Random.Range(sfxPitchRange.x, sfxPitchRange.y);
+                sfx[sfxIndex].Play();
+            }
+        }
+
+        public void StopAllBGM()
+        {
+            foreach (var s in bgm)
+                s.Stop();
+        }
+        
+        public void StopSFX(int index)
+        {
+            if(sfx != null && sfx[index].isPlaying)
+                sfx[index].Stop();
+        }
+
+        public void StopSFXWithDelay(int index) 
+            => StartCoroutine(DecreaseVolumeRoutine(sfx[index]));
+
+        private IEnumerator DecreaseVolumeRoutine(AudioSource audio)
+        {
+            if (audio == null) yield return null;
+
+            float defaultVolume = audio.volume;
+
+            while (audio.volume > Volume_Threshold)
+            {
+                audio.volume -= audio.volume * Volume_Decrease_Rate;
+                yield return new WaitForSeconds(Volume_Decrease_Interval);
+
+                if (audio.volume <= Volume_Threshold)
+                {
+                    audio.Stop();
+                    audio.volume = defaultVolume;
+                    break;
+                }
             }
         }
     }

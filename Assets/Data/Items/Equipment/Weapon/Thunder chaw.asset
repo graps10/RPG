@@ -12,10 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 234ad358cd538084c86934309d4542c4, type: 3}
   m_Name: Thunder chaw
   m_EditorClassIdentifier: 
-  itemType: 1
-  itemName: Thunder chaw
-  icon: {fileID: 367297872, guid: a9ca9a41598dd2e44b125928045c518f, type: 3}
-  dropChance: 0
+  ItemType: 1
+  ItemName: Thunder chaw
+  Icon: {fileID: 367297872, guid: a9ca9a41598dd2e44b125928045c518f, type: 3}
+  ItemID: 3033d33e400f6194aa86d3af11116422
+  DropChance: 0
   equipmentType: 0
   itemCooldown: 0
   itemEffects:
@@ -24,7 +25,7 @@ MonoBehaviour:
   agility: 0
   intelligence: 0
   vitality: 0
-  damage: 10
+  damage: 1
   critChance: 0
   critPower: 0
   health: 0
@@ -33,7 +34,5 @@ MonoBehaviour:
   magicResistance: 0
   fireDamage: 0
   iceDamage: 0
-  lightingDamage: 5
-  craftingMaterials:
-  - data: {fileID: 11400000, guid: a7c301e88a476cd4b8f7a81884d042d2, type: 2}
-    stackSize: 10
+  lightingDamage: 1
+  craftingMaterials: []

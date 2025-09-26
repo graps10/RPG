@@ -12,15 +12,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 234ad358cd538084c86934309d4542c4, type: 3}
   m_Name: Rogue's jacket
   m_EditorClassIdentifier: 
-  itemType: 1
-  itemName: Rogue's jacket
-  icon: {fileID: 957708663, guid: a9ca9a41598dd2e44b125928045c518f, type: 3}
-  dropChance: 0
+  ItemType: 1
+  ItemName: Rogue's jacket
+  Icon: {fileID: 957708663, guid: a9ca9a41598dd2e44b125928045c518f, type: 3}
+  ItemID: 29e04b4dc8f0e484ca394ec4e7032af5
+  DropChance: 0
   equipmentType: 1
   itemCooldown: 0
   itemEffects:
   - {fileID: 11400000, guid: dac96e2a175c7014782b37311262d791, type: 2}
-  itemEffectDescription: 'Unique: Increases evasion on each taken hit.'
   strength: 0
   agility: 5
   intelligence: 0

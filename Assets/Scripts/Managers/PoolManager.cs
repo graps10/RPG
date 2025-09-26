@@ -1,67 +1,72 @@
 using System.Collections;
 using System.Collections.Generic;
+using Core.ObjectPool;
 using UnityEngine;
 
-public class PoolManager : MonoBehaviour
+namespace Managers
 {
-    public static PoolManager instance { get; private set; }
-
-    [SerializeField] private List<PoolConfig> poolConfigs;
-    private Dictionary<string, ObjectPool> pools = new();
-    private Dictionary<string, Transform> poolParents = new();
-
-    void Awake()
+    public class PoolManager : MonoBehaviour
     {
-        if (instance != null)
-            Destroy(instance.gameObject);
-        else
-            instance = this;
+        public static PoolManager Instance { get; private set; }
 
-        InitializePools();
-    }
+        [SerializeField] private List<PoolConfig> poolConfigs;
+        
+        private Dictionary<string, ObjectPool> _pools = new();
+        private Dictionary<string, Transform> _poolParents = new();
 
-    private void InitializePools()
-    {
-        foreach (var config in poolConfigs)
+        private void Awake()
         {
-            var poolParent = new GameObject($"{config.key}_Pool");
-            poolParent.transform.SetParent(transform);
-            poolParents.Add(config.key, poolParent.transform);
+            if (Instance != null)
+                Destroy(Instance.gameObject);
+            else
+                Instance = this;
 
-            var pool = new ObjectPool(config, poolParent.transform);
-            pools.Add(config.key, pool);
+            InitializePools();
         }
-    }
 
-    public GameObject Spawn(string _key, Vector3 _position, Quaternion _rotation, GameObject _specificPrefab = null)
-    {
-        if (pools.TryGetValue(_key, out var pool))
+        private void InitializePools()
         {
-            return pool.Spawn(_position, _rotation, _specificPrefab);
-        }
-        Debug.LogWarning($"Pool with key '{_key}' not found.");
-        return null;
-    }
+            foreach (var config in poolConfigs)
+            {
+                var poolParent = new GameObject($"{config.Key}_Pool");
+                poolParent.transform.SetParent(transform);
+                _poolParents.Add(config.Key, poolParent.transform);
 
-    public void Return(string _key, GameObject _obj)
-    {
-        if (pools.TryGetValue(_key, out var pool))
+                var pool = new ObjectPool(config, poolParent.transform);
+                _pools.Add(config.Key, pool);
+            }
+        }
+
+        public GameObject Spawn(string _key, Vector3 _position, Quaternion _rotation, GameObject _specificPrefab = null)
         {
-            pool.Return(_obj);
+            if (_pools.TryGetValue(_key, out var pool))
+            {
+                return pool.Spawn(_position, _rotation, _specificPrefab);
+            }
+            Debug.LogWarning($"Pool with key '{_key}' not found.");
+            return null;
         }
-        else
+
+        public void Return(string _key, GameObject _obj)
         {
-            Debug.LogWarning($"Return failed. Pool with key '{_key}' not found.");
-            Destroy(_obj);
+            if (_pools.TryGetValue(_key, out var pool))
+            {
+                pool.Return(_obj);
+            }
+            else
+            {
+                Debug.LogWarning($"Return failed. Pool with key '{_key}' not found.");
+                Destroy(_obj);
+            }
         }
-    }
 
-    public void Return(string _key, GameObject _obj, float _delay) => StartCoroutine(ReturnToPoolRoutine(_key, _obj, _delay));
+        public void Return(string _key, GameObject _obj, float _delay) 
+            => StartCoroutine(ReturnToPoolRoutine(_key, _obj, _delay));
 
-    private IEnumerator ReturnToPoolRoutine(string _key, GameObject _obj, float _delay)
-    {
-        yield return new WaitForSeconds(_delay);
-
-        Return(_key, _obj);
+        private IEnumerator ReturnToPoolRoutine(string _key, GameObject _obj, float _delay)
+        {
+            yield return new WaitForSeconds(_delay);
+            Return(_key, _obj);
+        }
     }
 }

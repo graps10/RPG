@@ -1,76 +1,78 @@
-using UnityEngine;
 using System.Collections.Generic;
+using ChunkGeneration.Configs;
+using Managers;
+using UnityEngine;
 
-public class ChunkGenerator : MonoBehaviour
+namespace ChunkGeneration
 {
-    [SerializeField] private List<ChunkConfig> ordinaryChunkConfigs;
-    [SerializeField] private List<ChunkConfig> bossChunkConfigs;
-    [SerializeField] private int chunksAhead = 1;
-    [SerializeField] private int minChunksBeforeBoss = 5;
-    [SerializeField] private int maxChunksBeforeBoss = 7;
-
-    private Queue<GameObject> activeChunks = new Queue<GameObject>();
-    private float nextSpawnPosition = 0f;
-    private Transform playerSpawnSpot;
-    private int chunksSinceLastBoss = 0;
-    private int nextBossAtChunk;
-
-    void Start()
+    public class ChunkGenerator : MonoBehaviour
     {
-        CalculateNextBossChunk();
-        for (int i = 0; i < chunksAhead; i++)
+        [SerializeField] private List<ChunkConfig> ordinaryChunkConfigs;
+        [SerializeField] private List<ChunkConfig> bossChunkConfigs;
+        [SerializeField] private int chunksAhead = 1;
+        [SerializeField] private int minChunksBeforeBoss = 5;
+        [SerializeField] private int maxChunksBeforeBoss = 7;
+
+        private Queue<GameObject> _activeChunks = new();
+        private float _nextSpawnPosition;
+        private Transform _playerSpawnSpot;
+        private int _chunksSinceLastBoss;
+        private int _nextBossAtChunk;
+
+        private void Start()
         {
+            CalculateNextBossChunk();
+            for (int i = 0; i < chunksAhead; i++)
+                SpawnNextChunk();
+
+            if (_playerSpawnSpot != null)
+                PlayerManager.Instance.SpawnPlayer(_playerSpawnSpot);
+        }
+
+        public void OnPlayerExitedLastChunk()
+        {
+            if (_activeChunks.Count > chunksAhead)
+            {
+                GameObject oldestChunk = _activeChunks.Dequeue();
+                PoolManager.Instance.Return("chunk", oldestChunk);
+            }
+
             SpawnNextChunk();
         }
 
-        if (playerSpawnSpot != null)
-            PlayerManager.instance.SpawnPlayer(playerSpawnSpot);
-    }
-
-    public void OnPlayerExitedLastChunk()
-    {
-        if (activeChunks.Count > chunksAhead)
+        private void CalculateNextBossChunk()
         {
-            GameObject oldestChunk = activeChunks.Dequeue();
-            PoolManager.instance.Return("chunk", oldestChunk);
+            _nextBossAtChunk = Random.Range(minChunksBeforeBoss, maxChunksBeforeBoss + 1);
+            _chunksSinceLastBoss = 0;
         }
 
-        SpawnNextChunk();
-    }
-
-    private void CalculateNextBossChunk()
-    {
-        nextBossAtChunk = Random.Range(minChunksBeforeBoss, maxChunksBeforeBoss + 1);
-        chunksSinceLastBoss = 0;
-    }
-
-    private void SpawnNextChunk()
-    {
-        chunksSinceLastBoss++;
-        bool spawnBoss = chunksSinceLastBoss >= nextBossAtChunk;
-
-        ChunkConfig randomChunk = GetRandomChunkConfig(spawnBoss);
-        GameObject newChunk = PoolManager.instance.Spawn("chunk", new Vector3(nextSpawnPosition, 0, 0), Quaternion.identity);
-
-        ChunkController chunkController = newChunk.GetComponent<ChunkController>();
-        chunkController.Initialize(randomChunk, this, spawnBoss);
-
-        nextSpawnPosition += randomChunk.ChunkLength;
-        activeChunks.Enqueue(newChunk);
-
-        if (spawnBoss)
-            CalculateNextBossChunk();
-
-        if (playerSpawnSpot == null)
-            playerSpawnSpot = newChunk.GetComponent<ChunkController>().GetPlayerSpawnSpot();
-    }
-
-    private ChunkConfig GetRandomChunkConfig(bool spawnBoss)
-    {
-        if (spawnBoss && bossChunkConfigs.Count > 0)
+        private void SpawnNextChunk()
         {
-            return bossChunkConfigs[Random.Range(0, bossChunkConfigs.Count)];
+            _chunksSinceLastBoss++;
+            bool spawnBoss = _chunksSinceLastBoss >= _nextBossAtChunk;
+
+            ChunkConfig randomChunk = GetRandomChunkConfig(spawnBoss);
+            GameObject newChunk = PoolManager.Instance.Spawn("chunk", new Vector3(_nextSpawnPosition, 0, 0), Quaternion.identity);
+
+            ChunkController chunkController = newChunk.GetComponent<ChunkController>();
+            chunkController.Initialize(randomChunk, this, spawnBoss);
+
+            _nextSpawnPosition += randomChunk.ChunkLength;
+            _activeChunks.Enqueue(newChunk);
+
+            if (spawnBoss)
+                CalculateNextBossChunk();
+
+            if (_playerSpawnSpot == null)
+                _playerSpawnSpot = newChunk.GetComponent<ChunkController>().GetPlayerSpawnSpot();
         }
-        return ordinaryChunkConfigs[Random.Range(0, ordinaryChunkConfigs.Count)];
+
+        private ChunkConfig GetRandomChunkConfig(bool spawnBoss)
+        {
+            if (spawnBoss && bossChunkConfigs.Count > 0)
+                return bossChunkConfigs[Random.Range(0, bossChunkConfigs.Count)];
+        
+            return ordinaryChunkConfigs[Random.Range(0, ordinaryChunkConfigs.Count)];
+        }
     }
 }

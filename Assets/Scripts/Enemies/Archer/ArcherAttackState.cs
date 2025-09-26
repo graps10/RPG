@@ -1,30 +1,11 @@
-using UnityEngine;
+using Enemies.Base;
+using Enemies.Base.States;
 
-public class ArcherAttackState : EnemyState
+namespace Enemies.Archer
 {
-    private Enemy_Archer enemy;
-    public ArcherAttackState(Enemy _enemyBase, EnemyStateMachine _stateMachine, string _animBoolName, Enemy_Archer _enemy) : base(_enemyBase, _stateMachine, _animBoolName)
+    public class ArcherAttackState : EnemyAttackState<EnemyArcher>
     {
-        this.enemy = _enemy;
-    }
-
-    public override void Enter()
-    {
-        base.Enter();
-    }
-    public override void Update()
-    {
-        base.Update();
-
-        enemy.SetZeroVelocity();
-
-        if (triggerCalled)
-            stateMachine.ChangeState(enemy.battleState);
-    }
-    public override void Exit()
-    {
-        base.Exit();
-
-        enemy.lastTimeAttacked = Time.time;
+        public ArcherAttackState(EnemyArcher enemy, EnemyStateMachine stateMachine, int animBoolName) :
+            base(enemy, stateMachine, animBoolName) { }
     }
 }

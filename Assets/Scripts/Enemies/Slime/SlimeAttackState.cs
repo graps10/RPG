@@ -1,30 +1,14 @@
-using UnityEngine;
+using Enemies.Base;
+using Enemies.Base.States;
 
-public class SlimeAttackState : EnemyState
+namespace Enemies.Slime
 {
-    private Enemy_Slime enemy;
-    public SlimeAttackState(Enemy _enemyBase, EnemyStateMachine _stateMachine, string _animBoolName, Enemy_Slime _enemy) : base(_enemyBase, _stateMachine, _animBoolName)
+    public class SlimeAttackState : EnemyAttackState<EnemySlime>
     {
-        this.enemy = _enemy;
-    }
-
-    public override void Enter()
-    {
-        base.Enter();
-    }
-    public override void Update()
-    {
-        base.Update();
-
-        enemy.SetZeroVelocity();
-
-        if (triggerCalled)
-            stateMachine.ChangeState(enemy.battleState);
-    }
-    public override void Exit()
-    {
-        base.Exit();
-
-        enemy.lastTimeAttacked = Time.time;
+        public SlimeAttackState(EnemySlime enemy, EnemyStateMachine stateMachine, int animBoolName) :
+            base(enemy, stateMachine, animBoolName)
+        {
+            this.enemy = enemy;
+        }
     }
 }

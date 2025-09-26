@@ -12,16 +12,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 234ad358cd538084c86934309d4542c4, type: 3}
   m_Name: Ice and Fire
   m_EditorClassIdentifier: 
-  itemType: 1
-  itemName: Ice and Fire
-  icon: {fileID: 1398721256, guid: a9ca9a41598dd2e44b125928045c518f, type: 3}
-  dropChance: 0
+  ItemType: 1
+  ItemName: Ice and Fire
+  Icon: {fileID: 1398721256, guid: a9ca9a41598dd2e44b125928045c518f, type: 3}
+  ItemID: 696cdcfe02c4c4d4babf89b0a80f429c
+  DropChance: 0
   equipmentType: 0
   itemCooldown: 0
   itemEffects:
   - {fileID: 11400000, guid: 498a0daa24008bc4ba789d8594c94fa5, type: 2}
   - {fileID: 11400000, guid: 0a912de9f375b2c42a536ef0c4b3f4a9, type: 2}
-  itemEffectDescription: 'Unique: Each 3rd attack you launch ice and fire projectile.'
   strength: 0
   agility: 0
   intelligence: 0
@@ -33,11 +33,7 @@ MonoBehaviour:
   armor: 0
   evasion: 0
   magicResistance: 0
-  fireDamage: 5
-  iceDamage: 7
+  fireDamage: 1
+  iceDamage: 1
   lightingDamage: 0
-  craftingMaterials:
-  - data: {fileID: 11400000, guid: a7c301e88a476cd4b8f7a81884d042d2, type: 2}
-    stackSize: 2
-  - data: {fileID: 11400000, guid: 31c49433047bf6d49aed80da8565d32a, type: 2}
-    stackSize: 2
+  craftingMaterials: []

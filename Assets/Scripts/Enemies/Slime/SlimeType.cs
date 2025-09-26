@@ -1,6 +1,9 @@
-public enum SlimeType
+namespace Enemies.Slime
 {
-    Big,
-    Medium,
-    Small
+    public enum SlimeType
+    {
+        Big,
+        Medium,
+        Small
+    }
 }

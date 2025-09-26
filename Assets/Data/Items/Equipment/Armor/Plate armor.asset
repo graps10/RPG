@@ -12,11 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 234ad358cd538084c86934309d4542c4, type: 3}
   m_Name: Plate armor
   m_EditorClassIdentifier: 
-  itemType: 1
-  itemName: Plate armor
-  icon: {fileID: -1581127718, guid: a9ca9a41598dd2e44b125928045c518f, type: 3}
-  dropChance: 20
+  ItemType: 1
+  ItemName: Plate armor
+  Icon: {fileID: -1581127718, guid: a9ca9a41598dd2e44b125928045c518f, type: 3}
+  ItemID: e2fac72d89a1ca949b1846de1228d215
+  DropChance: 0
   equipmentType: 1
+  itemCooldown: 0
+  itemEffects: []
   strength: 0
   agility: 0
   intelligence: 0

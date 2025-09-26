@@ -1,12 +1,15 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "BossChunkConfig", menuName = "Level Generation/Chunk Config/Boss Config")]
-public class BossChunkConfig : ScriptableObject
+namespace ChunkGeneration.Configs
 {
-    [SerializeField] private GameObject chunkPrefab;
-    [SerializeField] private float chunkLength = 20f;
+    [CreateAssetMenu(fileName = "BossChunkConfig", menuName = "Level Generation/Chunk Config/Boss Config")]
+    public class BossChunkConfig : ScriptableObject
+    {
+        [SerializeField] private GameObject chunkPrefab;
+        [SerializeField] private float chunkLength = 20f;
 
-    [Header("Enemy Settings")]
-    [SerializeField] private EnemySpawnData enemyType;
+        [Header("Enemy Settings")]
+        [SerializeField] private EnemySpawnData enemyType;
+    }
 }
 

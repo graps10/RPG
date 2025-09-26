@@ -1,28 +1,19 @@
-public class SkeletonIdleState : SkeletonGroundedState
+using Enemies.Base;
+using Enemies.Base.States;
+using Managers;
+
+namespace Enemies.Skeleton
 {
-    public SkeletonIdleState(Enemy _enemyBase, EnemyStateMachine _stateMachine, string _animBoolName, Enemy_Skeleton _enemy) : base(_enemyBase, _stateMachine, _animBoolName, _enemy)
+    public class SkeletonIdleState : EnemyIdleState<EnemySkeleton>
     {
-    }
+        public SkeletonIdleState(EnemySkeleton enemy, EnemyStateMachine stateMachine, int animBoolName) : 
+            base(enemy, stateMachine, animBoolName) { }
 
-    public override void Enter()
-    {
-        base.Enter();
+        public override void Exit()
+        {
+            base.Exit();
 
-        stateTimer = enemy.idleTime;
-    }
-
-    public override void Update()
-    {
-        base.Update();
-
-        if (stateTimer <= 0)
-            stateMachine.ChangeState(enemy.moveState);
-    }
-
-    public override void Exit()
-    {
-        base.Exit();
-
-        AudioManager.instance.PlaySFX(22, enemy.transform);
+            AudioManager.Instance.PlaySFX(22, enemy.transform);
+        }
     }
 }

@@ -1,28 +1,11 @@
-public class ShadyIdleState : ShadyGroundedState
+using Enemies.Base;
+using Enemies.Base.States;
+
+namespace Enemies.Shady
 {
-    public ShadyIdleState(Enemy _enemyBase, EnemyStateMachine _stateMachine, string _animBoolName, Enemy_Shady _enemy) : base(_enemyBase, _stateMachine, _animBoolName, _enemy)
+    public class ShadyIdleState : EnemyIdleState<EnemyShady>
     {
-    }
-
-    public override void Enter()
-    {
-        base.Enter();
-
-        stateTimer = enemy.idleTime;
-    }
-
-    public override void Update()
-    {
-        base.Update();
-
-        if (stateTimer <= 0)
-            stateMachine.ChangeState(enemy.moveState);
-    }
-
-    public override void Exit()
-    {
-        base.Exit();
-
-        // AudioManager.instance.PlaySFX(22, enemy.transform);
+        public ShadyIdleState(EnemyShady enemy, EnemyStateMachine stateMachine, int animBoolName) : 
+            base(enemy, stateMachine, animBoolName) { }
     }
 }

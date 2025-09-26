@@ -12,10 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 234ad358cd538084c86934309d4542c4, type: 3}
   m_Name: Vampier's sword
   m_EditorClassIdentifier: 
-  itemType: 1
-  itemName: Vampier's sword
-  icon: {fileID: -1944902997, guid: a9ca9a41598dd2e44b125928045c518f, type: 3}
-  dropChance: 0
+  ItemType: 1
+  ItemName: Vampier's swprd
+  Icon: {fileID: -1944902997, guid: a9ca9a41598dd2e44b125928045c518f, type: 3}
+  ItemID: 35ebf87b80cb42b46b35a75e4ac4d408
+  DropChance: 0
   equipmentType: 0
   itemCooldown: 0
   itemEffects:
@@ -24,7 +25,7 @@ MonoBehaviour:
   agility: 0
   intelligence: 0
   vitality: 0
-  damage: 15
+  damage: 1
   critChance: 15
   critPower: 0
   health: 0
@@ -34,8 +35,4 @@ MonoBehaviour:
   fireDamage: 0
   iceDamage: 0
   lightingDamage: 0
-  craftingMaterials:
-  - data: {fileID: 11400000, guid: 31c49433047bf6d49aed80da8565d32a, type: 2}
-    stackSize: 7
-  - data: {fileID: 11400000, guid: a7c301e88a476cd4b8f7a81884d042d2, type: 2}
-    stackSize: 7
+  craftingMaterials: []

@@ -1,47 +1,57 @@
+using Core.Save_and_Load;
+using Stats;
 using UnityEngine;
 
-public class PlayerManager : MonoBehaviour, ISaveManager
+namespace Managers
 {
-    public static PlayerManager instance;
-    public Player player;
-
-    public int currency;
-
-    void Awake()
+    public class PlayerManager : MonoBehaviour, ISaveManager
     {
-        if (instance != null)
-            Destroy(instance.gameObject);
-        else
-            instance = this;
-    }
+        public static PlayerManager Instance;
+        public Player.Player PlayerGameObject;
+        public PlayerStats PlayerStats { get; private set; }
 
-    public void SpawnPlayer(Transform _spawnSpot)
-    {
-        player.transform.position = _spawnSpot.position;
-        player.gameObject.SetActive(true);
-    }
+        public int _currency;
 
-    public bool HasEnoughMoney(int _price)
-    {
-        if (_price > currency)
+        private void Awake()
         {
-            Debug.Log("Not enough money");
-            return false;
+            if (Instance != null)
+                Destroy(Instance.gameObject);
+            else
+                Instance = this;
+            
+            PlayerStats = PlayerGameObject.GetComponent<PlayerStats>();
         }
 
-        currency -= _price;
-        return true;
-    }
+        public void SpawnPlayer(Transform spawnSpot)
+        {
+            PlayerGameObject.transform.position = spawnSpot.position;
+            PlayerGameObject.gameObject.SetActive(true);
+        }
 
-    public int GetCurrency() => currency;
+        public bool HasEnoughMoney(int _price)
+        {
+            if (_price > _currency)
+            {
+                Debug.Log("Not enough money");
+                return false;
+            }
 
-    public void LoadData(GameData _data)
-    {
-        this.currency = _data.currency;
-    }
+            _currency -= _price;
+            return true;
+        }
 
-    public void SaveData(ref GameData _data)
-    {
-        _data.currency = this.currency;
+        public void AddCurrency(int amount) => _currency += amount;
+        public void SetCurrency(int currency) => _currency = currency;
+        public int GetCurrency() => _currency;
+
+        public void LoadData(GameData data)
+        {
+            _currency = data.GetCurrency();
+        }
+
+        public void SaveData(ref GameData data)
+        {
+            data.SetCurrency(_currency);
+        }
     }
 }

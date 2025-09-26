@@ -1,49 +1,55 @@
+using Core;
 using UnityEngine;
 
-public class PlayerState
+namespace Player
 {
-    protected PlayerStateMachine stateMachine;
-    protected Player player;
-
-    protected Rigidbody2D rb;
-
-    protected float xInput; 
-    protected float yInput; 
-    private string animBoolName;
-
-    protected float stateTimer;
-    protected bool triggerCalled;
-
-    public PlayerState(Player _player, PlayerStateMachine _stateMachine, string _animBoolName)
+    public class PlayerState
     {
-        this.player = _player;
-        this.stateMachine = _stateMachine;
-        this.animBoolName = _animBoolName;
-    }
+        protected Rigidbody2D rb;
+        
+        protected PlayerStateMachine stateMachine;
+        protected Player player;
+        
+        protected float xInput; 
+        protected float yInput; 
+        
+        protected float stateTimer;
+        protected bool triggerCalled;
+        
+        private int _animBoolName;
 
-    public virtual void Enter()
-    {
-        player.anim.SetBool(animBoolName, true);
-        rb = player.rb;
-        triggerCalled = false;
-    }
+        public PlayerState(Player player, PlayerStateMachine stateMachine, int animBoolName)
+        {
+            this.player = player;
+            this.stateMachine = stateMachine;
+            _animBoolName = animBoolName;
+        }
 
-    public virtual void Update()
-    {
-        stateTimer -= Time.deltaTime;
+        public virtual void Enter()
+        {
+            player.Anim.SetBool(_animBoolName, true);
+            rb = player.Rb;
+            triggerCalled = false;
+        }
 
-        xInput = Input.GetAxisRaw("Horizontal");
-        yInput = Input.GetAxisRaw("Vertical");
-        player.anim.SetFloat("yVelocity", rb.velocity.y);
-    }
+        public virtual void Update()
+        {
+            stateTimer -= Time.deltaTime;
 
-    public virtual void Exit()
-    {
-        player.anim.SetBool(animBoolName, false);
-    }
+            xInput = Input.GetAxisRaw("Horizontal");
+            yInput = Input.GetAxisRaw("Vertical");
+            
+            player.Anim.SetFloat(AnimatorHashes.YVelocity, rb.velocity.y);
+        }
 
-    public virtual void AnimationFinishTrigger()
-    {
-        triggerCalled = true;
+        public virtual void Exit()
+        {
+            player.Anim.SetBool(_animBoolName, false);
+        }
+
+        public void AnimationFinishTrigger()
+        {
+            triggerCalled = true;
+        }
     }
 }

@@ -1,134 +1,136 @@
+using Items_and_Inventory;
+using Managers;
 using UnityEngine;
 
-public class PlayerStats : CharacterStats
+namespace Stats
 {
-    private Player player;
-
-    protected override void Start()
+    public class PlayerStats : CharacterStats
     {
-        base.Start();
+        private const float High_Damage_Threshold = 0.3f;
+        private static Vector2 highDamageKnockback = new(10, 6);
+        
+        private Player.Player _player;
 
-        player = GetComponent<Player>();
-    }
-
-    public override void TakeDamage(int _damage)
-    {
-        base.TakeDamage(_damage);
-    }
-
-    public override void OnEvasion()
-    {
-        player.skill.dodge.CreateMirageOnDodge();
-    }
-
-    public void CloneDoDamage(CharacterStats _targetStats, float _multiplier)
-    {
-        if (_targetStats == null) return;
-
-        if (TargetCanAvoidAttack(_targetStats)) return;
-
-        int totalDamage = damage.GetValue() + strength.GetValue();
-
-        if (_multiplier > 0)
-            totalDamage = Mathf.RoundToInt(totalDamage * _multiplier);
-
-        if (CanCrit())
+        protected override void Start()
         {
-            totalDamage = CalculateCriticalDamage(totalDamage);
+            base.Start();
+
+            _player = GetComponent<Player.Player>();
         }
 
-        totalDamage = CheckTargetArmor(_targetStats, totalDamage);
-
-        _targetStats.TakeDamage(totalDamage);
-
-        DoMagicalDamage(_targetStats);
-    }
-
-    protected override void Die()
-    {
-        base.Die();
-
-        player.Die();
-
-        GameManager.instance.lostCurrencyAmount = PlayerManager.instance.currency;
-        PlayerManager.instance.currency = 0;
-
-        GetComponent<PlayerItemDrop>()?.GenerateDrop();
-    }
-
-    protected override void DeacreaseHealthBy(int _damage)
-    {
-        base.DeacreaseHealthBy(_damage);
-
-        if (_damage > GetMaxHealthValue() * 0.3f)
+        protected override void OnEvasion()
         {
-            player.SetupKnockbackPower(new Vector2(10, 6));
-            player.fx.ScreenShake(player.fx.shakeHighDamage);
-            AudioManager.instance.PlaySFX(32, null);
+            _player.Skill.Dodge.CreateMirageOnDodge();
         }
 
+        public void CloneDoDamage(CharacterStats targetStats, float multiplier)
+        {
+            if (targetStats == null) return;
 
-        ItemData_Equipment currentArmor = Inventory.instance.GetEquipment(EquipmentType.Armor);
+            if (TargetCanAvoidAttack(targetStats)) return;
 
-        if (currentArmor != null)
-            currentArmor.Effect(player.transform);
-    }
+            int totalDamage = damage.GetValue() + strength.GetValue();
 
-    public void AddStats(
-        int _strength, int _agility, int _intelligence, int _vitality,
-        int _damage, int _critChance, int _critPower,
-        int _maxHealth, int _armor, int _evasion, int _magicResistance,
-        int _fireDamage, int _iceDamage, int _lightingDamage)
-    {
-        // Major Stats
-        strength.AddModifier(_strength);
-        agility.AddModifier(_agility);
-        intelligence.AddModifier(_intelligence);
-        vitality.AddModifier(_vitality);
+            if (multiplier > 0)
+                totalDamage = Mathf.RoundToInt(totalDamage * multiplier);
 
-        // Offensive Stats
-        damage.AddModifier(_damage);
-        critChance.AddModifier(_critChance);
-        critPower.AddModifier(_critPower);
+            if (CanCrit())
+            {
+                totalDamage = CalculateCriticalDamage(totalDamage);
+            }
 
-        // Defensive Stats
-        maxHealth.AddModifier(_maxHealth);
-        armor.AddModifier(_armor);
-        evasion.AddModifier(_evasion);
-        magicResistance.AddModifier(_magicResistance);
+            totalDamage = CheckTargetArmor(targetStats, totalDamage);
 
-        // Magic Stats
-        fireDamage.AddModifier(_fireDamage);
-        iceDamage.AddModifier(_iceDamage);
-        lightingDamage.AddModifier(_lightingDamage);
-    }
+            targetStats.TakeDamage(totalDamage);
 
-    public void RemoveStats(
-        int _strength, int _agility, int _intelligence, int _vitality,
-        int _damage, int _critChance, int _critPower,
-        int _maxHealth, int _armor, int _evasion, int _magicResistance,
-        int _fireDamage, int _iceDamage, int _lightingDamage)
-    {
-        // Major Stats
-        strength.RemoveModifier(_strength);
-        agility.RemoveModifier(_agility);
-        intelligence.RemoveModifier(_intelligence);
-        vitality.RemoveModifier(_vitality);
+            DoMagicalDamage(targetStats);
+        }
 
-        // Offensive Stats
-        damage.RemoveModifier(_damage);
-        critChance.RemoveModifier(_critChance);
-        critPower.RemoveModifier(_critPower);
+        protected override void Die()
+        {
+            base.Die();
 
-        // Defensive Stats
-        maxHealth.RemoveModifier(_maxHealth);
-        armor.RemoveModifier(_armor);
-        evasion.RemoveModifier(_evasion);
-        magicResistance.RemoveModifier(_magicResistance);
+            _player.Die();
 
-        // Magic Stats
-        fireDamage.RemoveModifier(_fireDamage);
-        iceDamage.RemoveModifier(_iceDamage);
-        lightingDamage.RemoveModifier(_lightingDamage);
+            GameManager.Instance.SetLostCurrencyAmount(PlayerManager.Instance.GetCurrency());
+            PlayerManager.Instance.SetCurrency(0);
+
+            GetComponent<PlayerItemDrop>()?.GenerateDrop();
+        }
+
+        protected override void DecreaseHealthBy(int damage)
+        {
+            base.DecreaseHealthBy(damage);
+
+            if (damage > GetMaxHealthValue() * High_Damage_Threshold)
+            {
+                _player.SetupKnockbackPower(highDamageKnockback);
+                _player.Fx.ScreenShake(_player.Fx.GetShakeHighDamage());
+                AudioManager.Instance.PlaySFX(32, null);
+            }
+        
+            ItemData_Equipment currentArmor = Inventory.Instance.GetEquipment(EquipmentType.Armor);
+
+            if (currentArmor != null)
+                currentArmor.Effect(_player.transform);
+        }
+
+        public void AddStats(
+            int strength, int agility, int intelligence, int vitality,
+            int damage, int critChance, int critPower,
+            int maxHealth, int armor, int evasion, int magicResistance,
+            int fireDamage, int iceDamage, int lightingDamage)
+        {
+            // Major Stats
+            this.strength.AddModifier(strength);
+            this.agility.AddModifier(agility);
+            this.intelligence.AddModifier(intelligence);
+            this.vitality.AddModifier(vitality);
+
+            // Offensive Stats
+            this.damage.AddModifier(damage);
+            this.critChance.AddModifier(critChance);
+            this.critPower.AddModifier(critPower);
+
+            // Defensive Stats
+            this.maxHealth.AddModifier(maxHealth);
+            this.armor.AddModifier(armor);
+            this.evasion.AddModifier(evasion);
+            this.magicResistance.AddModifier(magicResistance);
+
+            // Magic Stats
+            this.fireDamage.AddModifier(fireDamage);
+            this.iceDamage.AddModifier(iceDamage);
+            this.lightingDamage.AddModifier(lightingDamage);
+        }
+
+        public void RemoveStats(
+            int strength, int agility, int intelligence, int vitality,
+            int damage, int critChance, int critPower,
+            int maxHealth, int armor, int evasion, int magicResistance,
+            int fireDamage, int iceDamage, int lightingDamage)
+        {
+            // Major Stats
+            this.strength.RemoveModifier(strength);
+            this.agility.RemoveModifier(agility);
+            this.intelligence.RemoveModifier(intelligence);
+            this.vitality.RemoveModifier(vitality);
+
+            // Offensive Stats
+            this.damage.RemoveModifier(damage);
+            this.critChance.RemoveModifier(critChance);
+            this.critPower.RemoveModifier(critPower);
+
+            // Defensive Stats
+            this.maxHealth.RemoveModifier(maxHealth);
+            this.armor.RemoveModifier(armor);
+            this.evasion.RemoveModifier(evasion);
+            this.magicResistance.RemoveModifier(magicResistance);
+
+            // Magic Stats
+            this.fireDamage.RemoveModifier(fireDamage);
+            this.iceDamage.RemoveModifier(iceDamage);
+            this.lightingDamage.RemoveModifier(lightingDamage);
+        }
     }
 }

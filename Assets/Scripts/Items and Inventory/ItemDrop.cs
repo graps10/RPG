@@ -1,47 +1,57 @@
 using System.Collections.Generic;
+using Managers;
 using UnityEngine;
 
-public class ItemDrop : MonoBehaviour
+namespace Items_and_Inventory
 {
-    [SerializeField] private int maxItemsToDrop;
-    [SerializeField] private ItemData[] itemPool;
-    private List<ItemData> possibleDrop = new List<ItemData>();
-    [SerializeField] private GameObject dropPrefab;
-
-    public virtual void GenerateDrop()
+    public class ItemDrop : MonoBehaviour
     {
-        if (itemPool.Length == 0)
-        {
-            // Debug.Log("Item Pool is empty. Enemy cannot drop items.");
-            return;
-        }
+        private static readonly Vector2 dropVelocityXRange = new(-5f, 5f);
+        private static readonly Vector2 dropVelocityYRange = new(15f, 20f);
+    
+        [SerializeField] private int maxItemsToDrop;
+        [SerializeField] private ItemData[] itemPool;
+        [SerializeField] private GameObject dropPrefab;
+    
+        private List<ItemData> _possibleDrop = new();
 
-        foreach (ItemData item in itemPool)
+        public virtual void GenerateDrop()
         {
-            if (item != null && Random.Range(0, 100) < item.dropChance)
-                possibleDrop.Add(item);
-        }
-
-        for (int i = 0; i < maxItemsToDrop; i++)
-        {
-            if (possibleDrop.Count > 0)
+            if (itemPool.Length == 0)
             {
-                int randomIndex = Random.Range(0, possibleDrop.Count);
-                ItemData itemToDrop = possibleDrop[randomIndex];
+                Debug.Log("Item Pool is empty. Enemy cannot drop items.");
+                return;
+            }
 
-                DropItem(itemToDrop);
-                possibleDrop.Remove(itemToDrop);
+            foreach (ItemData item in itemPool)
+            {
+                if (item != null && Random.Range(0, 100) < item.DropChance)
+                    _possibleDrop.Add(item);
+            }
+
+            for (int i = 0; i < maxItemsToDrop; i++)
+            {
+                if (_possibleDrop.Count > 0)
+                {
+                    int randomIndex = Random.Range(0, _possibleDrop.Count);
+                    ItemData itemToDrop = _possibleDrop[randomIndex];
+
+                    DropItem(itemToDrop);
+                    _possibleDrop.Remove(itemToDrop);
+                }
             }
         }
-    }
 
-    protected void DropItem(ItemData _itemData)
-    {
-        // GameObject newDrop = Instantiate(dropPrefab, transform.position, Quaternion.identity);
-        GameObject newDrop = PoolManager.instance.Spawn("drop", transform.position, Quaternion.identity, dropPrefab);
+        protected void DropItem(ItemData itemData)
+        {
+            GameObject newDrop = PoolManager.Instance.Spawn("drop", transform.position, Quaternion.identity, dropPrefab);
 
-        Vector2 randomVelocity = new Vector2(Random.Range(-5, 5), Random.Range(15, 20));
+            Vector2 randomVelocity = new Vector2(
+                Random.Range(dropVelocityXRange.x, dropVelocityXRange.y),
+                Random.Range(dropVelocityYRange.x, dropVelocityYRange.y)
+            );
 
-        newDrop.GetComponent<ItemObject>().SetupItem(_itemData, randomVelocity);
+            newDrop.GetComponent<ItemObject>().SetupItem(itemData, randomVelocity);
+        }
     }
 }

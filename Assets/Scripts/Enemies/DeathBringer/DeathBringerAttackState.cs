@@ -1,38 +1,29 @@
-using UnityEngine;
+using Enemies.Base;
+using Enemies.Base.States;
 
-public class DeathBringerAttackState : EnemyState
+namespace Enemies.DeathBringer
 {
-    private Enemy_DeathBringer enemy;
-    public DeathBringerAttackState(Enemy _enemyBase, EnemyStateMachine _stateMachine, string _animBoolName, Enemy_DeathBringer _enemy) : base(_enemyBase, _stateMachine, _animBoolName)
+    public class DeathBringerAttackState : EnemyAttackState<EnemyDeathBringer>
     {
-        this.enemy = _enemy;
-    }
+        public DeathBringerAttackState(EnemyDeathBringer enemy, EnemyStateMachine stateMachine, int animBoolName) : 
+            base(enemy, stateMachine, animBoolName) { }
 
-    public override void Enter()
-    {
-        base.Enter();
-
-        enemy.chanceToTeleport += 5;
-    }
-    public override void Update()
-    {
-        base.Update();
-
-        enemy.SetZeroVelocity();
-
-        if (triggerCalled)
+        public override void Enter()
         {
-            if (enemy.CanTeleport())
-                stateMachine.ChangeState(enemy.teleportState);
-            else
-                stateMachine.ChangeState(enemy.battleState);
+            base.Enter();
+
+            enemy.IncreaseChangeToTeleport(5);
         }
-    }
+        
+        public override void Update()
+        {
+            base.Update();
 
-    public override void Exit()
-    {
-        base.Exit();
+            enemy.SetZeroVelocity();
 
-        enemy.lastTimeAttacked = Time.time;
+            if (!triggerCalled) return;
+
+            stateMachine.ChangeState(enemy.CanTeleport() ? enemy.TeleportState : enemy.BattleState);
+        }
     }
 }

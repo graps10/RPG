@@ -3988,8 +3988,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mixer: {fileID: 24100000, guid: bfb0915eb8ff6064a9193f3b77fc9753, type: 2}
-  multiplier: 25
-  sfxMinDistance: 10
   sfx:
   - {fileID: 4410501054921982676}
   - {fileID: 2089298632128767305}
@@ -4031,7 +4029,9 @@ MonoBehaviour:
   - {fileID: 3627729486337579744}
   - {fileID: 6850802340034916090}
   - {fileID: 1767836924416615061}
-  playBGM: 1
+  sfxMinDistance: 10
+  volumeScaleFactor: 25
+  shouldPlayBGM: 1
 --- !u!1 &7216774499969936510
 GameObject:
   m_ObjectHideFlags: 0

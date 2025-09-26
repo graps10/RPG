@@ -1,29 +1,11 @@
-public class ShadyMoveState : ShadyGroundedState
+using Enemies.Base;
+using Enemies.Base.States;
+
+namespace Enemies.Shady
 {
-    public ShadyMoveState(Enemy _enemyBase, EnemyStateMachine _stateMachine, string _animBoolName, Enemy_Shady _enemy) : base(_enemyBase, _stateMachine, _animBoolName, _enemy)
+    public class ShadyMoveState : EnemyMoveState<EnemyShady>
     {
-    }
-
-    public override void Enter()
-    {
-        base.Enter();
-    }
-
-    public override void Update()
-    {
-        base.Update();
-
-        enemy.SetVelocity(enemy.moveSpeed * enemy.facingDir, rb.velocity.y);
-
-        if (enemy.IsWallDetected() || !enemy.IsGroundDetected())
-        {
-            enemy.Flip();
-            stateMachine.ChangeState(enemy.idleState);
-        }
-    }
-
-    public override void Exit()
-    {
-        base.Exit();
+        public ShadyMoveState(EnemyShady enemy, EnemyStateMachine stateMachine, int animBoolName) : 
+            base(enemy, stateMachine, animBoolName) { }
     }
 }

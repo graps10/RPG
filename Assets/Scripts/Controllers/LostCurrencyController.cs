@@ -1,15 +1,21 @@
+using Managers;
 using UnityEngine;
 
-public class LostCurrencyController : MonoBehaviour
+namespace Controllers
 {
-    public int currency;
-
-    void OnTriggerEnter2D(Collider2D collision)
+    public class LostCurrencyController : MonoBehaviour
     {
-        if(collision.GetComponent<Player>() != null)
+        private int _currency;
+        
+        public void SetCurrency(int currency) => _currency = currency;
+
+        private void OnTriggerEnter2D(Collider2D collision)
         {
-            PlayerManager.instance.currency += currency;
-            Destroy(this.gameObject);
-        }   
+            if(collision.GetComponent<Player.Player>() != null)
+            {
+                PlayerManager.Instance.AddCurrency(_currency);
+                Destroy(gameObject);
+            }   
+        }
     }
 }

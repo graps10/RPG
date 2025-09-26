@@ -1,37 +1,38 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[System.Serializable]
-public class Stat 
+namespace Stats
 {
-    [SerializeField] private int baseValue;
-
-    public List<int> modifiers;
-
-    public int GetValue()
+    [System.Serializable]
+    public class Stat 
     {
-        int finalValue = baseValue;
+        [SerializeField] private int baseValue;
 
-        foreach(int modifier in modifiers)
+        [SerializeField] private List<int> modifiers = new();
+
+        public int GetValue()
         {
-            finalValue += modifier;
+            int finalValue = baseValue;
+
+            foreach(int modifier in modifiers)
+                finalValue += modifier;
+
+            return finalValue;
         }
 
-        return finalValue;
-    }
+        public void SetDefaultValue(int value)
+        {
+            baseValue = value;
+        }
 
-    public void SetDefaultValue(int _value)
-    {
-        baseValue = _value;
-    }
-
-    public void AddModifier(int _modifier)
-    {
-        modifiers.Add(_modifier);
-    }
+        public void AddModifier(int modifier)
+        {
+            modifiers.Add(modifier);
+        }
     
-    public void RemoveModifier(int _modifier)
-    {
-        modifiers.Remove(_modifier);
+        public void RemoveModifier(int modifier)
+        {
+            modifiers.Remove(modifier);
+        }
     }
 }

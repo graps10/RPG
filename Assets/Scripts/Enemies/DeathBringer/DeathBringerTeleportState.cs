@@ -1,37 +1,33 @@
-public class DeathBringerTeleportState : EnemyState
+using Enemies.Base;
+
+namespace Enemies.DeathBringer
 {
-    private Enemy_DeathBringer enemy;
-
-    public DeathBringerTeleportState(Enemy _enemyBase, EnemyStateMachine _stateMachine, string _animBoolName, Enemy_DeathBringer _enemy) : base(_enemyBase, _stateMachine, _animBoolName)
+    public class DeathBringerTeleportState : EnemyState<EnemyDeathBringer>
     {
-        this.enemy = _enemy;
-    }
+        public DeathBringerTeleportState(EnemyDeathBringer enemy, EnemyStateMachine stateMachine, int animBoolName) : 
+            base(enemy, stateMachine, animBoolName) { }
 
-    public override void Enter()
-    {
-        base.Enter();
-
-        enemy.stats.MakeInvincible(true);
-    }
-
-    public override void Update()
-    {
-        base.Update();
-
-        if (triggerCalled)
+        public override void Enter()
         {
-            if (enemy.CanDoSpellCast())
-                stateMachine.ChangeState(enemy.spellCastState);
-            else
-                stateMachine.ChangeState(enemy.battleState);
+            base.Enter();
+
+            enemy.Stats.MakeInvincible(true);
         }
 
-    }
+        public override void Update()
+        {
+            base.Update();
 
-    public override void Exit()
-    {
-        base.Exit();
+            if (!triggerCalled) return;
 
-        enemy.stats.MakeInvincible(false);
+            stateMachine.ChangeState(enemy.CanCastSpell() ? enemy.SpellCastState : enemy.BattleState);
+        }
+
+        public override void Exit()
+        {
+            base.Exit();
+
+            enemy.Stats.MakeInvincible(false);
+        }
     }
 }

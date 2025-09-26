@@ -345,7 +345,7 @@ MonoBehaviour:
     baseValue: 0
     modifiers: 
   damage:
-    baseValue: 250
+    baseValue: 5
     modifiers: 
   critChance:
     baseValue: 0
@@ -376,11 +376,8 @@ MonoBehaviour:
     modifiers: 
   ailmentsDuration: 4
   shockStrikePrefab: {fileID: 8912282936253123872, guid: 4d37f0b7dda799247959915ab3f3ee67, type: 3}
-  soulsDropAmount:
-    baseValue: 0
-    modifiers: 
   level: 1
-  percantageModifier: 0.4
+  percentageModifier: 0.4
 --- !u!114 &8062760186566866088
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -451,6 +448,8 @@ MonoBehaviour:
   whatIsPlayer:
     serializedVersion: 2
     m_Bits: 64
+  playerDetectionRange: 50
+  wallDetectionRange: 50
   stunDuration: 1
   stunDirection: {x: 10, y: 12}
   counterImage: {fileID: 9131353766515080525}
@@ -460,9 +459,7 @@ MonoBehaviour:
   agroDistance: 5
   attackDistance: 0.5
   attackCooldown: 0
-  minAttackCooldown: 1
-  maxAttackCooldown: 2
-  lastTimeAttacked: 0
+  attackCooldownRange: {x: 1, y: 2}
   battleStateMoveSpeed: 6
   explosivePrefab: {fileID: 2283389122960958411, guid: 2ed38bce3a8dd914486cae0d40a78ca1, type: 3}
   growSpeed: 15

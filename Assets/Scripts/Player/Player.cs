@@ -1,181 +1,212 @@
 using System.Collections;
+using Components.FX;
+using Core;
+using Items_and_Inventory;
+using Player.States;
+using Skills;
 using UnityEngine;
 
-public class Player : Entity
+namespace Player
 {
-    [Header("Attack Details")]
-    public Vector2[] attackMovement;
-    public float counterAttackDuration = 0.2f;
-    public bool isBusy { get; private set; }
-
-    [Header("Move Info")]
-    public float moveSpeed = 8f;
-    public float jumpForce;
-    public float swordReturnImpact;
-    private float defaultMoveSpeed;
-    private float defaultJumpForce;
-
-    [Header("Dash Info")]
-    public float dashSpeed;
-    public float dashDuration;
-    private float defaultDashSpeed;
-    public float dashDir { get; private set; }
-
-    public SkillManager skill { get; private set; }
-    public GameObject sword { get; private set; }
-
-    public PlayerFX fx { get; private set; }
-
-    #region States
-    public PlayerStateMachine stateMachine { get; private set; }
-
-    public PlayerIdleState idleState { get; private set; }
-    public PlayerMoveState moveState { get; private set; }
-    public PlayerJumpState jumpState { get; private set; }
-    public PlayerAirState airState { get; private set; }
-    public PlayerDashState dashState { get; private set; }
-    public PlayerWallSlideState wallSlide { get; private set; }
-    public PlayerWallJumpState wallJump { get; private set; }
-
-    public PlayerPrimaryAttackState primaryAttack { get; private set; }
-    public PlayerCounterAttackState counterAttack { get; private set; }
-
-    public PlayerAimSwordState aimSword { get; private set; }
-    public PlayerCatchSwordState catchSword { get; private set; }
-    public PlayerBlackHoleState blackHoleState { get; private set; }
-
-    public PlayerDeadState deadState { get; private set; }
-    #endregion
-
-    protected override void Awake()
+    public class Player : Entity.Entity
     {
-        base.Awake();
+        [Header("Attack Details")]
+        [SerializeField] private Vector2[] attackMovement;
+        [SerializeField] private float counterAttackDuration = 0.2f;
+        
+        [Header("Move Info")]
+        [SerializeField] private float moveSpeed = 8f;
+        [SerializeField] private float jumpForce;
+        [SerializeField] private float swordReturnImpact;
+        
+        [Header("Dash Info")]
+        [SerializeField] private float dashSpeed;
+        [SerializeField] private float dashDuration;
+        
+        #region States
+    
+        public PlayerStateMachine StateMachine { get; private set; }
 
-        stateMachine = new PlayerStateMachine();
+        public PlayerIdleState IdleState { get; private set; }
+        public PlayerMoveState MoveState { get; private set; }
+        public PlayerJumpState JumpState { get; private set; }
+        public PlayerAirState AirState { get; private set; }
+        public PlayerDashState DashState { get; private set; }
+    
+        public PlayerWallSlideState WallSlide { get; private set; }
+        public PlayerWallJumpState WallJump { get; private set; }
 
-        idleState = new PlayerIdleState(this, stateMachine, "Idle");
-        moveState = new PlayerMoveState(this, stateMachine, "Move");
-        jumpState = new PlayerJumpState(this, stateMachine, "Jump");
-        airState = new PlayerAirState(this, stateMachine, "Jump");
-        dashState = new PlayerDashState(this, stateMachine, "Dash");
-        wallSlide = new PlayerWallSlideState(this, stateMachine, "WallSlide");
-        wallJump = new PlayerWallJumpState(this, stateMachine, "Jump");
+        public PlayerPrimaryAttackState PrimaryAttack { get; private set; }
+        public PlayerCounterAttackState CounterAttack { get; private set; }
 
-        primaryAttack = new PlayerPrimaryAttackState(this, stateMachine, "Attack");
-        counterAttack = new PlayerCounterAttackState(this, stateMachine, "CounterAttack");
+        public PlayerAimSwordState AimSword { get; private set; }
+        public PlayerCatchSwordState CatchSword { get; private set; }
+        public PlayerBlackHoleState BlackHoleState { get; private set; }
 
-        aimSword = new PlayerAimSwordState(this, stateMachine, "AimSword");
-        catchSword = new PlayerCatchSwordState(this, stateMachine, "CatchSword");
-        blackHoleState = new PlayerBlackHoleState(this, stateMachine, "Jump");
+        public PlayerDeadState DeadState { get; private set; }
+    
+        #endregion
+        
+        public SkillManager Skill { get; private set; }
+        public GameObject Sword { get; private set; }
 
-        deadState = new PlayerDeadState(this, stateMachine, "Die");
-    }
+        public PlayerFX Fx { get; private set; }
+        
+        private bool _isBusy;
+        
+        private float _defaultDashSpeed;
+        private float _defaultMoveSpeed;
+        private float _defaultJumpForce;
+        
+        private float _dashDir;
 
-    protected override void Start()
-    {
-        base.Start();
-
-        fx = GetComponent<PlayerFX>();
-
-        skill = SkillManager.instance;
-
-        stateMachine.Initialize(idleState);
-
-        defaultMoveSpeed = moveSpeed;
-        defaultJumpForce = jumpForce;
-        defaultDashSpeed = dashSpeed;
-    }
-
-    protected override void Update()
-    {
-        if (Time.timeScale == 0) return;
-
-        base.Update();
-
-        stateMachine.currentState.Update();
-
-        CheckForDashInput();
-
-        if (Input.GetKeyDown(KeyCode.F) && skill.crystal.crystalUnlocked)
-            skill.crystal.CanUseSkill();
-
-        if (Input.GetKeyDown(KeyCode.E))
-            Inventory.instance.UseFlask();
-    }
-
-    public override void Die()
-    {
-        base.Die();
-
-        stateMachine.ChangeState(deadState);
-    }
-
-    public override void SlowEntityBy(float _slowPercantage, float _slowDuration)
-    {
-        moveSpeed = moveSpeed * (1 - _slowPercantage);
-        jumpForce = jumpForce * (1 - _slowPercantage);
-        dashSpeed = dashSpeed * (1 - _slowPercantage);
-        anim.speed = anim.speed * (1 - _slowPercantage);
-
-        Invoke("ReturnDefaultSpeed", _slowDuration);
-    }
-
-    protected override void ReturnDefaultSpeed()
-    {
-        base.ReturnDefaultSpeed();
-
-        moveSpeed = defaultMoveSpeed;
-        jumpForce = defaultJumpForce;
-        dashSpeed = defaultDashSpeed;
-    }
-
-    public override void SetupKnockbackDir(Transform _damageDirection)
-    {
-        knockbackPower = new Vector2(0, 0);
-    }
-
-    public void AssignNewSword(GameObject _newSword)
-    {
-        sword = _newSword;
-    }
-    public void CatchTheSword()
-    {
-        stateMachine.ChangeState(catchSword);
-        Destroy(sword);
-    }
-
-    public IEnumerator BusyFor(float seconds)
-    {
-        isBusy = true;
-
-        yield return new WaitForSeconds(seconds);
-
-        isBusy = false;
-    }
-
-    public void AnimationTrigger() => stateMachine.currentState.AnimationFinishTrigger();
-
-    private void CheckForDashInput()
-    {
-        if (IsWallDetected())
-            return;
-
-        if (skill.dash.dashUnlocked == false)
-            return;
-
-        if (stateMachine.currentState == blackHoleState || stateMachine.currentState == deadState)
-            return;
-
-
-        if (Input.GetKeyDown(KeyCode.LeftShift) && SkillManager.instance.dash.CanUseSkill())
+        protected override void Awake()
         {
+            base.Awake();
 
-            dashDir = Input.GetAxisRaw("Horizontal");
+            StateMachine = new PlayerStateMachine();
 
-            if (dashDir == 0)
-                dashDir = facingDir;
+            IdleState = new PlayerIdleState(this, StateMachine, AnimatorHashes.PlayerIdleState);
+            MoveState = new PlayerMoveState(this, StateMachine, AnimatorHashes.PlayerMoveState);
+            JumpState = new PlayerJumpState(this, StateMachine, AnimatorHashes.PlayerJumpState);
+            AirState = new PlayerAirState(this, StateMachine, AnimatorHashes.PlayerAirState);
+            DashState = new PlayerDashState(this, StateMachine, AnimatorHashes.PlayerDashState);
+            
+            WallSlide = new PlayerWallSlideState(this, StateMachine, AnimatorHashes.PlayerWallSlideState);
+            WallJump = new PlayerWallJumpState(this, StateMachine, AnimatorHashes.PlayerWallJumpState);
 
-            stateMachine.ChangeState(dashState);
+            PrimaryAttack = new PlayerPrimaryAttackState(this, StateMachine, AnimatorHashes.PlayerPrimaryAttackState);
+            CounterAttack = new PlayerCounterAttackState(this, StateMachine, AnimatorHashes.PlayerCounterAttackState);
+
+            AimSword = new PlayerAimSwordState(this, StateMachine, AnimatorHashes.PlayerAimSwordState);
+            CatchSword = new PlayerCatchSwordState(this, StateMachine, AnimatorHashes.PlayerCatchSwordState);
+            BlackHoleState = new PlayerBlackHoleState(this, StateMachine, AnimatorHashes.PlayerBlackHoleState);
+
+            DeadState = new PlayerDeadState(this, StateMachine, AnimatorHashes.PlayerDeadState);
         }
+
+        protected override void Start()
+        {
+            base.Start();
+
+            Fx = GetComponent<PlayerFX>();
+
+            Skill = SkillManager.Instance;
+
+            StateMachine.Initialize(IdleState);
+
+            _defaultMoveSpeed = moveSpeed;
+            _defaultJumpForce = jumpForce;
+            _defaultDashSpeed = dashSpeed;
+        }
+
+        protected override void Update()
+        {
+            if (Time.timeScale == 0) 
+                return;
+
+            base.Update();
+
+            StateMachine.CurrentState.Update();
+
+            CheckForDashInput();
+
+            if (Input.GetKeyDown(KeyCode.F) && Skill.Crystal.IsCrystalUnlocked())
+                Skill.Crystal.CanUseSkill();
+
+            if (Input.GetKeyDown(KeyCode.E))
+                Inventory.Instance.UseFlask();
+        }
+
+        public override void Die()
+        {
+            base.Die();
+
+            StateMachine.ChangeState(DeadState);
+        }
+
+        public override void SlowEntityBy(float slowPercantage, float slowDuration)
+        {
+            moveSpeed *= (1 - slowPercantage);
+            jumpForce *= (1 - slowPercantage);
+            dashSpeed *= (1 - slowPercantage);
+            Anim.speed *= (1 - slowPercantage);
+
+            Invoke(nameof(ReturnDefaultSpeed), slowDuration);
+        }
+
+        protected override void ReturnDefaultSpeed()
+        {
+            base.ReturnDefaultSpeed();
+
+            moveSpeed = _defaultMoveSpeed;
+            jumpForce = _defaultJumpForce;
+            dashSpeed = _defaultDashSpeed;
+        }
+
+        public override void SetupKnockbackDir(Transform _damageDirection)
+        {
+            knockbackPower = Vector2.zero;
+        }
+
+        public void AssignNewSword(GameObject newSword)
+        {
+            Sword = newSword;
+        }
+        
+        public void CatchTheSword()
+        {
+            StateMachine.ChangeState(CatchSword);
+            Destroy(Sword.gameObject);
+            Sword = null;
+        }
+
+        public IEnumerator BusyFor(float seconds)
+        {
+            _isBusy = true;
+            yield return new WaitForSeconds(seconds);
+            _isBusy = false;
+        }
+
+        public void AnimationTrigger() => StateMachine.CurrentState.AnimationFinishTrigger();
+
+        private void CheckForDashInput()
+        {
+            if (IsWallDetected())
+                return;
+
+            if (Skill.Dash.IsDashUnlocked() == false)
+                return;
+
+            if (StateMachine.CurrentState == BlackHoleState || StateMachine.CurrentState == DeadState)
+                return;
+            
+            if (!Input.GetKeyDown(KeyCode.LeftShift) || !SkillManager.Instance.Dash.CanUseSkill()) 
+                return;
+            
+            _dashDir = Input.GetAxisRaw("Horizontal");
+
+            if (_dashDir == 0)
+                _dashDir = FacingDir;
+
+            StateMachine.ChangeState(DashState);
+        }
+
+        #region Public Getters
+
+        public bool IsBusy() => _isBusy;
+        public Vector2[] GetAttackMovement() => attackMovement;
+        public float GetCounterAttackDuration() => counterAttackDuration;
+        
+        public float GetMoveSpeed() => moveSpeed;
+        public float GetJumpForce() => jumpForce;
+        
+        public float GetSwordReturnImpact() => swordReturnImpact;
+        
+        public float GetDashSpeed() => dashSpeed;
+        public float GetDashDuration() => dashDuration;
+        public float GetDishDirection() => _dashDir;
+
+        #endregion
     }
 }

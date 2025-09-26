@@ -1,11 +1,22 @@
 using UnityEngine;
 
-public class ItemEffect : ScriptableObject
+namespace Items_and_Inventory.Effects
 {
-    [TextArea]
-    public string effectDescription;
-    public virtual void ExucuteEffect(Transform _enemyPosition)
+    public class ItemEffect : ScriptableObject
     {
-        Debug.Log("Effect executed!");
+        [TextArea]
+        [SerializeField] private string effectDescription;
+        
+        public virtual void ExecuteEffect()
+        {
+            Debug.Log("Effect executed!");
+        }
+        
+        public virtual void ExecuteEffect(Transform enemyPosition)
+        {
+            Debug.Log("Effect executed!");
+        }
+        
+        public string GetEffectDescription() => effectDescription;
     }
 }

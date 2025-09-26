@@ -897,7 +897,7 @@ MonoBehaviour:
     baseValue: 0
     modifiers: 
   damage:
-    baseValue: 50
+    baseValue: 1
     modifiers: 
   critChance:
     baseValue: 0
@@ -928,11 +928,8 @@ MonoBehaviour:
     modifiers: 
   ailmentsDuration: 4
   shockStrikePrefab: {fileID: 8912282936253123872, guid: 4d37f0b7dda799247959915ab3f3ee67, type: 3}
-  soulsDropAmount:
-    baseValue: 0
-    modifiers: 
   level: 1
-  percantageModifier: 0.4
+  percentageModifier: 0.4
 --- !u!114 &2901799726314917220
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1003,6 +1000,8 @@ MonoBehaviour:
   whatIsPlayer:
     serializedVersion: 2
     m_Bits: 64
+  playerDetectionRange: 50
+  wallDetectionRange: 50
   stunDuration: 1
   stunDirection: {x: 10, y: 12}
   counterImage: {fileID: 1807276212166490405}
@@ -1012,14 +1011,13 @@ MonoBehaviour:
   agroDistance: 2
   attackDistance: 6.5
   attackCooldown: 0
-  minAttackCooldown: 1
-  maxAttackCooldown: 2
-  lastTimeAttacked: 0
-  bossFightBegun: 0
-  arena: {fileID: 7260706497283614295}
+  attackCooldownRange: {x: 1, y: 2}
+  teleportArea: {fileID: 7260706497283614295}
   surroundingCheckSize: {x: 3, y: 3}
   chanceToTeleport: 25
   defaultChanceToTeleport: 25
+  teleportGroundCheckDistance: 100
+  teleportPositionPadding: 3
   spellPrefab: {fileID: 3428880875411675170, guid: 8fbd4d45312589e40885ac4cc83c9296, type: 3}
   spellCastOffset: {x: 3, y: 3}
   spellStateCooldown: 15
