@@ -65,44 +65,34 @@ namespace Skills.Skills
 
         private void OnEnable()
         {
-            swordUnlockButton.GetComponent<Button>().onClick.AddListener(
-                () => TryUnlock(swordUnlockButton, ref _swordUnlocked, () => swordType = SwordType.Regular));
+            swordUnlockButton.OnUnlocked += UnlockRegular;
+            pierceUnlockButton.OnUnlocked += UnlockPierce;
+            bounceUnlockButton.OnUnlocked += UnlockBounce;;
+            spinUnlockButton.OnUnlocked += UnlockSpin;
             
-            bounceUnlockButton.GetComponent<Button>().onClick.AddListener(
-                () => TryUnlock(pierceUnlockButton, ref _swordUnlocked, () => swordType = SwordType.Pierce));
-            
-            pierceUnlockButton.GetComponent<Button>().onClick.AddListener(
-                (() =>  TryUnlock(bounceUnlockButton, ref _swordUnlocked, () => swordType = SwordType.Bounce)));
-            
-            spinUnlockButton.GetComponent<Button>().onClick.AddListener(
-                () =>  TryUnlock(spinUnlockButton, ref _swordUnlocked, () => swordType = SwordType.Spin));
-            
-            timeStopUnlockButton.GetComponent<Button>().onClick.AddListener(
-                () => TryUnlock(timeStopUnlockButton, ref _timeStopUnlocked));
-            
-            vulnerableUnlockButton.GetComponent<Button>().onClick.AddListener(
-                () => TryUnlock(vulnerableUnlockButton, ref _vulnerableUnlocked));
+            timeStopUnlockButton.OnUnlocked += UnlockTimeStop;
+            vulnerableUnlockButton.OnUnlocked += UnlockVulnerable;
         }
 
         private void OnDisable()
         {
             if(swordUnlockButton != null)
-                swordUnlockButton.GetComponent<Button>().onClick.RemoveAllListeners();
-            
-            if(bounceUnlockButton != null)
-                bounceUnlockButton.GetComponent<Button>().onClick.RemoveAllListeners();
+                swordUnlockButton.OnUnlocked -= UnlockRegular;
             
             if(pierceUnlockButton != null)
-                pierceUnlockButton.GetComponent<Button>().onClick.RemoveAllListeners();
+                pierceUnlockButton.OnUnlocked -= UnlockPierce;
+            
+            if(bounceUnlockButton != null)
+                bounceUnlockButton.OnUnlocked -= UnlockBounce;;
             
             if(spinUnlockButton != null)
-                spinUnlockButton.GetComponent<Button>().onClick.RemoveAllListeners();
+                spinUnlockButton.OnUnlocked -= UnlockSpin;
             
             if(timeStopUnlockButton != null)
-                timeStopUnlockButton.GetComponent<Button>().onClick.RemoveAllListeners();
+                timeStopUnlockButton.OnUnlocked -= UnlockTimeStop;
             
             if(vulnerableUnlockButton != null)
-                vulnerableUnlockButton.GetComponent<Button>().onClick.RemoveAllListeners();
+                vulnerableUnlockButton.OnUnlocked -= UnlockVulnerable;
         }
         
         protected override void Start()
@@ -174,18 +164,45 @@ namespace Skills.Skills
 
         protected override void CheckUnlock()
         {
-            TryUnlock(swordUnlockButton, ref _swordUnlocked, () => swordType = SwordType.Regular);
-            TryUnlock(pierceUnlockButton, ref _swordUnlocked, () => swordType = SwordType.Pierce);
-            TryUnlock(bounceUnlockButton, ref _swordUnlocked, () => swordType = SwordType.Bounce);
-            TryUnlock(spinUnlockButton, ref _swordUnlocked, () => swordType = SwordType.Spin);
+            UnlockRegular();
+            UnlockPierce();
+            UnlockBounce();
+            UnlockSpin();
             
-            TryUnlock(timeStopUnlockButton, ref _timeStopUnlocked);
-            TryUnlock(vulnerableUnlockButton, ref _vulnerableUnlocked);
+            UnlockTimeStop();
+            UnlockVulnerable();
         }
+
+        #region Unlock
 
         public bool IsSwordUnlocked() => _swordUnlocked;
         public bool IsTimeStopUnlocked() => _timeStopUnlocked;
         public bool IsVulnerableUnlocked() => _vulnerableUnlocked;
+        
+        private void UnlockRegular() 
+            => TryUnlock(swordUnlockButton, ref _swordUnlocked, 
+                () => swordType = SwordType.Regular);
+        
+        private void UnlockPierce() 
+            => TryUnlock(pierceUnlockButton, ref _swordUnlocked, 
+                () => swordType = SwordType.Pierce);
+        
+        private void UnlockBounce() 
+            => TryUnlock(bounceUnlockButton, ref _swordUnlocked, 
+                () => swordType = SwordType.Bounce);
+        
+        private void UnlockSpin() 
+            => TryUnlock(spinUnlockButton, ref _swordUnlocked, 
+                () => swordType = SwordType.Spin);
+        
+        private void UnlockTimeStop() 
+            => TryUnlock(timeStopUnlockButton, ref _timeStopUnlocked);
+        
+        private void UnlockVulnerable() 
+            => TryUnlock(vulnerableUnlockButton, ref _vulnerableUnlocked);
+
+        #endregion
+        
         
         #region Aim Region
 

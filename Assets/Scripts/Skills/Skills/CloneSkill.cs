@@ -41,47 +41,52 @@ namespace Skills.Skills
 
         private void OnEnable()
         {
-            cloneAttackUnlockButton.GetComponent<Button>().onClick.AddListener(
-                () =>  TryUnlock(cloneAttackUnlockButton, ref canAttack, 
-                    () =>  attackMultiplier = cloneAttackMultiplier));
-            
-            aggressiveCloneUnlockButton.GetComponent<Button>().onClick.AddListener(
-                () => TryUnlock(aggressiveCloneUnlockButton, ref _canApplyOnHitEffect, 
-                    () => attackMultiplier = aggressiveCloneAttackMultiplier));
-            
-            multipleUnlockButton.GetComponent<Button>().onClick.AddListener(
-                () => TryUnlock(multipleUnlockButton, ref canDuplicateClone, 
-                    () =>  attackMultiplier = multiCloneAttackMultiplier));
-            
-            crystalInsteadUnlockButton.GetComponent<Button>().onClick.AddListener(
-                () =>  TryUnlock(crystalInsteadUnlockButton, ref _crystalInsteadOfClone));
+            cloneAttackUnlockButton.OnUnlocked += UnlockCloneCanAttack;
+            aggressiveCloneUnlockButton.OnUnlocked += UnlockAggressiveClone;
+            multipleUnlockButton.OnUnlocked += UnlockMultipleClone;
+            crystalInsteadUnlockButton.OnUnlocked += UnlockCrystalInstead;
         }
 
         private void OnDisable()
         {
             if(cloneAttackUnlockButton != null)
-                cloneAttackUnlockButton.GetComponent<Button>().onClick.RemoveAllListeners();
+                cloneAttackUnlockButton.OnUnlocked -= UnlockCloneCanAttack;
             
             if(aggressiveCloneUnlockButton != null)
-                aggressiveCloneUnlockButton.GetComponent<Button>().onClick.RemoveAllListeners();
+                aggressiveCloneUnlockButton.OnUnlocked -= UnlockAggressiveClone;
             
             if(multipleUnlockButton != null)
-                multipleUnlockButton.GetComponent<Button>().onClick.RemoveAllListeners();
+                multipleUnlockButton.OnUnlocked -= UnlockMultipleClone;
             
             if(crystalInsteadUnlockButton != null)
-                crystalInsteadUnlockButton.GetComponent<Button>().onClick.RemoveAllListeners();
+                crystalInsteadUnlockButton.OnUnlocked -= UnlockCrystalInstead;
         }
 
         protected override void CheckUnlock()
         { 
-            TryUnlock(cloneAttackUnlockButton, ref canAttack, () =>  attackMultiplier = cloneAttackMultiplier);
-            TryUnlock(aggressiveCloneUnlockButton, ref _canApplyOnHitEffect, () => attackMultiplier = aggressiveCloneAttackMultiplier);
-            TryUnlock(multipleUnlockButton, ref canDuplicateClone, () =>  attackMultiplier = multiCloneAttackMultiplier);
-            TryUnlock(crystalInsteadUnlockButton, ref _crystalInsteadOfClone);
+            UnlockCloneCanAttack();
+            UnlockAggressiveClone();
+            UnlockMultipleClone();
+            UnlockCrystalInstead();
         }
 
-        public bool CanApplyOnHitEffect() => _canApplyOnHitEffect;
-        public bool IsCrystalInsteadOfClone() => _crystalInsteadOfClone;
+        # region Unlock
+        private void UnlockCloneCanAttack() 
+            => TryUnlock(cloneAttackUnlockButton, ref canAttack, 
+                () =>  attackMultiplier = cloneAttackMultiplier);
+        
+        private void UnlockAggressiveClone() 
+            => TryUnlock(aggressiveCloneUnlockButton, ref _canApplyOnHitEffect, 
+                () => attackMultiplier = aggressiveCloneAttackMultiplier);
+        
+        private void UnlockMultipleClone() 
+            => TryUnlock(multipleUnlockButton, ref canDuplicateClone, 
+                () =>  attackMultiplier = multiCloneAttackMultiplier);
+        
+        private void UnlockCrystalInstead()
+            => TryUnlock(crystalInsteadUnlockButton, ref _crystalInsteadOfClone);
+        
+        #endregion
         
         public void CreateClone(Transform clonePosition, Vector3 offset)
         {
@@ -108,5 +113,8 @@ namespace Skills.Skills
             yield return new WaitForSeconds(Clone_Delay);
             CreateClone(transform, offset);
         }
+        
+        public bool CanApplyOnHitEffect() => _canApplyOnHitEffect;
+        public bool IsCrystalInsteadOfClone() => _crystalInsteadOfClone;
     }
 }

@@ -23,37 +23,45 @@ namespace Skills.Skills
 
         private void OnEnable()
         {
-            parryUnlockButton.GetComponent<Button>().onClick.AddListener(
-                () => TryUnlock(parryUnlockButton, ref _parryUnlocked));
-            
-            restoreUnlockButton.GetComponent<Button>().onClick.AddListener(
-                () =>  TryUnlock(restoreUnlockButton, ref _restoreUnlocked));
-            
-            parryWithMirageUnlockButton.GetComponent<Button>().onClick.AddListener(
-                () => TryUnlock(parryWithMirageUnlockButton, ref _parryWithMirageUnlocked));
+            parryUnlockButton.OnUnlocked += UnlockParry;
+            restoreUnlockButton.OnUnlocked += UnlockRestore;
+            parryWithMirageUnlockButton.OnUnlocked += UnlockParryWithMirage;
         }
 
         private void OnDisable()
         {
             if(parryUnlockButton != null)
-                parryUnlockButton.GetComponent<Button>().onClick.RemoveAllListeners();
+                parryUnlockButton.OnUnlocked -= UnlockParry;
             
             if(restoreUnlockButton != null)
-                restoreUnlockButton.GetComponent<Button>().onClick.RemoveAllListeners();
+                restoreUnlockButton.OnUnlocked -= UnlockRestore;
             
             if(parryWithMirageUnlockButton != null)
-                parryWithMirageUnlockButton.GetComponent<Button>().onClick.RemoveAllListeners();
+                parryWithMirageUnlockButton.OnUnlocked -= UnlockParryWithMirage;
         }
 
         protected override void CheckUnlock()
         {
-            TryUnlock(parryUnlockButton, ref _parryUnlocked);
-            TryUnlock(restoreUnlockButton, ref _restoreUnlocked);
-            TryUnlock(parryWithMirageUnlockButton, ref _parryWithMirageUnlocked);
+            UnlockParry();
+            UnlockRestore();
+            UnlockParryWithMirage();
         }
+
+        #region Unlock
         
         public bool IsParryUnlocked() => _parryUnlocked;
 
+        private void UnlockParry() 
+            => TryUnlock(parryUnlockButton, ref _parryUnlocked);
+        
+        private void UnlockRestore() 
+            => TryUnlock(restoreUnlockButton, ref _restoreUnlocked);
+        
+        private void UnlockParryWithMirage() 
+            => TryUnlock(parryWithMirageUnlockButton, ref _parryWithMirageUnlocked);
+
+        #endregion
+        
         public override void UseSkill()
         {
             base.UseSkill();

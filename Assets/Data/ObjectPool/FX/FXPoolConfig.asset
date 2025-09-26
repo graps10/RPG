@@ -14,10 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Key: fx
   Prefabs:
-  - {fileID: 814629493188087900, guid: 6de6a38999560394c8dee6adf3b06f93, type: 3}
-  - {fileID: 365283283224506203, guid: 232bb00d0f9b2f64a85b16bb88dac708, type: 3}
-  - {fileID: 6518187248204357967, guid: 056a572510164184ebee343683941d08, type: 3}
-  - {fileID: 3047873494746436171, guid: 6659b6581c686854aa5c98fd0a469758, type: 3}
-  - {fileID: 7695768987535175251, guid: 9cc1d1864cc0272429a50d7217750433, type: 3}
+  - {fileID: 1244835694717432849, guid: bcadf8eee9e29404b86303067fee6617, type: 3}
+  - {fileID: 1945852406485171177, guid: dce775d7096755c4cad2fd372e8b7371, type: 3}
   InitialSize: 10
   AllowExpand: 1

@@ -21,32 +21,23 @@ namespace Skills.Skills
 
         private void OnEnable()
         {
-            unlockDodgeButton.GetComponent<Button>().onClick.AddListener(UnlockDodge);
-            
-            unlockMirageDodgeButton.GetComponent<Button>().onClick.AddListener(
-                () => TryUnlock(unlockMirageDodgeButton, ref _dodgeMirageUnlocked));
+            unlockDodgeButton.OnUnlocked += UnlockDodge;
+            unlockMirageDodgeButton.OnUnlocked += UnlockMirageDodge;
         }
 
         private void OnDisable()
         {
             if(unlockDodgeButton != null)
-                unlockDodgeButton.GetComponent<Button>().onClick.RemoveAllListeners();
+                unlockDodgeButton.OnUnlocked -= UnlockDodge;
             
             if(unlockMirageDodgeButton != null)
-                unlockMirageDodgeButton.GetComponent<Button>().onClick.RemoveAllListeners();
+                unlockMirageDodgeButton.OnUnlocked -= UnlockMirageDodge;
         }
 
         protected override void CheckUnlock()
         {
             UnlockDodge();
-            TryUnlock(unlockMirageDodgeButton, ref _dodgeMirageUnlocked);
-        }
-
-        public void CreateMirageOnDodge()
-        {
-            if(_dodgeMirageUnlocked)
-                SkillManager.Instance.Clone.CreateClone(player.transform, 
-                    new Vector3(Mirage_Spawn_Offset * player.FacingDir, 0));
+            UnlockMirageDodge();
         }
 
         private void UnlockDodge()
@@ -57,6 +48,16 @@ namespace Skills.Skills
                 Inventory.Instance.UpdateStatsUI();
                 _dodgeUnlocked = true;
             } 
+        }
+        
+        private void UnlockMirageDodge() 
+            => TryUnlock(unlockMirageDodgeButton, ref _dodgeMirageUnlocked);
+        
+        public void CreateMirageOnDodge()
+        {
+            if(_dodgeMirageUnlocked)
+                SkillManager.Instance.Clone.CreateClone(player.transform, 
+                    new Vector3(Mirage_Spawn_Offset * player.FacingDir, 0));
         }
     }
 }

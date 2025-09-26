@@ -1,3 +1,4 @@
+using System;
 using Core.Save_and_Load;
 using Managers;
 using UnityEngine;
@@ -20,6 +21,7 @@ namespace UI_Elements
         [SerializeField] private SkillTreeSlot[] shouldBeLocked;
     
         public bool Unlocked { get; private set; }
+		public event Action OnUnlocked;
         
         private Image _skillImage;
         private Button _button;
@@ -37,15 +39,9 @@ namespace UI_Elements
             _skillImage = GetComponent<Image>();
         }
 
-        private void OnEnable()
-        {
-            _button.onClick.AddListener(UnlockSkillSlot);
-        }
+        private void OnEnable() => _button.onClick.AddListener(UnlockSkillSlot);
 
-        private void OnDisable()
-        {
-            _button.onClick.RemoveListener(UnlockSkillSlot);
-        }
+        private void OnDisable() => _button.onClick.RemoveListener(UnlockSkillSlot);
 
         private void Start()
         {
@@ -55,31 +51,23 @@ namespace UI_Elements
                 _skillImage.color = UnlockedSkillColor;
         }
 
-        private void UnlockSkillSlot() // need to refactor for all skills
+        private void UnlockSkillSlot()
         {
             if(PlayerManager.Instance.HasEnoughMoney(skillCost) == false)
                 return;
 
-            for (int i = 0; i < shouldBeUnlocked.Length; i++)
-            {
-                if(shouldBeUnlocked[i].Unlocked == false)
-                {
-                    Debug.Log("Cannot unlock skill");
+            foreach (var skill in shouldBeUnlocked)
+                if(skill.Unlocked == false)
                     return;
-                }
-            }
 
-            for (int i = 0; i < shouldBeLocked.Length; i++)
-            {
-                if(shouldBeLocked[i].Unlocked == true)
-                {
-                    Debug.Log("Cannot unlock skill");
+            foreach (var skill in shouldBeLocked)
+                if(skill.Unlocked)
                     return;
-                }
-            }
 
             Unlocked = true;
             _skillImage.color = UnlockedSkillColor;
+            
+            OnUnlocked?.Invoke();
         }
         
         public void OnPointerEnter(PointerEventData eventData)

@@ -14,6 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Key: shockStrike
   Prefabs:
-  - {fileID: 3365727812267402363, guid: 3a4709d650a25f44b9abb73ba8f4aaed, type: 3}
+  - {fileID: 8912282936253123872, guid: 4d37f0b7dda799247959915ab3f3ee67, type: 3}
   InitialSize: 10
   AllowExpand: 1

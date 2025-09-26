@@ -24,22 +24,24 @@ namespace Skills.Skills
         
         private void OnEnable()
         {
-            blackHoleUnlockButton.GetComponent<Button>().onClick.AddListener(
-                () => TryUnlock(blackHoleUnlockButton, ref _blackHoleUnlocked));
+            blackHoleUnlockButton.OnUnlocked += UnlockBlackHole;
         }
 
         private void OnDisable()
         {
             if(blackHoleUnlockButton != null)
-                blackHoleUnlockButton.GetComponent<Button>().onClick.RemoveAllListeners();
+                blackHoleUnlockButton.OnUnlocked -= UnlockBlackHole;
         }
 
         protected override void CheckUnlock()
         {
+            UnlockBlackHole();
+        }
+
+        private void UnlockBlackHole()
+        {
             TryUnlock(blackHoleUnlockButton, ref _blackHoleUnlocked);
         }
-        
-        public bool IsBlackHoleUnlocked() => _blackHoleUnlocked;
 
         public override void UseSkill()
         {
@@ -68,7 +70,8 @@ namespace Skills.Skills
 
             return false;
         }
-
+        
+        public bool IsBlackHoleUnlocked() => _blackHoleUnlocked;
         public float GetBlackHoleRadius() => maxSize / 2;
     }
 }

@@ -45,38 +45,29 @@ namespace Skills.Skills
 
         private void OnEnable()
         {
-            unlockCrystalButton.GetComponent<Button>().onClick.AddListener(
-                () => TryUnlock(unlockCrystalButton, ref _crystalUnlocked));
-            
-            unlockCloneInsteadButton.GetComponent<Button>().onClick.AddListener(
-                () => TryUnlock(unlockCloneInsteadButton, ref cloneInsteadOfCrystal));
-            
-            unlockExplosiveButton.GetComponent<Button>().onClick.AddListener(
-                () => TryUnlock(unlockExplosiveButton, ref canExplode));
-            
-            unlockMovingCrystalButton.GetComponent<Button>().onClick.AddListener(
-                () =>  TryUnlock(unlockMovingCrystalButton, ref canMoveToEnemy));
-            
-            unlockMultiStackButton.GetComponent<Button>().onClick.AddListener(
-                () =>  TryUnlock(unlockMultiStackButton, ref canUseMultiStacks));
+            unlockCrystalButton.OnUnlocked +=  UnlockCrystal;
+            unlockCloneInsteadButton.OnUnlocked +=  UnlockCloneInstead;
+            unlockExplosiveButton.OnUnlocked +=  UnlockExplosive;
+            unlockMovingCrystalButton.OnUnlocked +=  UnlockMovingCrystal;
+            unlockMultiStackButton.OnUnlocked +=  UnlockMultiStack;
         }
 
         private void OnDisable()
         {
             if(unlockCrystalButton != null)
-                unlockCrystalButton.GetComponent<Button>().onClick.RemoveAllListeners();
+                unlockCrystalButton.OnUnlocked -= UnlockCrystal;
             
             if(unlockCloneInsteadButton != null)
-                unlockCloneInsteadButton.GetComponent<Button>().onClick.RemoveAllListeners();
+                unlockCloneInsteadButton.OnUnlocked -= UnlockCloneInstead;
             
             if(unlockExplosiveButton != null)
-                unlockExplosiveButton.GetComponent<Button>().onClick.RemoveAllListeners();
+                unlockExplosiveButton.OnUnlocked -= UnlockExplosive;
             
             if(unlockMovingCrystalButton != null)
-                unlockMovingCrystalButton.GetComponent<Button>().onClick.RemoveAllListeners();
+                unlockMovingCrystalButton.OnUnlocked -= UnlockMovingCrystal;
             
             if(unlockMultiStackButton != null)
-                unlockMultiStackButton.GetComponent<Button>().onClick.RemoveAllListeners();
+                unlockMultiStackButton.OnUnlocked -= UnlockMultiStack;
         }
 
         public override void UseSkill()
@@ -86,9 +77,7 @@ namespace Skills.Skills
             if (CanUseMultiCrystal()) return;
 
             if (_currentCrystal == null)
-            {
                 CreateCrystal();
-            }
             else
             {
                 if (canMoveToEnemy || !_canTeleport) return;
@@ -117,12 +106,34 @@ namespace Skills.Skills
         
         protected override void CheckUnlock()
         {
-            TryUnlock(unlockCrystalButton, ref _crystalUnlocked);
-            TryUnlock(unlockCloneInsteadButton, ref cloneInsteadOfCrystal);
-            TryUnlock(unlockExplosiveButton, ref canExplode);
-            TryUnlock(unlockMovingCrystalButton, ref canMoveToEnemy);
-            TryUnlock(unlockMultiStackButton, ref canUseMultiStacks);
+            UnlockCrystal();
+            UnlockCloneInstead();
+            UnlockExplosive();
+            UnlockMovingCrystal();
+            UnlockMultiStack();
         }
+
+        #region Unlock
+
+        private void UnlockCrystal() 
+            => TryUnlock(unlockCrystalButton, ref _crystalUnlocked);
+        
+        private void UnlockCloneInstead() 
+            => TryUnlock(unlockCloneInsteadButton, ref cloneInsteadOfCrystal);
+        
+        private void UnlockExplosive() 
+            => TryUnlock(unlockExplosiveButton, ref canExplode);
+        
+        private void UnlockMovingCrystal() 
+            => TryUnlock(unlockMovingCrystalButton, ref canMoveToEnemy);
+        
+        private void UnlockMultiStack() 
+            => TryUnlock(unlockMultiStackButton, ref canUseMultiStacks);
+        
+        private void UnlockTeleport() => _canTeleport = true;
+        private void LockTeleport() => _canTeleport = false;
+
+        #endregion
 
         public bool IsCrystalUnlocked() => _crystalUnlocked;
         
@@ -198,8 +209,5 @@ namespace Skills.Skills
             cooldownRemaining = multiStackCooldown;
             RefillCrystal();
         }
-
-        private void UnlockTeleport() => _canTeleport = true;
-        private void LockTeleport() => _canTeleport = false;
     }
 }

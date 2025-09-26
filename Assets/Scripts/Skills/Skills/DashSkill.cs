@@ -21,36 +21,44 @@ namespace Skills.Skills
 
         private void OnEnable()
         {
-            dashUnlockButton.GetComponent<Button>().onClick.AddListener(
-                () => TryUnlock(dashUnlockButton, ref _dashUnlocked));
-            
-            cloneOnDashUnlockButton.GetComponent<Button>().onClick.AddListener(
-                () => TryUnlock(cloneOnDashUnlockButton, ref _cloneOnDashUnlocked));
-            
-            cloneOnArrivalUnlockButton.GetComponent<Button>().onClick.AddListener(
-                () =>  TryUnlock(cloneOnArrivalUnlockButton, ref _cloneOnArrivalUnlocked));
+            dashUnlockButton.OnUnlocked += UnlockDash;
+            cloneOnDashUnlockButton.OnUnlocked += UnlockCloneOnDash;
+            cloneOnArrivalUnlockButton.OnUnlocked += UnlockCloneOnArrival;
         }
 
         private void OnDisable()
         {
             if(dashUnlockButton != null)
-                dashUnlockButton.GetComponent<Button>().onClick.RemoveAllListeners();
+                dashUnlockButton.OnUnlocked -= UnlockDash;
             
             if(cloneOnDashUnlockButton != null)
-                cloneOnDashUnlockButton.GetComponent<Button>().onClick.RemoveAllListeners();
+                cloneOnDashUnlockButton.OnUnlocked -= UnlockCloneOnDash;
             
             if(cloneOnArrivalUnlockButton)
-                cloneOnArrivalUnlockButton.GetComponent<Button>().onClick.RemoveAllListeners();
+                cloneOnArrivalUnlockButton.OnUnlocked -= UnlockCloneOnArrival;
         }
 
         protected override void CheckUnlock()
         {
-            TryUnlock(dashUnlockButton, ref _dashUnlocked);
-            TryUnlock(cloneOnDashUnlockButton, ref _cloneOnDashUnlocked);
-            TryUnlock(cloneOnArrivalUnlockButton, ref _cloneOnArrivalUnlocked);
+            UnlockDash();
+            UnlockCloneOnDash();
+            UnlockCloneOnArrival();
         }
-        
+
+        #region Unlock
+
         public bool IsDashUnlocked() => _dashUnlocked;
+        
+        private void UnlockDash() 
+            => TryUnlock(dashUnlockButton, ref _dashUnlocked);
+        
+        private void UnlockCloneOnDash() 
+            => TryUnlock(cloneOnDashUnlockButton, ref _cloneOnDashUnlocked);
+        
+        private void UnlockCloneOnArrival() 
+            => TryUnlock(cloneOnArrivalUnlockButton, ref _cloneOnArrivalUnlocked);
+
+        #endregion
 
         public void CloneOnDash()
         {
