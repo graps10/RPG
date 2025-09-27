@@ -575,6 +575,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 07576aac23de08b40b7488faa1f58307, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _entity: {fileID: 5898013196290452530}
+  _myStats: {fileID: 1218858172027356505}
 --- !u!1 &7877495901767242346
 GameObject:
   m_ObjectHideFlags: 0
@@ -930,6 +932,7 @@ MonoBehaviour:
   shockStrikePrefab: {fileID: 8912282936253123872, guid: 4d37f0b7dda799247959915ab3f3ee67, type: 3}
   level: 1
   percentageModifier: 0.4
+  initialSoulsDropAmount: 100
 --- !u!114 &2901799726314917220
 MonoBehaviour:
   m_ObjectHideFlags: 0

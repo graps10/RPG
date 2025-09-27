@@ -109,7 +109,7 @@ namespace UI_Elements
 
             if (GameManager.Instance != null)
             {
-                GameManager.Instance.PauseGame(menu != inGameUI);
+                GameManager.PauseGame(menu != inGameUI);
             }
         }
 
@@ -133,7 +133,7 @@ namespace UI_Elements
             StartCoroutine(EndScreenRoutine());
         }
 
-        public void RestartGameButton() => GameManager.Instance.RestartScene();
+        public void RestartGameButton() => GameManager.RestartScene();
 
         private void CheckForInGameUI()
         {

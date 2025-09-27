@@ -9,13 +9,10 @@ namespace Managers
     {
         public static GameManager Instance;
 
-        // public string closestCheckpointId;
-        // [SerializeField] private Checkpoint[] checkpoints;
-
         [Header("Lost Currency")]
         [SerializeField] private GameObject lostCurrencyPrefab;
-        [SerializeField] private Vector2 spawnLostCurrencyRange;
-    
+        
+        private Vector2 _spawnLostCurrencyRange;
         private int _lostCurrencyAmount;
 
         private void Awake()
@@ -24,14 +21,11 @@ namespace Managers
                 Destroy(Instance.gameObject);
             else
                 Instance = this;
-        
-            // temporary find checkpoints
         }
     
         public void SetLostCurrencyAmount(int amount) => _lostCurrencyAmount = amount;
-        public int GetLostCurrencyAmount() => _lostCurrencyAmount;
 
-        public void RestartScene()
+        public static void RestartScene()
         {
             SaveManager.Instance.SaveGame();
             Scene scene = SceneManager.GetActiveScene();
@@ -43,18 +37,17 @@ namespace Managers
         public void LoadData(GameData data)
         {
             LoadLostCurrency(data);
-            // LoadCheckpoints(_data);
         }
 
         private void LoadLostCurrency(GameData data)
         {
             _lostCurrencyAmount = data.GetLostCurrencyAmount();
-            spawnLostCurrencyRange = data.GetSpawnLostCurrencyRange();
+            _spawnLostCurrencyRange = data.GetSpawnLostCurrencyRange();
 
             if (_lostCurrencyAmount > 0)
             {
                 GameObject newLostCurrency = Instantiate(lostCurrencyPrefab, 
-                    new Vector3(spawnLostCurrencyRange.x, spawnLostCurrencyRange.y), Quaternion.identity);
+                    new Vector3(_spawnLostCurrencyRange.x, _spawnLostCurrencyRange.y), Quaternion.identity);
             
                 newLostCurrency.GetComponent<LostCurrencyController>().SetCurrency(_lostCurrencyAmount);;
             }
@@ -81,7 +74,7 @@ namespace Managers
 
         #endregion
 
-        public void PauseGame(bool _pause)
+        public static void PauseGame(bool _pause)
         {
             Time.timeScale = _pause ? 0 : 1;
         }

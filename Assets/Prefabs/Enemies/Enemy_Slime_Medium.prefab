@@ -735,11 +735,9 @@ MonoBehaviour:
     modifiers: 
   ailmentsDuration: 4
   shockStrikePrefab: {fileID: 8912282936253123872, guid: 4d37f0b7dda799247959915ab3f3ee67, type: 3}
-  soulsDropAmount:
-    baseValue: 0
-    modifiers: 
   level: 1
-  percantageModifier: 0.4
+  percentageModifier: 0.4
+  initialSoulsDropAmount: 100
 --- !u!114 &3023183467518170880
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -811,6 +809,8 @@ MonoBehaviour:
   whatIsPlayer:
     serializedVersion: 2
     m_Bits: 64
+  playerDetectionRange: 50
+  wallDetectionRange: 50
   stunDuration: 1
   stunDirection: {x: 10, y: 12}
   counterImage: {fileID: 6628913849299806220}
@@ -820,9 +820,7 @@ MonoBehaviour:
   agroDistance: 2
   attackDistance: 1.5
   attackCooldown: 0
-  minAttackCooldown: 0.5
-  maxAttackCooldown: 0.8
-  lastTimeAttacked: 0
+  attackCooldownRange: {x: 1, y: 2}
   slimeType: 1
   slimesToCreate: 4
   slimePrefab: {fileID: 8077859740426728682, guid: 48712f3fd1858644a8d3265b152422ae, type: 3}
@@ -943,6 +941,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 07576aac23de08b40b7488faa1f58307, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _entity: {fileID: 4078269123703412013}
+  _myStats: {fileID: 805335163748739493}
 --- !u!1001 &2602574699055091465
 PrefabInstance:
   m_ObjectHideFlags: 0

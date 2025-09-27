@@ -108,7 +108,6 @@ namespace Stats
 
         protected virtual void Start()
         {
-            /*critPower.SetDefaultValue(150);*/
             CurrentHealth = GetMaxHealthValue();
 
             _fx = GetComponent<EntityFX>();

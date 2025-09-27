@@ -7,18 +7,16 @@ namespace UI_Elements
 {
     public class HealthBar : MonoBehaviour 
     {
-        private Entity.Entity _entity;
-        private CharacterStats _myStats;
+        [SerializeField] private Entity.Entity _entity;
+        [SerializeField] private CharacterStats _myStats;
         
         private RectTransform _myTransform;
         private Slider _slider;
 
         private void Awake() 
         {
-            _entity = GetComponentInParent<Entity.Entity>();
             _myTransform = GetComponent<RectTransform>();
             _slider = GetComponentInChildren<Slider>();
-            _myStats = GetComponentInParent<CharacterStats>();
         }
 
         private void OnEnable()
@@ -26,6 +24,7 @@ namespace UI_Elements
             _entity.OnFlipped += FlipUI;
             _myStats.OnHealthChanged += UpdateHealthUI;
         }
+        
         private void OnDisable()
         {
             _entity.OnFlipped -= FlipUI;

@@ -7,7 +7,7 @@ namespace Core.Save_and_Load
     public class SaveManager : MonoBehaviour
     {
         public static SaveManager Instance;
-
+        
         [SerializeField] private string fileName;
         [SerializeField] private bool encryptData;
 
@@ -38,12 +38,12 @@ namespace Core.Save_and_Load
             LoadGame();
         }
 
-        public void NewGame()
+        private void NewGame()
         {
             _gameData = new GameData();
         }
 
-        public void LoadGame()
+        private void LoadGame()
         {
             _gameData = _dataHandler.Load();
 
@@ -56,7 +56,8 @@ namespace Core.Save_and_Load
             foreach (ISaveManager saveManager in _saveManagers)
                 saveManager.LoadData(_gameData);
 
-            Debug.Log("Loaded currency " + _gameData.GetCurrency());
+            if (_gameData != null) 
+                Debug.Log("Loaded currency " + _gameData.GetCurrency());
         }
 
         [ContextMenu("Save Game")]
@@ -68,20 +69,12 @@ namespace Core.Save_and_Load
             _dataHandler.Save(_gameData);
         }
 
-        public bool HasSavedData()
-        {
-            if (_dataHandler.Load() != null)
-                return true;
-
-            return false;
-        }
-
         private void OnApplicationQuit()
         {
             SaveGame();
         }
 
-        private List<ISaveManager> FindAllSaveManagers()
+        private static List<ISaveManager> FindAllSaveManagers()
         {
             IEnumerable<ISaveManager> saveManagers = FindObjectsOfType<MonoBehaviour>().OfType<ISaveManager>();
             return new List<ISaveManager>(saveManagers);

@@ -165,11 +165,9 @@ MonoBehaviour:
     modifiers: 
   ailmentsDuration: 4
   shockStrikePrefab: {fileID: 8912282936253123872, guid: 4d37f0b7dda799247959915ab3f3ee67, type: 3}
-  soulsDropAmount:
-    baseValue: 0
-    modifiers: 
   level: 1
-  percantageModifier: 0.4
+  percentageModifier: 0.4
+  initialSoulsDropAmount: 100
 --- !u!114 &4514353212984039851
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -242,6 +240,8 @@ MonoBehaviour:
   whatIsPlayer:
     serializedVersion: 2
     m_Bits: 64
+  playerDetectionRange: 50
+  wallDetectionRange: 50
   stunDuration: 1
   stunDirection: {x: 10, y: 12}
   counterImage: {fileID: 233225095406134249}
@@ -251,9 +251,7 @@ MonoBehaviour:
   agroDistance: 2
   attackDistance: 15
   attackCooldown: 0
-  minAttackCooldown: 1
-  maxAttackCooldown: 2
-  lastTimeAttacked: 0
+  attackCooldownRange: {x: 1, y: 2}
   arrowSpeed: 7
   jumpVelocity: {x: 25, y: 20}
   jumpCooldown: 1
@@ -261,6 +259,7 @@ MonoBehaviour:
   lastTimeJumped: 0
   groundBehindCheck: {fileID: 5477200796658543965}
   groundBehindCheckSize: {x: 2, y: 8}
+  wallBehindExtraDistance: 2
 --- !u!1 &233225095406134249
 GameObject:
   m_ObjectHideFlags: 0
@@ -677,6 +676,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 07576aac23de08b40b7488faa1f58307, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _entity: {fileID: 7656670257762040362}
+  _myStats: {fileID: 1430992102294738425}
 --- !u!1 &3375879242553280419
 GameObject:
   m_ObjectHideFlags: 0

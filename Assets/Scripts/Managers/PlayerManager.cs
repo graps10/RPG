@@ -7,10 +7,11 @@ namespace Managers
     public class PlayerManager : MonoBehaviour, ISaveManager
     {
         public static PlayerManager Instance;
+        
         public Player.Player PlayerGameObject;
         public PlayerStats PlayerStats { get; private set; }
 
-        public int _currency;
+        private int _currency;
 
         private void Awake()
         {
