@@ -1,3 +1,4 @@
+using Components.Audio;
 using Enemies.Base;
 using Enemies.Base.States;
 using Managers;
@@ -13,7 +14,7 @@ namespace Enemies.Skeleton
         {
             base.Exit();
 
-            AudioManager.Instance.PlaySFX(22, enemy.transform);
+            AudioManager.Instance.PlaySFX(SFXEnum.SkeletonBones, enemy.transform);
         }
     }
 }

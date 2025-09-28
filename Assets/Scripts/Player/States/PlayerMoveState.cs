@@ -1,3 +1,4 @@
+using Components.Audio;
 using Managers;
 
 namespace Player.States
@@ -11,14 +12,14 @@ namespace Player.States
         {
             base.Enter();
 
-            AudioManager.Instance.PlaySFX(13, null);
+            AudioManager.Instance.PlaySFX(SFXEnum.PlayerFootsteps);
         }
 
         public override void Exit()
         {
             base.Exit();
 
-            AudioManager.Instance.StopSFX(13);
+            AudioManager.Instance.StopSFX(SFXEnum.PlayerFootsteps);
         }
 
         public override void Update()

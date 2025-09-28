@@ -1,3 +1,4 @@
+using Components.Audio;
 using Controllers.Skill_Controllers;
 using Managers;
 using UI_Elements;
@@ -54,8 +55,8 @@ namespace Skills.Skills
             _currentBlackHole.SetupBlackHole(
                 maxSize, growSpeed, shrinkSpeed, amountOfAttacks, cloneCooldown, blackHoleDuration);
 
-            AudioManager.Instance.PlaySFX(4, player.transform);
-            AudioManager.Instance.PlaySFX(5, player.transform);
+            AudioManager.Instance.PlaySFX(SFXEnum.Bankai, player.transform);
+            AudioManager.Instance.PlaySFX(SFXEnum.Chronosphere, player.transform);
         }
 
         public bool SkillCompleted()

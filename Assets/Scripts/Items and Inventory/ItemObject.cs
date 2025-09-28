@@ -1,3 +1,4 @@
+using Components.Audio;
 using Core.ObjectPool;
 using Managers;
 using UnityEngine;
@@ -36,7 +37,7 @@ namespace Items_and_Inventory
                 return;
             }
 
-            AudioManager.Instance.PlaySFX(16, transform);
+            AudioManager.Instance.PlaySFX(SFXEnum.ItemPickup, transform);
             Inventory.Instance.AddItem(itemData);
 
             PoolManager.Instance.Return("drop", gameObject);

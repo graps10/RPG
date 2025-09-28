@@ -1,3 +1,4 @@
+using Components.Audio;
 using Core;
 using Managers;
 using UnityEngine;
@@ -25,7 +26,7 @@ namespace Components.Level
         public void ActivateCheckpoint()
         {
             if (!_activationStatus)
-                AudioManager.Instance.PlaySFX(3, transform);
+                AudioManager.Instance.PlaySFX(SFXEnum.Checkpoint, transform);
 
             _activationStatus = true;
             _anim.SetBool(AnimatorHashes.ActiveCheckpoint, true);

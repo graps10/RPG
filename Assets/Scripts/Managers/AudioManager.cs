@@ -1,4 +1,5 @@
 using System.Collections;
+using Components.Audio;
 using UnityEngine;
 using UnityEngine.Audio;
 
@@ -56,7 +57,7 @@ namespace Managers
             else
             {
                 if (!bgm[_bgmIndex].isPlaying)
-                    PlayBGM(_bgmIndex);
+                    PlayBGM(BGMEnum.FatefulEncounter);
             }
         }
         
@@ -65,27 +66,28 @@ namespace Managers
 
         public void SetupBGMVolume(float savedBGMVolume) => _bgmVolume = savedBGMVolume;
         public void SetupSFXVolume(float savedSFXVolume) => _sfxVolume = savedSFXVolume;
-        public void AllowSFX(bool allow) => _canPlaySFX = allow;
+        private void AllowSFX(bool allow) => _canPlaySFX = allow;
 
-        public void PlayBGM(int bgmIndex)
+        private void PlayBGM(BGMEnum type)
         {
+            int bgmIndex = (int)type;
             _bgmIndex = bgmIndex;
 
             StopAllBGM();
             bgm[_bgmIndex].Play();
         }
         
-        public void PlaySFX(int sfxIndex, Transform source)
+        public void PlaySFX(SFXEnum type, Transform source = null)
         {
-            if (!_canPlaySFX) return;
-
-            if (source != null && Vector2.Distance(PlayerManager.Instance.PlayerGameObject.transform.position, source.position) > sfxMinDistance)
+            if (!_canPlaySFX || source != null 
+                && Vector2.Distance(PlayerManager.Instance.PlayerGameObject.transform.position, source.position) > sfxMinDistance)
                 return;
 
-            if (sfxIndex < sfx.Length)
+            int index = (int)type;
+            if (index < sfx.Length)
             {
-                sfx[sfxIndex].pitch = Random.Range(sfxPitchRange.x, sfxPitchRange.y);
-                sfx[sfxIndex].Play();
+                sfx[index].pitch = Random.Range(sfxPitchRange.x, sfxPitchRange.y);
+                sfx[index].Play();
             }
         }
 
@@ -95,8 +97,9 @@ namespace Managers
                 s.Stop();
         }
         
-        public void StopSFX(int index)
+        public void StopSFX(SFXEnum type)
         {
+            int index = (int)type;
             if(sfx != null && sfx[index].isPlaying)
                 sfx[index].Stop();
         }

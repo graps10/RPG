@@ -1,3 +1,4 @@
+using Components.Audio;
 using Items_and_Inventory;
 using Managers;
 using UnityEngine;
@@ -66,7 +67,7 @@ namespace Stats
             {
                 _player.SetupKnockbackPower(highDamageKnockback);
                 _player.Fx.ScreenShake(_player.Fx.GetShakeHighDamage());
-                AudioManager.Instance.PlaySFX(32, null);
+                AudioManager.Instance.PlaySFX(SFXEnum.WomanStruggle);
             }
         
             ItemData_Equipment currentArmor = Inventory.Instance.GetEquipment(EquipmentType.Armor);

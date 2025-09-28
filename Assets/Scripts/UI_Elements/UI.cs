@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Components.Audio;
 using Core.Save_and_Load;
 using Managers;
 using UnityEngine;
@@ -103,7 +104,7 @@ namespace UI_Elements
 
             if (menu != null)
             {
-                AudioManager.Instance.PlaySFX(6, null);
+                AudioManager.Instance.PlaySFX(SFXEnum.Click);
                 menu.SetActive(true);
             }
 

@@ -1,3 +1,4 @@
+using Components.Audio;
 using Enemies;
 using Enemies.Base;
 using Items_and_Inventory;
@@ -19,7 +20,7 @@ namespace Player
     
         private void AttackTrigger()
         {
-            AudioManager.Instance.PlaySFX(1, null);
+            AudioManager.Instance.PlaySFX(SFXEnum.PlayerAttack1);
 
             Collider2D[] colliders = 
                 Physics2D.OverlapCircleAll(player.GetAttackCheckTransform().position, player.GetAttackCheckRadius());

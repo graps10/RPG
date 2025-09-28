@@ -10,7 +10,7 @@ namespace Components.Audio
         private void OnTriggerEnter2D(Collider2D collision)
         {
             if (collision.GetComponent<Player.Player>() != null)
-                AudioManager.Instance.PlaySFX(areaSoundIndex, null);
+                AudioManager.Instance.PlaySFX(SFXEnum.WindySound);
         }
 
         private void OnTriggerExit2D(Collider2D collision)
