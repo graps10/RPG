@@ -1,3 +1,4 @@
+using Core.ObjectPool;
 using Managers;
 using UnityEngine;
 
@@ -19,7 +20,7 @@ namespace Items_and_Inventory.Effects
 
             if (thirdAttack)
             {
-                GameObject newIceAndFire = PoolManager.Instance.Spawn("fx", respawnPosition.position, 
+                GameObject newIceAndFire = PoolManager.Instance.Spawn(PoolNames.FX, respawnPosition.position, 
                     player.transform.rotation, iceAndFirePrefab);
                 
                 newIceAndFire.GetComponent<Rigidbody2D>().velocity = new Vector2(xVelocity * player.FacingDir, 0);

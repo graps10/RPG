@@ -1,3 +1,4 @@
+using Core.ObjectPool;
 using Managers;
 using Stats;
 using UnityEngine;
@@ -28,7 +29,7 @@ namespace Controllers
             }
         }
 
-        private void SelfDestroy() => PoolManager.Instance.Return("deathBringerSpell", gameObject);
+        private void SelfDestroy() => PoolManager.Instance.Return(PoolNames.DeathBringerSpell, gameObject);
 
         private void OnDrawGizmos()
         {

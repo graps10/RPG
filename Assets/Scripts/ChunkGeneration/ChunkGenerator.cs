@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using ChunkGeneration.Configs;
+using Core.ObjectPool;
 using Managers;
 using UnityEngine;
 
@@ -52,7 +53,7 @@ namespace ChunkGeneration
             bool spawnBoss = _chunksSinceLastBoss >= _nextBossAtChunk;
 
             ChunkConfig randomChunk = GetRandomChunkConfig(spawnBoss);
-            GameObject newChunk = PoolManager.Instance.Spawn("chunk", new Vector3(_nextSpawnPosition, 0, 0), Quaternion.identity);
+            GameObject newChunk = PoolManager.Instance.Spawn(PoolNames.CHUNK, new Vector3(_nextSpawnPosition, 0, 0), Quaternion.identity);
 
             ChunkController chunkController = newChunk.GetComponent<ChunkController>();
             chunkController.Initialize(randomChunk, this, spawnBoss);

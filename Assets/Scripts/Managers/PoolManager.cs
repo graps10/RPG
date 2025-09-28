@@ -37,36 +37,36 @@ namespace Managers
             }
         }
 
-        public GameObject Spawn(string _key, Vector3 _position, Quaternion _rotation, GameObject _specificPrefab = null)
+        public GameObject Spawn(string key, Vector3 position, Quaternion rotation, GameObject specificPrefab = null)
         {
-            if (_pools.TryGetValue(_key, out var pool))
+            if (_pools.TryGetValue(key, out var pool))
             {
-                return pool.Spawn(_position, _rotation, _specificPrefab);
+                return pool.Spawn(position, rotation, specificPrefab);
             }
-            Debug.LogWarning($"Pool with key '{_key}' not found.");
+            Debug.LogWarning($"Pool with key '{key}' not found.");
             return null;
         }
 
-        public void Return(string _key, GameObject _obj)
+        public void Return(string key, GameObject obj)
         {
-            if (_pools.TryGetValue(_key, out var pool))
+            if (_pools.TryGetValue(key, out var pool))
             {
-                pool.Return(_obj);
+                pool.Return(obj);
             }
             else
             {
-                Debug.LogWarning($"Return failed. Pool with key '{_key}' not found.");
-                Destroy(_obj);
+                Debug.LogWarning($"Return failed. Pool with key '{key}' not found.");
+                Destroy(obj);
             }
         }
 
-        public void Return(string _key, GameObject _obj, float _delay) 
-            => StartCoroutine(ReturnToPoolRoutine(_key, _obj, _delay));
+        public void Return(string key, GameObject obj, float delay) 
+            => StartCoroutine(ReturnToPoolRoutine(key, obj, delay));
 
-        private IEnumerator ReturnToPoolRoutine(string _key, GameObject _obj, float _delay)
+        private IEnumerator ReturnToPoolRoutine(string key, GameObject obj, float delay)
         {
-            yield return new WaitForSeconds(_delay);
-            Return(_key, _obj);
+            yield return new WaitForSeconds(delay);
+            Return(key, obj);
         }
     }
 }

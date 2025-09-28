@@ -1,4 +1,5 @@
 using System.Collections;
+using Core.ObjectPool;
 using Managers;
 using TMPro;
 using UI_Elements;
@@ -65,7 +66,7 @@ namespace Components.FX
             float randomY = Random.Range(popupYPositionRange.x, popupYPositionRange.y);
 
             Vector3 positionOffset = new Vector3(randomX, randomY, 0);
-            GameObject newText = PoolManager.Instance.Spawn("text", 
+            GameObject newText = PoolManager.Instance.Spawn(PoolNames.POPUP_TEXT, 
                 transform.position + positionOffset, Quaternion.identity);
 
             if (newText)
@@ -109,12 +110,12 @@ namespace Components.FX
                 hitFXRotation = new Vector3(0, yRotation, zRotation);
             }
             
-            GameObject newHitFX = PoolManager.Instance.Spawn("hitFX", 
+            GameObject newHitFX = PoolManager.Instance.Spawn(PoolNames.HIT_FX, 
                 target.position + new Vector3(xPosition, yPosition), Quaternion.identity, hitFX);
 
             newHitFX.transform.Rotate(hitFXRotation);
 
-            PoolManager.Instance.Return("hitFX", newHitFX, Hit_Return_To_Pool_Delay);
+            PoolManager.Instance.Return(PoolNames.HIT_FX, newHitFX, Hit_Return_To_Pool_Delay);
         }
 
         public void IgniteFxFor(float seconds)

@@ -75,7 +75,7 @@ namespace Controllers.Skill_Controllers
             _targetStats.ApplyShock(true);
 
             _targetStats.TakeDamage(_damage);
-            PoolManager.Instance.Return("shockStrike", gameObject, Return_Delay);
+            PoolManager.Instance.Return(PoolNames.SHOCK_STRIKE, gameObject, Return_Delay);
         }
     }
 }

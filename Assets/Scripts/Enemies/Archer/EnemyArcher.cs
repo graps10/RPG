@@ -1,6 +1,7 @@
 using Controllers;
 using Core;
 using Core.Interfaces;
+using Core.ObjectPool;
 using Core.Utilities;
 using Enemies.Base;
 using Managers;
@@ -98,7 +99,7 @@ namespace Enemies.Archer
             var rotation = FacingDir == 1 ? Vector3.zero : TransformUtils.FlipAngle;
             Quaternion arrowRotation = Quaternion.Euler(rotation);
 
-            GameObject newArrow = PoolManager.Instance.Spawn("arrow", attackCheck.position, arrowRotation);
+            GameObject newArrow = PoolManager.Instance.Spawn(PoolNames.ARROW, attackCheck.position, arrowRotation);
             newArrow.GetComponent<ArrowController>().SetupArrow(Stats, arrowSpeed * FacingDir);
         }
 

@@ -51,7 +51,7 @@ namespace Components.FX
                     speed = disappearanceSpeed;
 
                 if (_myText.color.a <= 0)
-                    PoolManager.Instance.Return("text", gameObject);
+                    PoolManager.Instance.Return(PoolNames.POPUP_TEXT, gameObject);
             }
         }
     }

@@ -40,7 +40,7 @@ namespace Items_and_Inventory
             AudioManager.Instance.PlaySFX(SFXEnum.ItemPickup, transform);
             Inventory.Instance.AddItem(itemData);
 
-            PoolManager.Instance.Return("drop", gameObject);
+            PoolManager.Instance.Return(PoolNames.Drop, gameObject);
         }
 
         private void SetupVisual()

@@ -1,3 +1,4 @@
+using Core.ObjectPool;
 using Managers;
 using UnityEngine;
 
@@ -11,10 +12,10 @@ namespace Items_and_Inventory.Effects
         [SerializeField] private GameObject thunderStrikePrefab;
         public override void ExecuteEffect(Transform enemyPosition)
         {
-            GameObject newThunderStrike = PoolManager.Instance.Spawn("fx", 
+            GameObject newThunderStrike = PoolManager.Instance.Spawn(PoolNames.FX, 
                 enemyPosition.position, Quaternion.identity, thunderStrikePrefab);
             
-            PoolManager.Instance.Return("fx", newThunderStrike, Return_To_Pool_Delay);
+            PoolManager.Instance.Return(PoolNames.FX, newThunderStrike, Return_To_Pool_Delay);
         }
     }
 }

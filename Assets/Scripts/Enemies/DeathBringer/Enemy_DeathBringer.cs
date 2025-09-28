@@ -1,6 +1,7 @@
 using Controllers;
 using Core;
 using Core.Interfaces;
+using Core.ObjectPool;
 using Enemies.Base;
 using Managers;
 using UnityEngine;
@@ -75,7 +76,7 @@ namespace Enemies.DeathBringer
 
             Vector3 spellPosition = new Vector3(player.transform.position.x + xOffset, player.transform.position.y + spellCastOffset.y);
 
-            GameObject newSpell = PoolManager.Instance.Spawn("deathBringerSpell", spellPosition, Quaternion.identity);
+            GameObject newSpell = PoolManager.Instance.Spawn(PoolNames.DeathBringerSpell, spellPosition, Quaternion.identity);
             newSpell.GetComponent<DeathBringerSpellController>().SetupSpell(Stats);
         }
 

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Core.ObjectPool;
 using Managers;
 using UnityEngine;
 
@@ -44,7 +45,7 @@ namespace Items_and_Inventory
 
         protected void DropItem(ItemData itemData)
         {
-            GameObject newDrop = PoolManager.Instance.Spawn("drop", transform.position, Quaternion.identity, dropPrefab);
+            GameObject newDrop = PoolManager.Instance.Spawn(PoolNames.Drop, transform.position, Quaternion.identity, dropPrefab);
 
             Vector2 randomVelocity = new Vector2(
                 Random.Range(dropVelocityXRange.x, dropVelocityXRange.y),

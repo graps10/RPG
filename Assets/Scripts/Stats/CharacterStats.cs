@@ -1,6 +1,7 @@
 using System.Collections;
 using Components.FX;
 using Controllers.Skill_Controllers;
+using Core.ObjectPool;
 using Enemies.Base;
 using Managers;
 using UnityEngine;
@@ -436,7 +437,7 @@ namespace Stats
 
             if (closestEnemy != null)
             {
-                GameObject newShockStrike = PoolManager.Instance.Spawn("shockStrike", transform.position, Quaternion.identity, shockStrikePrefab);
+                GameObject newShockStrike = PoolManager.Instance.Spawn(PoolNames.SHOCK_STRIKE, transform.position, Quaternion.identity, shockStrikePrefab);
 
                 if (newShockStrike)
                     newShockStrike.GetComponent<ShockStrikeController>().

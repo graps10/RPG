@@ -53,8 +53,8 @@ namespace Controllers
             
             _targetLayer = whatIsPlayer;
             _trailFx.Play();
-
-            PoolManager.Instance.Return("arrow", gameObject, Arrow_Return_To_Pool_Delay);
+            
+            PoolManager.Instance.Return(PoolNames.ARROW, gameObject, Arrow_Return_To_Pool_Delay);
         }
 
         public void OnReturnToPool()
