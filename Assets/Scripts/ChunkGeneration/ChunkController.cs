@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using ChunkGeneration.Configs;
 using ChunkGeneration.Triggers;
@@ -8,6 +9,8 @@ namespace ChunkGeneration
 {
     public class ChunkController : MonoBehaviour, IPooledObject
     {
+        private const float Check_Chunk_Delay = 1f;
+        
         [SerializeField] private Transform playerSpawnSpot;
         [SerializeField] private List<Transform> enemySpawnSpots = new();
 
@@ -21,6 +24,8 @@ namespace ChunkGeneration
         private List<GameObject> _spawnedEnemies = new();
         private bool _isBossChunk;
         private bool _chunkCompleted;
+        
+        private Coroutine _checkChunkCoroutine;
 
         public void Initialize(ChunkConfig config, ChunkGenerator generator, bool isBossChunk)
         {
@@ -33,32 +38,15 @@ namespace ChunkGeneration
             SetupTriggers();
         }
 
-        private void Update()
-        {
-            if (_chunkCompleted || _spawnedEnemies.Count <= 0) 
-                return;
-        
-            bool allDead = true;
-            foreach (var enemy in _spawnedEnemies)
-            {
-                if (enemy != null)
-                {
-                    allDead = false;
-                    break;
-                }
-            }
-
-            if (allDead)
-                CompleteChunk();
-        }
-
-        public Transform GetPlayerSpawnSpot() => playerSpawnSpot;
-
         public void OnReturnToPool()
         {
+            if (_checkChunkCoroutine != null)
+                StopCoroutine(_checkChunkCoroutine);
+            
             _chunkCompleted = false;
             transform.position = Vector3.zero;
-            ClearEnemies();
+            
+            ClearAllSpawnedEnemies();
             UnlockDoors();
         }
 
@@ -76,26 +64,27 @@ namespace ChunkGeneration
 
         #endregion
 
-        private void CompleteChunk()
-        {
-            _chunkCompleted = true;
-            UnlockDoors();
-        }
-
+        #region Enemies
+        
         private void SetupEnemies()
         {
             if (enemySpawnSpots.Count == 0)
                 return;
 
             if (_isBossChunk)
-                SpawnBoss();
+                SpawnEnemyBoss();
             else
-                SpawnEnemies();
+                SpawnOrdinaryEnemies();
+            
+            _checkChunkCoroutine = StartCoroutine(CheckChunkCompletion());
         }
 
-        private void SpawnEnemies()
+        private void SpawnOrdinaryEnemies()
         {
-            int enemyCount = Random.Range(_config.MinEnemies, _config.MaxEnemies + 1);
+            var ordinaryConfig = _config as OrdinaryConfig;
+            if (ordinaryConfig == null) return;
+
+            int enemyCount = Random.Range(ordinaryConfig.MinEnemies, ordinaryConfig.MaxEnemies + 1);
             List<Transform> availableSpots = new List<Transform>(enemySpawnSpots);
 
             for (int i = 0; i < enemyCount && availableSpots.Count > 0; i++)
@@ -104,16 +93,17 @@ namespace ChunkGeneration
                 Transform spot = availableSpots[spotIndex];
                 availableSpots.RemoveAt(spotIndex);
 
-                foreach (var enemyType in _config.EnemyTypes)
+                foreach (var enemyType in ordinaryConfig.EnemiesData)
                 {
-                    if (Random.value <= enemyType.spawnChance)
+                    if (Random.value <= enemyType.SpawnChance)
                     {
                         GameObject enemy = Instantiate(
-                            enemyType.prefab,
+                            enemyType.EnemyPrefab,
                             spot.position,
                             Quaternion.identity,
                             spot
                         );
+                        
                         _spawnedEnemies.Add(enemy);
                         break;
                     }
@@ -121,30 +111,68 @@ namespace ChunkGeneration
             }
         }
 
-        private void SpawnBoss()
+        private void SpawnEnemyBoss()
         {
-            if (_config.BossPrefab != null)
+            var bossConfig = _config as BossChunkConfig;
+            if (bossConfig == null) return;
+            
+            if (bossConfig.BossData != null)
             {
                 Transform bossSpot = enemySpawnSpots[0];
                 GameObject boss = Instantiate(
-                    _config.BossPrefab,
+                    bossConfig.BossData.EnemyPrefab,
                     bossSpot.position,
                     Quaternion.identity,
                     bossSpot
                 );
+                
                 _spawnedEnemies.Add(boss);
             }
         }
 
-        private void ClearEnemies()
+        private void ClearAllSpawnedEnemies()
         {
             foreach (var enemy in _spawnedEnemies)
-            {
                 if (enemy != null)
                     Destroy(enemy);
-            }
             
             _spawnedEnemies.Clear();
+        }
+        
+        private IEnumerator CheckChunkCompletion()
+        {
+            while (!_chunkCompleted)
+            {
+                if (_spawnedEnemies.Count > 0)
+                {
+                    bool allDead = true;
+
+                    foreach (var enemy in _spawnedEnemies)
+                    {
+                        if (enemy != null)
+                        {
+                            allDead = false;
+                            break;
+                        }
+                    }
+
+                    if (allDead)
+                    {
+                        CompleteChunk();
+                        yield break; 
+                    }
+                }
+
+                yield return new WaitForSeconds(Check_Chunk_Delay);
+            }
+        }
+        
+        #endregion
+        
+        private void CompleteChunk()
+        {
+            _chunkCompleted = true;
+            UnlockDoors();
         }
 
         private void LockDoors()
@@ -158,5 +186,7 @@ namespace ChunkGeneration
             entryTrigger.EnableTrigger();
             exitTrigger.EnableTrigger();
         }
+        
+        public Transform GetPlayerSpawnSpot() => playerSpawnSpot;
     }
 }

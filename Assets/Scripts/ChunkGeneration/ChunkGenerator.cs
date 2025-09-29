@@ -53,7 +53,8 @@ namespace ChunkGeneration
             bool spawnBoss = _chunksSinceLastBoss >= _nextBossAtChunk;
 
             ChunkConfig randomChunk = GetRandomChunkConfig(spawnBoss);
-            GameObject newChunk = PoolManager.Instance.Spawn(PoolNames.CHUNK, new Vector3(_nextSpawnPosition, 0, 0), Quaternion.identity);
+            GameObject newChunk = PoolManager.Instance.Spawn(PoolNames.CHUNK, new Vector3(_nextSpawnPosition, 0, 0),
+                Quaternion.identity);
 
             ChunkController chunkController = newChunk.GetComponent<ChunkController>();
             chunkController.Initialize(randomChunk, this, spawnBoss);
@@ -72,7 +73,7 @@ namespace ChunkGeneration
         {
             if (spawnBoss && bossChunkConfigs.Count > 0)
                 return bossChunkConfigs[Random.Range(0, bossChunkConfigs.Count)];
-        
+
             return ordinaryChunkConfigs[Random.Range(0, ordinaryChunkConfigs.Count)];
         }
     }

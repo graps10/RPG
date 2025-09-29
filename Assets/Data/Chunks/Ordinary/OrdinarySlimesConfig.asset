@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8f9650e639e77a749aa7abd2b2f722da, type: 3}
+  m_Name: OrdinarySlimesConfig
+  m_EditorClassIdentifier: 
+  chunkPrefab: {fileID: 752500295555284995, guid: f5a891b79a0276d43b70e28074f8cab7, type: 3}
+  chunkLength: 72
+  minEnemies: 1
+  maxEnemies: 3
+  enemiesData:
+  - EnemyPrefab: {fileID: 3224313224280886796, guid: 74f0f99771668e045bc4fde30e1de57a, type: 3}
+    SpawnChance: 1
+  - EnemyPrefab: {fileID: 3224313224280886796, guid: 74f0f99771668e045bc4fde30e1de57a, type: 3}
+    SpawnChance: 1
+  - EnemyPrefab: {fileID: 3224313224280886796, guid: 74f0f99771668e045bc4fde30e1de57a, type: 3}
+    SpawnChance: 1

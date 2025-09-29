@@ -15208,8 +15208,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ordinaryChunkConfigs:
-  - {fileID: 11400000, guid: 48e5130c496859b489b4fa71454580aa, type: 2}
-  bossChunkConfigs: []
+  - {fileID: 11400000, guid: 2d6fadba377c840449967765702bdd65, type: 2}
+  bossChunkConfigs:
+  - {fileID: 11400000, guid: 189b4ced87fbfc54186da7ce046c41ea, type: 2}
   chunksAhead: 1
   minChunksBeforeBoss: 5
   maxChunksBeforeBoss: 7

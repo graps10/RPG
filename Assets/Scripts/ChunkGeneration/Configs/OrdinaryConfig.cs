@@ -4,16 +4,17 @@ using UnityEngine;
 namespace ChunkGeneration.Configs
 {
     [CreateAssetMenu(fileName = "OrdinaryChunkConfig", menuName = "Level Generation/Chunk Config/Ordinary Config")]
-    public class OrdinaryConfig : ScriptableObject
+    public class OrdinaryConfig : ChunkConfig
     {
-        [Header("Enemy Settings")]
-        [SerializeField] private int minEnemies = 1;
-        [SerializeField] private int maxEnemies = 3;
-        [SerializeField] private List<EnemySpawnData> enemyTypes;
+        [Space]
+        [Header("Ordinary Chunk Enemy Settings")]
+        [SerializeField] private int minEnemies;
+        [SerializeField] private int maxEnemies;
+        [SerializeField] private List<EnemySpawnData> enemiesData;
 
         public int MinEnemies => minEnemies;
         public int MaxEnemies => maxEnemies;
-        public List<EnemySpawnData> EnemyTypes => enemyTypes;
+        public List<EnemySpawnData> EnemiesData => enemiesData;
     }
 }
 
