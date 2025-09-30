@@ -4,6 +4,7 @@ using Core;
 using Items_and_Inventory;
 using Player.States;
 using Skills;
+using Stats;
 using UnityEngine;
 
 namespace Player
@@ -47,6 +48,7 @@ namespace Player
     
         #endregion
         
+        public PlayerStats PlayerStats { get; private set; }
         public SkillManager Skill { get; private set; }
         public GameObject Sword { get; private set; }
 
@@ -89,8 +91,8 @@ namespace Player
         {
             base.Start();
 
+            PlayerStats = GetComponent<PlayerStats>();
             Fx = GetComponent<PlayerFX>();
-
             Skill = SkillManager.Instance;
 
             StateMachine.Initialize(IdleState);

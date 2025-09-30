@@ -27,10 +27,7 @@ namespace Core.Save_and_Load
             if (Instance != null)
                 Destroy(Instance.gameObject);
             else
-            {
                 Instance = this;
-                DontDestroyOnLoad(gameObject);
-            }
 
             _dataHandler = new FileDataHandler(Application.persistentDataPath, fileName, encryptData);
             _saveManagers = FindAllSaveManagers();

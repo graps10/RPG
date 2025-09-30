@@ -20,7 +20,7 @@ namespace Enemies.Base.States
         {
             base.Enter();
 
-            if (PlayerManager.Instance.PlayerStats.IsDead)
+            if (PlayerManager.Instance.PlayerGameObject.PlayerStats.IsDead)
                 stateMachine.ChangeState(enemy.MoveState);
             
             stateTimer = enemy.GetBattleTime();
