@@ -11,15 +11,15 @@ namespace Enemies.Slime
         
         public override void Update()
         {
-            base.Update();
-            
-            if (rb.velocity.y < 0.1f && enemy.IsGroundDetected())
+            if (enemy.IsGroundDetected())
             {
                 enemy.Fx.InvokeCancelColorChange(0);
                 enemy.Anim.SetTrigger(AnimatorHashes.StunFold);
                 
                 enemy.Stats.MakeInvincible(true);
             }
+            
+            base.Update();
         }
         
         public override void Exit()

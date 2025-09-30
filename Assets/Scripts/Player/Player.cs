@@ -48,7 +48,6 @@ namespace Player
     
         #endregion
         
-        public PlayerStats PlayerStats { get; private set; }
         public SkillManager Skill { get; private set; }
         public GameObject Sword { get; private set; }
 
@@ -90,8 +89,7 @@ namespace Player
         protected override void Start()
         {
             base.Start();
-
-            PlayerStats = GetComponent<PlayerStats>();
+            
             Fx = GetComponent<PlayerFX>();
             Skill = SkillManager.Instance;
 

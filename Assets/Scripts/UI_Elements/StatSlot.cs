@@ -37,7 +37,7 @@ namespace UI_Elements
         
         public void UpdateStatValueUI()
         {
-            PlayerStats playerStats = PlayerManager.Instance.PlayerGameObject.PlayerStats;
+            var playerStats = PlayerManager.Instance.PlayerGameObject.Stats as PlayerStats;
 
             if(playerStats != null)
             {
