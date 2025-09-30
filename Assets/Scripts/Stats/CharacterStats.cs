@@ -184,6 +184,8 @@ namespace Stats
 
         public virtual void DoMagicalDamage(CharacterStats targetStats)
         {
+            if (targetStats._isInvincible) return;
+           
             int _fireDamage = fireDamage.GetValue();
             int _iceDamage = iceDamage.GetValue();
             int _lightingDamage = lightingDamage.GetValue();

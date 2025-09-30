@@ -9,13 +9,11 @@ namespace Controllers.Skill_Controllers
     {
         protected virtual void OnTriggerEnter2D(Collider2D collision) 
         {
-            PlayerStats playerStats = PlayerManager.Instance.PlayerGameObject.GetComponent<PlayerStats>();
+            PlayerStats playerStats = PlayerManager.Instance.PlayerGameObject.Stats as PlayerStats;
+            EnemyStats enemyTarget = collision.GetComponent<EnemyStats>();
 
-            if(collision.GetComponent<Enemy>() != null)
-            {
-                EnemyStats enemyTarget = collision.GetComponent<EnemyStats>();
+            if (enemyTarget != null && playerStats != null)
                 playerStats.DoMagicalDamage(enemyTarget);
-            }
         }
     }
 }

@@ -32,7 +32,10 @@ namespace Enemies.Base.States
             if (enemy.IsPlayerDetected())
             {
                 stateTimer = enemy.GetBattleTime();
-
+                
+                if (moveDir != 0 && moveDir != enemy.FacingDir)
+                    enemy.Flip();
+                
                 if (enemy.IsPlayerDetected().distance < enemy.GetAttackDistance())
                 {
                     if (enemy is IAttackable attackable && attackable.CanAttack())
@@ -46,7 +49,7 @@ namespace Enemies.Base.States
                     flippedOnce = true;
                     enemy.Flip();
                 }
-
+                
                 if (CanReturnToIdle())
                     stateMachine.ChangeState(enemy.IdleState);
             }
@@ -54,9 +57,6 @@ namespace Enemies.Base.States
 
         protected virtual void ChasePlayer()
         {
-            if (!enemy.IsPlayerDetected()) 
-                return;
-            
             if (enemy.IsPlayerDetected().distance < enemy.GetAttackDistance() - ATTACK_DISTANCE_THRESHOLD)
                 enemy.Anim.SetFloat(AnimatorHashes.XVelocity, 0);
             else

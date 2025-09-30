@@ -25,7 +25,7 @@ namespace Items_and_Inventory.Effects
                 
                 newIceAndFire.GetComponent<Rigidbody2D>().velocity = new Vector2(xVelocity * player.FacingDir, 0);
 
-                PoolManager.Instance.Return("fx", newIceAndFire, Return_To_Pool_Delay);
+                PoolManager.Instance.Return(PoolNames.FX, newIceAndFire, Return_To_Pool_Delay);
             }
         }
     }
