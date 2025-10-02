@@ -240,7 +240,7 @@ namespace Controllers.Skill_Controllers
       if (_player.Skill.Sword.IsVulnerableUnlocked())
         enemyStats.MakeVulnerableFor(_freezeTimeDuration);
 
-      ItemData_Equipment equippedAmulet = Inventory.Instance.GetEquipment(EquipmentType.Amulet);
+      ItemData_Equipment equippedAmulet = Inventory.Instance.GetEquippedItem(EquipmentType.Amulet);
 
       if (equippedAmulet != null)
         equippedAmulet.Effect(enemy.transform);

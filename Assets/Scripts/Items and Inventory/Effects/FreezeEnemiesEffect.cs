@@ -19,7 +19,7 @@ namespace Items_and_Inventory.Effects
 
             if(playerStats.CurrentHealth > playerStats.GetMaxHealthValue() * Low_Health_Threshold) return;
 
-            if(!Inventory.Instance.CanUseArmor()) return;
+            if(!Inventory.Instance.GetEquipmentCooldowns().CanUseArmor()) return;
 
             Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, Freeze_Radius);
 

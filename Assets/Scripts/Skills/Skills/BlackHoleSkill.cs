@@ -3,7 +3,6 @@ using Controllers.Skill_Controllers;
 using Managers;
 using UI_Elements;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace Skills.Skills
 {

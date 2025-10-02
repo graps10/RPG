@@ -70,7 +70,7 @@ namespace Stats
                 AudioManager.Instance.PlaySFX(SFXEnum.WomanStruggle);
             }
         
-            ItemData_Equipment currentArmor = Inventory.Instance.GetEquipment(EquipmentType.Armor);
+            ItemData_Equipment currentArmor = Inventory.Instance.GetEquippedItem(EquipmentType.Armor);
 
             if (currentArmor != null)
                 currentArmor.Effect(_player.transform);

@@ -91,7 +91,7 @@ namespace Controllers.Skill_Controllers
                     hit.GetComponent<Entity.Entity>().SetupKnockbackDir(transform);
                     _player.Stats.DoMagicalDamage(hit.GetComponent<CharacterStats>());
 
-                    ItemData_Equipment equippedAmulet = Inventory.Instance.GetEquipment(EquipmentType.Amulet);
+                    ItemData_Equipment equippedAmulet = Inventory.Instance.GetEquippedItem(EquipmentType.Amulet);
 
                     if (equippedAmulet != null)
                         equippedAmulet.Effect(hit.transform);

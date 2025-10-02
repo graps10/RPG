@@ -1,7 +1,5 @@
-using Items_and_Inventory;
 using UI_Elements;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace Skills.Skills
 {
@@ -45,7 +43,7 @@ namespace Skills.Skills
             if(unlockDodgeButton.Unlocked && !_dodgeUnlocked)
             {
                 player.Stats.evasion.AddModifier(evasionAmount);
-                Inventory.Instance.UpdateStatsUI();
+                // Inventory.Instance.UpdateStatsUI();
                 _dodgeUnlocked = true;
             } 
         }

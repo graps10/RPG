@@ -43,7 +43,7 @@ namespace Player
 
         private void WeaponEffect(Transform target)
         {
-            ItemData_Equipment weaponData = Inventory.Instance.GetEquipment(EquipmentType.Weapon);
+            ItemData_Equipment weaponData = Inventory.Instance.GetEquippedItem(EquipmentType.Weapon);
 
             if (weaponData != null)
                 weaponData.Effect(target.transform);

@@ -50,10 +50,10 @@ namespace UI_Elements
             UpdateSkillCooldownUI(blackHoleImage, 
                 _skills.BlackHole.GetCooldownRemaining(), _skills.BlackHole.GetCooldownDuration());
             
-            if (Input.GetKeyDown(KeyCode.E) && Inventory.Instance.GetEquipment(EquipmentType.Flask) != null)
+            if (Input.GetKeyDown(KeyCode.E) && Inventory.Instance.GetEquippedItem(EquipmentType.Flask) != null)
                 SetCooldownOf(flaskImage);
 
-            CheckCooldownOf(flaskImage, Inventory.Instance.GetFlaskCooldown());
+            CheckCooldownOf(flaskImage, Inventory.Instance.GetEquipmentCooldowns().GetFlaskCooldown());
         }
 
         private void UpdateSoulsUI()

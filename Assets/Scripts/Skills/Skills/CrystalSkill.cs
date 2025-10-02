@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using Controllers.Skill_Controllers;
 using UI_Elements;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace Skills.Skills
 {

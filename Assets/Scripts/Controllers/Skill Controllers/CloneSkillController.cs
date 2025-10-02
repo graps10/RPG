@@ -103,7 +103,7 @@ namespace Controllers.Skill_Controllers
 
                     if (_player.Skill.Clone.CanApplyOnHitEffect())
                     {
-                        ItemData_Equipment weaponData = Inventory.Instance.GetEquipment(EquipmentType.Weapon);
+                        ItemData_Equipment weaponData = Inventory.Instance.GetEquippedItem(EquipmentType.Weapon);
 
                         if (weaponData != null)
                             weaponData.Effect(hit.transform);

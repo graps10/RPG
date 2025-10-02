@@ -4958,6 +4958,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f3799f6380af8f4e8844602ae838fce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ui:
+    inventorySlotParent: {fileID: 1162565277}
+    stashSlotParent: {fileID: 1681491881}
+    equipmentSlotParent: {fileID: 664557241}
+    statSlotParent: {fileID: 2134590434}
   startingItems:
   - {fileID: 11400000, guid: e2fac72d89a1ca949b1846de1228d215, type: 2}
   - {fileID: 11400000, guid: 3033d33e400f6194aa86d3af11116422, type: 2}
@@ -4978,12 +4983,7 @@ MonoBehaviour:
   equipment: []
   inventory: []
   stash: []
-  inventorySlotParent: {fileID: 1162565277}
-  stashSlotParent: {fileID: 1681491881}
-  equipmentSlotParent: {fileID: 664557241}
-  statSlotParent: {fileID: 2134590434}
   itemDataBase:
-  - {fileID: 0}
   - {fileID: 0}
   - {fileID: 11400000, guid: 7e3cbe6980b75464392d5d10bb651ff0, type: 2}
   - {fileID: 11400000, guid: e5160fcc0422b374ea14c3bc80bdddea, type: 2}

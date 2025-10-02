@@ -115,7 +115,7 @@ namespace Player
                 Skill.Crystal.CanUseSkill();
 
             if (Input.GetKeyDown(KeyCode.E))
-                Inventory.Instance.UseFlask();
+                Inventory.Instance.GetEquipmentCooldowns().TryUseFlask();
         }
 
         public override void Die()

@@ -102,14 +102,18 @@ namespace Items_and_Inventory
             return sb.ToString();
         }
 
-        public void Effect(Transform enemyPosition)
+        public void Effect(Transform enemyPosition = null)
         {
             foreach (var item in itemEffects)
             {
                 if(item is BuffEffect or HealEffect)
                     item.ExecuteEffect();
                 else
-                    item.ExecuteEffect(enemyPosition);
+                {
+                    if(enemyPosition != null)
+                        item.ExecuteEffect(enemyPosition);
+                }
+                    
             }
         }
         
