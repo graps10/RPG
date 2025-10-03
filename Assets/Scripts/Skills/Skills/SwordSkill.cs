@@ -1,4 +1,4 @@
-using Controllers.Skill_Controllers;
+using Core.Factories;
 using Managers;
 using UI_Elements;
 using UnityEngine;
@@ -137,26 +137,25 @@ namespace Skills.Skills
 
         public void CreateSword()
         {
-            GameObject newSword = Instantiate(swordPrefab, player.transform.position, transform.rotation);
-            SwordSkillController newSwordScript = newSword.GetComponent<SwordSkillController>();
-
-            switch (swordType)
+            var config = new SwordConfig
             {
-                case SwordType.Bounce:
-                    newSwordScript.SetupBounce(true, bounceAmount, bounceSpeed);
-                    break;
-                case SwordType.Pierce:
-                    newSwordScript.SetupPierce(pierceAmount);
-                    break;
-                case SwordType.Spin:
-                    newSwordScript.SetupSpin(true, maxTravelDistance, spinDuration, hitCooldown);
-                    break;
-            }
-
-            newSwordScript.SetupSword(_finalDir, swordGravity, player, freezeTimeDuration, returnSpeed);
-
-            player.AssignNewSword(newSword);
-
+                Direction = _finalDir,
+                Gravity = swordGravity,
+                Player = player,
+                FreezeTimeDuration = freezeTimeDuration,
+                ReturnSpeed = returnSpeed,
+                BounceAmount = bounceAmount,
+                BounceSpeed = bounceSpeed,
+                PierceAmount = pierceAmount,
+                MaxTravelDistance = maxTravelDistance,
+                SpinDuration = spinDuration,
+                HitCooldown = hitCooldown
+            };
+            
+            var swordController = SwordFactory.CreateSword(swordType, swordPrefab, 
+                player.transform.position, transform.rotation, config);
+            
+            player.AssignNewSword(swordController.gameObject);
             DotsActive(false);
         }
 

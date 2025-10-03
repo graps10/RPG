@@ -1,4 +1,4 @@
-using Controllers.Skill_Controllers;
+using Controllers.Skill_Controllers.SwordSkill;
 using UnityEngine;
 
 namespace Player.States
