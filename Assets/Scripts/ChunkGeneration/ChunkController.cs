@@ -20,6 +20,8 @@ namespace ChunkGeneration
 
         private ChunkConfig _config;
         private ChunkGenerator _levelGenerator;
+        
+        private LocationTheme _chunkTheme;
 
         private List<GameObject> _spawnedEnemies = new();
         private bool _isBossChunk;
@@ -27,10 +29,11 @@ namespace ChunkGeneration
         
         private Coroutine _checkChunkCoroutine;
 
-        public void Initialize(ChunkConfig config, ChunkGenerator generator, bool isBossChunk)
+        public void Initialize(ChunkConfig config, ChunkGenerator generator, LocationTheme theme, bool isBossChunk)
         {
             _config = config;
             _levelGenerator = generator;
+            _chunkTheme = theme;
             _isBossChunk = isBossChunk;
 
             UnlockDoors();
@@ -51,7 +54,11 @@ namespace ChunkGeneration
         }
 
         #region Triggers
-        public void OnPlayerEntry() => LockDoors();
+        public void OnPlayerEntry()
+        {
+            _levelGenerator.UpdateActiveTheme(_chunkTheme);
+            LockDoors();
+        }
         public void OnPlayerExitedLastChunk() => _levelGenerator.OnPlayerExitedLastChunk();
         public void OnPlayerExitedCurrentChunk() => Debug.Log("Player exited chunk");
 

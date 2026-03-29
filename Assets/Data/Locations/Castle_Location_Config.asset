@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 346e6a7eef9678a4385a4d49baf37e69, type: 3}
+  m_Name: Castle_Location_Config
+  m_EditorClassIdentifier: 
+  theme: 2
+  chunksPerTheme: 1
+  ordinaryChunks:
+  - {fileID: 11400000, guid: e618917e4f822ca46af509d5a2e56a19, type: 2}
+  bossChunks:
+  - {fileID: 11400000, guid: 189b4ced87fbfc54186da7ce046c41ea, type: 2}

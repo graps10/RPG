@@ -5,6 +5,7 @@ namespace Items_and_Inventory
 {
     public class PlayerItemDrop : ItemDrop
     {
+        // TODO: make item pool not serializable for player
         [Header("Player's Drop")]
         [SerializeField] private float chanceToLooseItems;
         [SerializeField] private float chanceToLooseMaterials;

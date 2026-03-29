@@ -22,7 +22,7 @@ namespace Core.Save_and_Load
 
         public GameData()
         {
-            SetCurrency(0);
+            SetCurrency(1000000);
 
             SetLostCurrencyAmount(0);
             SetSpawnLostCurrencyRange(Vector2.zero);

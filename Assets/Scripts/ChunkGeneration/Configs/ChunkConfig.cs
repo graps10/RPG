@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace ChunkGeneration.Configs
@@ -12,8 +11,6 @@ namespace ChunkGeneration.Configs
         
         public float ChunkLength => chunkLength;
     }
-
-
     
     [System.Serializable]
     public class EnemySpawnData

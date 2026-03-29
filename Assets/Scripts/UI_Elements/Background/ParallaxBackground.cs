@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace UI_Elements
+namespace UI_Elements.Background
 {
     public class ParallaxBackground : MonoBehaviour
     {

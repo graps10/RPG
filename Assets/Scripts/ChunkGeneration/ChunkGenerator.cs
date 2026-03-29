@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using ChunkGeneration.Configs;
 using Core.ObjectPool;
@@ -8,21 +9,38 @@ namespace ChunkGeneration
 {
     public class ChunkGenerator : MonoBehaviour
     {
-        [SerializeField] private List<ChunkConfig> ordinaryChunkConfigs;
-        [SerializeField] private List<ChunkConfig> bossChunkConfigs;
+        [Header("World Progression")]
+        [Tooltip("Valley, Forest, Castle")]
+        [SerializeField] private List<LocationConfig> locations; 
+        
+        [Header("Generation Rules")]
         [SerializeField] private int chunksAhead = 1;
-        [SerializeField] private int minChunksBeforeBoss = 5;
-        [SerializeField] private int maxChunksBeforeBoss = 7;
 
+        public static int LoopCount { get; private set; } = 0; 
+        public static float DifficultyMultiplier => 1f + (LoopCount * 0.5f); 
+        
+        public static event Action<LocationTheme> OnThemeChanged;
+
+        private int _currentLocationIndex;
+        private LocationTheme _activeTheme;
+        
         private Queue<GameObject> _activeChunks = new();
         private float _nextSpawnPosition;
         private Transform _playerSpawnSpot;
-        private int _chunksSinceLastBoss;
-        private int _nextBossAtChunk;
+        
+        private int _chunksSpawnedInCurrentTheme;
+        private bool _isSpawningBoss;
 
         private void Start()
         {
-            CalculateNextBossChunk();
+            if (locations == null || locations.Count == 0)
+            {
+                Debug.LogError("No locations assigned to ChunkGenerator!");
+                return;
+            }
+            
+            _activeTheme = locations[0].Theme;
+
             for (int i = 0; i < chunksAhead; i++)
                 SpawnNextChunk();
 
@@ -41,40 +59,73 @@ namespace ChunkGeneration
             SpawnNextChunk();
         }
 
-        private void CalculateNextBossChunk()
-        {
-            _nextBossAtChunk = Random.Range(minChunksBeforeBoss, maxChunksBeforeBoss + 1);
-            _chunksSinceLastBoss = 0;
-        }
-
         private void SpawnNextChunk()
         {
-            _chunksSinceLastBoss++;
-            bool spawnBoss = _chunksSinceLastBoss >= _nextBossAtChunk;
+            LocationConfig currentLocation = locations[_currentLocationIndex];
+            ChunkConfig chunkToSpawn = null;
+            bool spawningBossChunk = false;
+            
+            if (_isSpawningBoss)
+            {
+                chunkToSpawn = currentLocation.GetRandomBossChunk();
+                spawningBossChunk = true;
+                _isSpawningBoss = false;
+                
+                AdvanceToNextLocation();
+            }
+            else
+            {
+                chunkToSpawn = currentLocation.GetRandomOrdinaryChunk();
+                _chunksSpawnedInCurrentTheme++;
+                
+                if (_chunksSpawnedInCurrentTheme >= currentLocation.ChunksPerTheme)
+                {
+                    if (currentLocation.HasBoss)
+                        _isSpawningBoss = true;
+                    else
+                        AdvanceToNextLocation();
+                }
+            }
 
-            ChunkConfig randomChunk = GetRandomChunkConfig(spawnBoss);
+            if (chunkToSpawn == null)
+            {
+                Debug.LogError($"No valid chunk found for location {currentLocation.Theme}! Check your configs.");
+                return;
+            }
+            
             GameObject newChunk = PoolManager.Instance.Spawn(PoolNames.CHUNK, 
                 new Vector3(_nextSpawnPosition, 0, 0), Quaternion.identity);
 
             ChunkController chunkController = newChunk.GetComponent<ChunkController>();
-            chunkController.Initialize(randomChunk, this, spawnBoss);
+            chunkController.Initialize(chunkToSpawn, this, currentLocation.Theme,spawningBossChunk);
 
-            _nextSpawnPosition += randomChunk.ChunkLength;
+            _nextSpawnPosition += chunkToSpawn.ChunkLength;
             _activeChunks.Enqueue(newChunk);
-
-            if (spawnBoss)
-                CalculateNextBossChunk();
 
             if (_playerSpawnSpot == null)
                 _playerSpawnSpot = chunkController.GetPlayerSpawnSpot();
         }
 
-        private ChunkConfig GetRandomChunkConfig(bool spawnBoss)
+        private void AdvanceToNextLocation()
         {
-            if (spawnBoss && bossChunkConfigs.Count > 0)
-                return bossChunkConfigs[Random.Range(0, bossChunkConfigs.Count)];
-
-            return ordinaryChunkConfigs[Random.Range(0, ordinaryChunkConfigs.Count)];
+            _chunksSpawnedInCurrentTheme = 0;
+            _currentLocationIndex++;
+            
+            if (_currentLocationIndex >= locations.Count)
+            {
+                _currentLocationIndex = 0;
+                LoopCount++;
+                Debug.Log($"Loop {LoopCount} started! Difficulty is now x{DifficultyMultiplier}");
+            }
+        }
+        
+        public void UpdateActiveTheme(LocationTheme newTheme)
+        {
+            if (_activeTheme != newTheme)
+            {
+                _activeTheme = newTheme;
+                OnThemeChanged?.Invoke(_activeTheme); 
+            }
         }
     }
 }

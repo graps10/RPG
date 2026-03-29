@@ -17,7 +17,7 @@ namespace Skills
 
         protected virtual void Start()
         {
-            player = PlayerManager.Instance.PlayerGameObject;
+            player = PlayerManager.Instance.PlayerGameObject; // TODO: Change player spawning logic
 
             CheckUnlock();
         }
