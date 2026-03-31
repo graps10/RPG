@@ -9,6 +9,7 @@ namespace ChunkGeneration.Configs
         [SerializeField] private GameObject chunkPrefab;
         [SerializeField] private float chunkLength;
         
+        public GameObject ChunkPrefab => chunkPrefab;
         public float ChunkLength => chunkLength;
     }
     

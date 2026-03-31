@@ -11,23 +11,23 @@ namespace ChunkGeneration
     {
         [Header("World Progression")]
         [Tooltip("Valley, Forest, Castle")]
-        [SerializeField] private List<LocationConfig> locations; 
-        
+        [SerializeField] private List<LocationConfig> locations;
+
         [Header("Generation Rules")]
         [SerializeField] private int chunksAhead = 1;
 
-        public static int LoopCount { get; private set; } = 0; 
-        public static float DifficultyMultiplier => 1f + (LoopCount * 0.5f); 
-        
+        public static int LoopCount { get; private set; } = 0;
+        public static float DifficultyMultiplier => 1f + (LoopCount * 0.5f);
+
         public static event Action<LocationTheme> OnThemeChanged;
 
         private int _currentLocationIndex;
         private LocationTheme _activeTheme;
-        
+
         private Queue<GameObject> _activeChunks = new();
         private float _nextSpawnPosition;
         private Transform _playerSpawnSpot;
-        
+
         private int _chunksSpawnedInCurrentTheme;
         private bool _isSpawningBoss;
 
@@ -38,7 +38,7 @@ namespace ChunkGeneration
                 Debug.LogError("No locations assigned to ChunkGenerator!");
                 return;
             }
-            
+
             _activeTheme = locations[0].Theme;
 
             for (int i = 0; i < chunksAhead; i++)
@@ -64,20 +64,20 @@ namespace ChunkGeneration
             LocationConfig currentLocation = locations[_currentLocationIndex];
             ChunkConfig chunkToSpawn = null;
             bool spawningBossChunk = false;
-            
+
             if (_isSpawningBoss)
             {
                 chunkToSpawn = currentLocation.GetRandomBossChunk();
                 spawningBossChunk = true;
                 _isSpawningBoss = false;
-                
+
                 AdvanceToNextLocation();
             }
             else
             {
                 chunkToSpawn = currentLocation.GetRandomOrdinaryChunk();
                 _chunksSpawnedInCurrentTheme++;
-                
+
                 if (_chunksSpawnedInCurrentTheme >= currentLocation.ChunksPerTheme)
                 {
                     if (currentLocation.HasBoss)
@@ -92,12 +92,12 @@ namespace ChunkGeneration
                 Debug.LogError($"No valid chunk found for location {currentLocation.Theme}! Check your configs.");
                 return;
             }
-            
-            GameObject newChunk = PoolManager.Instance.Spawn(PoolNames.CHUNK, 
-                new Vector3(_nextSpawnPosition, 0, 0), Quaternion.identity);
+
+            // TODO: Fix Pool Manager
+            GameObject newChunk = Instantiate(chunkToSpawn.ChunkPrefab, new Vector3(_nextSpawnPosition, 0, 0), Quaternion.identity);
 
             ChunkController chunkController = newChunk.GetComponent<ChunkController>();
-            chunkController.Initialize(chunkToSpawn, this, currentLocation.Theme,spawningBossChunk);
+            chunkController.Initialize(chunkToSpawn, this, currentLocation.Theme, spawningBossChunk);
 
             _nextSpawnPosition += chunkToSpawn.ChunkLength;
             _activeChunks.Enqueue(newChunk);
@@ -110,7 +110,7 @@ namespace ChunkGeneration
         {
             _chunksSpawnedInCurrentTheme = 0;
             _currentLocationIndex++;
-            
+
             if (_currentLocationIndex >= locations.Count)
             {
                 _currentLocationIndex = 0;
@@ -118,13 +118,13 @@ namespace ChunkGeneration
                 Debug.Log($"Loop {LoopCount} started! Difficulty is now x{DifficultyMultiplier}");
             }
         }
-        
+
         public void UpdateActiveTheme(LocationTheme newTheme)
         {
             if (_activeTheme != newTheme)
             {
                 _activeTheme = newTheme;
-                OnThemeChanged?.Invoke(_activeTheme); 
+                OnThemeChanged?.Invoke(_activeTheme);
             }
         }
     }

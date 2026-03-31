@@ -14,6 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Key: chunk
   Prefabs:
-  - {fileID: 752500295555284995, guid: f5a891b79a0276d43b70e28074f8cab7, type: 3}
-  InitialSize: 10
+  - {fileID: 752500295555284995, guid: 127c90d3111a75d40ab07a16cdfa1923, type: 3}
+  InitialSize: 3
   AllowExpand: 1

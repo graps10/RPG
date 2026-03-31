@@ -195,5 +195,32 @@ namespace ChunkGeneration
         }
         
         public Transform GetPlayerSpawnSpot() => playerSpawnSpot;
+        
+        #region Editor Debug
+
+#if UNITY_EDITOR
+        [Header("Editor Debug")]
+        [SerializeField] private ChunkConfig debugConfig;
+
+        private void OnDrawGizmos()
+        {
+            if (debugConfig == null) return;
+    
+            Vector3 centerPos = transform.position;
+            float halfLength = debugConfig.ChunkLength / 2f;
+            
+            Vector3 leftPos = centerPos - new Vector3(halfLength, 0, 0);
+            Vector3 rightPos = centerPos + new Vector3(halfLength, 0, 0);
+            
+            Gizmos.color = Color.green;
+            Gizmos.DrawLine(leftPos, rightPos);
+            
+            Gizmos.color = Color.red;
+            Gizmos.DrawLine(leftPos + Vector3.down * 10f, leftPos + Vector3.up * 10f);
+            Gizmos.DrawLine(rightPos + Vector3.down * 10f, rightPos + Vector3.up * 10f);
+        }
+#endif
+
+        #endregion
     }
 }
