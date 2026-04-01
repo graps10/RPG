@@ -2918,7 +2918,7 @@ GameObject:
   - component: {fileID: 7111224035438365699}
   - component: {fileID: 6824620947864973809}
   - component: {fileID: 8246877902695218647}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: GenerationTrigger
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3042,7 +3042,7 @@ GameObject:
   - component: {fileID: 8857290845588876189}
   - component: {fileID: 5896496804855299703}
   - component: {fileID: 4618994935457985039}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: EntryTrigger
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3058,7 +3058,7 @@ Transform:
   m_GameObject: {fileID: 3610781754808651067}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -23, y: 0, z: 0}
+  m_LocalPosition: {x: -22.5, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3163,7 +3163,7 @@ GameObject:
   - component: {fileID: 8957289480541555946}
   - component: {fileID: 3578868338291456173}
   - component: {fileID: 5520887514290418099}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: ExitTrigger
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3179,7 +3179,7 @@ Transform:
   m_GameObject: {fileID: 4428526767006627030}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 23, y: 0, z: 0}
+  m_LocalPosition: {x: 22.5, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3749,7 +3749,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4135051133476444781, guid: f6bfd7e0e1e12e7408e00c171df42074, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -7.4
+      value: -11
       objectReference: {fileID: 0}
     - target: {fileID: 4135051133476444781, guid: f6bfd7e0e1e12e7408e00c171df42074, type: 3}
       propertyPath: m_LocalPosition.z

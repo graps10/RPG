@@ -16,4 +16,8 @@ MonoBehaviour:
   chunksPerTheme: 1
   ordinaryChunks:
   - {fileID: 11400000, guid: dccc2336a0fd8ed4abdd78ed2b07f782, type: 2}
+  - {fileID: 11400000, guid: 69a8bd8c70aab0d4ba753d65a337fed6, type: 2}
+  - {fileID: 11400000, guid: e70186e139fa2a147a1a4b899f7b942f, type: 2}
+  - {fileID: 11400000, guid: fa78bf4969994ec408d4fe86f75ef6ff, type: 2}
+  - {fileID: 11400000, guid: 87c3fe65d2a325a4e9aed2affeba8a63, type: 2}
   bossChunks: []

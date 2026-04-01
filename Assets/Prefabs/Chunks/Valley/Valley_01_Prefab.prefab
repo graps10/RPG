@@ -2140,7 +2140,7 @@ GameObject:
   - component: {fileID: 7111224035438365699}
   - component: {fileID: 6824620947864973809}
   - component: {fileID: 8246877902695218647}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: GenerationTrigger
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2263,7 +2263,7 @@ GameObject:
   - component: {fileID: 8857290845588876189}
   - component: {fileID: 5896496804855299703}
   - component: {fileID: 4618994935457985039}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: EntryTrigger
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2384,7 +2384,7 @@ GameObject:
   - component: {fileID: 8957289480541555946}
   - component: {fileID: 3578868338291456173}
   - component: {fileID: 5520887514290418099}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: ExitTrigger
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2980,7 +2980,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4135051133476444781, guid: f6bfd7e0e1e12e7408e00c171df42074, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -9
+      value: -12
       objectReference: {fileID: 0}
     - target: {fileID: 4135051133476444781, guid: f6bfd7e0e1e12e7408e00c171df42074, type: 3}
       propertyPath: m_LocalPosition.z
@@ -3020,7 +3020,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7724545546272873636, guid: f6bfd7e0e1e12e7408e00c171df42074, type: 3}
       propertyPath: m_Size.x
-      value: 35
+      value: 37
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

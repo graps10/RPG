@@ -18,4 +18,5 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 8a893fd9fbaa1614e9737a21c0c317c1, type: 2}
   - {fileID: 11400000, guid: 33c49a7cca31e5b45acb15a47ca60550, type: 2}
   - {fileID: 11400000, guid: bf91e8e55c46932429b0d7bcc9eef538, type: 2}
+  - {fileID: 11400000, guid: d280d49407ce1844da425874074c24b5, type: 2}
   bossChunks: []

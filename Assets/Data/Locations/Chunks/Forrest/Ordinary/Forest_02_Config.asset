@@ -10,16 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8f9650e639e77a749aa7abd2b2f722da, type: 3}
-  m_Name: Forest_01_Config
+  m_Name: Forest_02_Config
   m_EditorClassIdentifier: 
   chunkPrefab: {fileID: 752500295555284995, guid: f8cfeb7aad345414eb1617e049b3759f, type: 3}
-  chunkLength: 50
+  chunkLength: 55
   minEnemies: 2
   maxEnemies: 3
   enemiesData:
   - EnemyPrefab: {fileID: 233287652356747905, guid: 5c84086843a841f4d9ac6a254757bcf7, type: 3}
-    SpawnChance: 0.65
+    SpawnChance: 0.5
   - EnemyPrefab: {fileID: 50979775065540776, guid: e442bc2694c7c024d9c83152ba4627f2, type: 3}
-    SpawnChance: 0.65
-  - EnemyPrefab: {fileID: 3224313224280886796, guid: 74f0f99771668e045bc4fde30e1de57a, type: 3}
-    SpawnChance: 0.35
+    SpawnChance: 0.5
