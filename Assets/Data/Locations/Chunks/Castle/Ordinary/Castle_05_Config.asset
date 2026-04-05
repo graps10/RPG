@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8f9650e639e77a749aa7abd2b2f722da, type: 3}
+  m_Name: Castle_05_Config
+  m_EditorClassIdentifier: 
+  chunkPrefab: {fileID: 752500295555284995, guid: 04cb3d90d9a7830408b90dec9275e02c, type: 3}
+  chunkLength: 65
+  minEnemies: 9
+  maxEnemies: 10
+  enemiesData:
+  - EnemyPrefab: {fileID: 233287652356747905, guid: 5c84086843a841f4d9ac6a254757bcf7, type: 3}
+    SpawnChance: 0.75
+  - EnemyPrefab: {fileID: 50979775065540776, guid: e442bc2694c7c024d9c83152ba4627f2, type: 3}
+    SpawnChance: 0.65
+  - EnemyPrefab: {fileID: 5086862662968306678, guid: 222bd04128ea92b40b3ec6b2f65a8db3, type: 3}
+    SpawnChance: 0.45
+  - EnemyPrefab: {fileID: 3224313224280886796, guid: 74f0f99771668e045bc4fde30e1de57a, type: 3}
+    SpawnChance: 0.35

@@ -10,11 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c882e9f2c428f184c8a9f3d3b33e57ff, type: 3}
-  m_Name: BossChunkConfig
+  m_Name: Castle_Boss_Config
   m_EditorClassIdentifier: 
-  theme: 2
-  chunkPrefab: {fileID: 752500295555284995, guid: f5a891b79a0276d43b70e28074f8cab7, type: 3}
-  chunkLength: 72
+  chunkPrefab: {fileID: 752500295555284995, guid: 52e4f9aaa8e933649bf2ab022934e1cc, type: 3}
+  chunkLength: 85
   bossData:
     EnemyPrefab: {fileID: 8809330246300682694, guid: af1d4be28526f8547879feba27b2ddb8, type: 3}
     SpawnChance: 1

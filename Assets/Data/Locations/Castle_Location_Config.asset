@@ -13,8 +13,13 @@ MonoBehaviour:
   m_Name: Castle_Location_Config
   m_EditorClassIdentifier: 
   theme: 2
-  chunksPerTheme: 1
+  chunksPerTheme: 6
   ordinaryChunks:
-  - {fileID: 11400000, guid: e618917e4f822ca46af509d5a2e56a19, type: 2}
+  - {fileID: 11400000, guid: 674bd4ebdc32aec4fb461740b1ae8364, type: 2}
+  - {fileID: 11400000, guid: 901ed45063eae4e49aa4d09d3fe1f21d, type: 2}
+  - {fileID: 11400000, guid: 6ed43aaaa6c7b674494e6a679d3ccfc7, type: 2}
+  - {fileID: 11400000, guid: b02b166db3e73754db15dc8799b4e33c, type: 2}
+  - {fileID: 11400000, guid: b6a96346d582d934789fbef5fe4ff574, type: 2}
+  - {fileID: 11400000, guid: 8cadffa7fe5d27749becaadd0de36343, type: 2}
   bossChunks:
   - {fileID: 11400000, guid: 189b4ced87fbfc54186da7ce046c41ea, type: 2}

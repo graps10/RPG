@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Forest_Location_Config
   m_EditorClassIdentifier: 
   theme: 1
-  chunksPerTheme: 1
+  chunksPerTheme: 5
   ordinaryChunks:
   - {fileID: 11400000, guid: dccc2336a0fd8ed4abdd78ed2b07f782, type: 2}
   - {fileID: 11400000, guid: 69a8bd8c70aab0d4ba753d65a337fed6, type: 2}

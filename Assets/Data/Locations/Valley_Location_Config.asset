@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Valley_Location_Config
   m_EditorClassIdentifier: 
   theme: 0
-  chunksPerTheme: 3
+  chunksPerTheme: 4
   ordinaryChunks:
   - {fileID: 11400000, guid: 8a893fd9fbaa1614e9737a21c0c317c1, type: 2}
   - {fileID: 11400000, guid: 33c49a7cca31e5b45acb15a47ca60550, type: 2}
