@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 4702995280263812873}
   - component: {fileID: 1216330632070980798}
   - component: {fileID: 1443439969091068502}
+  - component: {fileID: 3565648858792789450}
   m_Layer: 0
   m_Name: HitFX_00
   m_TagString: Untagged
@@ -106,3 +107,15 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &3565648858792789450
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1699656547998446530}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c419e032798e4140b29353c6b35a73a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

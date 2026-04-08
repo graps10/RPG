@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8f9650e639e77a749aa7abd2b2f722da, type: 3}
   m_Name: Forest_03_Config
   m_EditorClassIdentifier: 
-  chunkPrefab: {fileID: 752500295555284995, guid: 82f632eaa92bfdd439394f3753b5517b, type: 3}
+  prefab: {fileID: 4001723277648283666, guid: 82f632eaa92bfdd439394f3753b5517b, type: 3}
   chunkLength: 55
   minEnemies: 4
   maxEnemies: 5

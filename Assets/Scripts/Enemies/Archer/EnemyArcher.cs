@@ -1,23 +1,23 @@
 using Controllers;
 using Core;
 using Core.Interfaces;
-using Core.ObjectPool;
+using Core.ObjectPool.Configs;
 using Core.Utilities;
 using Enemies.Base;
-using Managers;
 using UnityEngine;
+using PoolManager = Core.ObjectPool.PoolManager;
 
 namespace Enemies.Archer
 {
     public class EnemyArcher : Enemy, IAttackable, IStunnable, IJumpable
     {
         [Header("Archer Specific")]
-        [SerializeField] private float arrowSpeed;
+        [SerializeField] private ArrowPoolConfig arrowConfig;
         [SerializeField] private Vector2 jumpVelocity;
         [SerializeField] private float jumpCooldown;
         [SerializeField] private float safeDistance; // how close player should be to trigger jump on battle state
         [SerializeField] private float lastTimeJumped;
-
+        
         [Header("Additional Collision Check")]
         [SerializeField] private Transform groundBehindCheck;
         [SerializeField] private Vector2 groundBehindCheckSize;
@@ -99,8 +99,8 @@ namespace Enemies.Archer
             var rotation = FacingDir == 1 ? Vector3.zero : TransformUtils.FlipAngle;
             Quaternion arrowRotation = Quaternion.Euler(rotation);
 
-            GameObject newArrow = PoolManager.Instance.Spawn(PoolNames.ARROW, attackCheck.position, arrowRotation);
-            newArrow.GetComponent<ArrowController>().SetupArrow(Stats, arrowSpeed * FacingDir);
+            GameObject newArrow = PoolManager.Instance.Spawn(arrowConfig.Prefab, attackCheck.position, arrowRotation);
+            newArrow.GetComponent<ArrowController>().SetupArrow(Stats, arrowConfig, FacingDir);
         }
 
         public Vector2 GetJumpVelocity() => jumpVelocity;

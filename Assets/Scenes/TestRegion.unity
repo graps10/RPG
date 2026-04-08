@@ -4118,18 +4118,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 318655942}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 288967e6acf6155449771ab63a57930f, type: 3}
+  m_Script: {fileID: 11500000, guid: 6abc00f863114f75b415f8a44b6ee78b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  poolConfigs:
-  - {fileID: 11400000, guid: c6c44c41b9cc59e499ef1413748f9260, type: 2}
-  - {fileID: 11400000, guid: d2307f14ca3d48642a59a04e266f7d71, type: 2}
-  - {fileID: 11400000, guid: 23345cc292470f14c94ab9c1cf38e96c, type: 2}
-  - {fileID: 11400000, guid: c60cf6e22adea4348a92f2615953669d, type: 2}
-  - {fileID: 11400000, guid: 4d0137366955384499c2353da6e624f5, type: 2}
-  - {fileID: 11400000, guid: 3717f6eff98d86d4e932fc64ae480159, type: 2}
-  - {fileID: 11400000, guid: 4c703fc621d59f94fb6f3f2c6974efeb, type: 2}
-  - {fileID: 11400000, guid: 7f62008420b818d40b1b52ccb2e91db9, type: 2}
 --- !u!4 &318655944
 Transform:
   m_ObjectHideFlags: 0

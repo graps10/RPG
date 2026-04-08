@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 546726c034b54721873064ede8458aa0, type: 3}
+  m_Name: ArrowPoolConfig
+  m_EditorClassIdentifier: 
+  prefab: {fileID: 3195399012004361935, guid: 3987992e824b7154d819f73b20be679c, type: 3}
+  damage: 25
+  speed: 7
+  hitReturnDelay: 6
+  missReturnDelay: 15
+  whatIsPlayer:
+    serializedVersion: 2
+    m_Bits: 64
+  whatIsEnemy:
+    serializedVersion: 2
+    m_Bits: 128
+  whatIsGround:
+    serializedVersion: 2
+    m_Bits: 8

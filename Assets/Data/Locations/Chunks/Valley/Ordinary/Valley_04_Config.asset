@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8f9650e639e77a749aa7abd2b2f722da, type: 3}
   m_Name: Valley_04_Config
   m_EditorClassIdentifier: 
-  chunkPrefab: {fileID: 752500295555284995, guid: c3c50b8d4e9445a4cb29b219cb6456c8, type: 3}
+  prefab: {fileID: 4001723277648283666, guid: c3c50b8d4e9445a4cb29b219cb6456c8, type: 3}
   chunkLength: 45
   minEnemies: 3
   maxEnemies: 4

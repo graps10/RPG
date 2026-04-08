@@ -9,11 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 06812537e082f0f45b2388ab44d6f738, type: 3}
-  m_Name: ShockStrikesPoolConfig
+  m_Script: {fileID: 11500000, guid: 4c1cec1088ef4197bdc2dfc53d307170, type: 3}
+  m_Name: ItemDropPoolConfig
   m_EditorClassIdentifier: 
-  Key: shockStrike
-  Prefabs:
-  - {fileID: 8912282936253123872, guid: 4d37f0b7dda799247959915ab3f3ee67, type: 3}
-  InitialSize: 10
-  AllowExpand: 1
+  prefab: {fileID: 7276896820485575511, guid: e6e381a1def9d2c4599315b197d60c1c, type: 3}

@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
 using ChunkGeneration.Configs;
-using Core.ObjectPool;
 using Managers;
 using UnityEngine;
+using PoolManager = Core.ObjectPool.PoolManager;
 
 namespace ChunkGeneration
 {
@@ -53,7 +53,7 @@ namespace ChunkGeneration
             if (_activeChunks.Count > chunksAhead)
             {
                 GameObject oldestChunk = _activeChunks.Dequeue();
-                PoolManager.Instance.Return(PoolNames.CHUNK, oldestChunk);
+                PoolManager.Instance.Return(oldestChunk);
             }
 
             SpawnNextChunk();
@@ -67,7 +67,7 @@ namespace ChunkGeneration
 
             if (_isSpawningBoss)
             {
-                chunkToSpawn = currentLocation.GetRandomBossChunk();
+                chunkToSpawn = currentLocation.GetBossChunk(LoopCount);
                 spawningBossChunk = true;
                 _isSpawningBoss = false;
 
@@ -75,7 +75,7 @@ namespace ChunkGeneration
             }
             else
             {
-                chunkToSpawn = currentLocation.GetRandomOrdinaryChunk();
+                chunkToSpawn = currentLocation.GetOrdinaryChunk(_chunksSpawnedInCurrentTheme);
                 _chunksSpawnedInCurrentTheme++;
 
                 if (_chunksSpawnedInCurrentTheme >= currentLocation.ChunksPerTheme)
@@ -93,9 +93,7 @@ namespace ChunkGeneration
                 return;
             }
 
-            // TODO: Fix Pool Manager
-            GameObject newChunk = Instantiate(chunkToSpawn.ChunkPrefab, new Vector3(_nextSpawnPosition, 0, 0), Quaternion.identity);
-
+            GameObject newChunk = PoolManager.Instance.Spawn(chunkToSpawn.Prefab, new Vector3(_nextSpawnPosition, 0, 0), Quaternion.identity);
             ChunkController chunkController = newChunk.GetComponent<ChunkController>();
             chunkController.Initialize(chunkToSpawn, this, currentLocation.Theme, spawningBossChunk);
 

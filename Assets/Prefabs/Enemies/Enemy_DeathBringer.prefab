@@ -929,7 +929,7 @@ MonoBehaviour:
     baseValue: 0
     modifiers: 
   ailmentsDuration: 4
-  shockStrikePrefab: {fileID: 8912282936253123872, guid: 4d37f0b7dda799247959915ab3f3ee67, type: 3}
+  shockStrikeConfig: {fileID: 11400000, guid: ddabd98dd8e2f4247be4e06582f199f7, type: 2}
   level: 1
   percentageModifier: 0.4
   initialSoulsDropAmount: 100
@@ -945,8 +945,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 13b235a1f856cf9438d82ac55c31f333, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hitFXPrefab: {fileID: 1699656547998446530, guid: 3786c0af4259414428e82c63db846bb3, type: 3}
-  criticalHitFXPrefab: {fileID: 1057830787675581550, guid: 8ab1744b468a47d4fad32bb8f781d610, type: 3}
+  textConfig: {fileID: 11400000, guid: 3717f6eff98d86d4e932fc64ae480159, type: 2}
+  hitFXConfig: {fileID: 11400000, guid: 85dad7f26bf21b942800e347c0219fa7, type: 2}
+  criticalHitFXConfig: {fileID: 11400000, guid: a0436c8216c051d419455ba1fdab7fd8, type: 2}
   flashDuration: 0.2
   hitMat: {fileID: 2100000, guid: 7947b23ac27a33b4598dd7e23abe4469, type: 2}
   igniteColor:
@@ -974,8 +975,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxItemsToDrop: 0
-  itemPool: []
-  dropPrefab: {fileID: 1914593840508665066, guid: e6e381a1def9d2c4599315b197d60c1c, type: 3}
+  itemList: []
+  dropConfig: {fileID: 11400000, guid: 27ecf18bcbb2bae49b75deed81e0bc0a, type: 2}
 --- !u!114 &5898013196290452530
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1015,13 +1016,13 @@ MonoBehaviour:
   attackDistance: 6.5
   attackCooldown: 0
   attackCooldownRange: {x: 1, y: 2}
+  spellConfig: {fileID: 11400000, guid: 24706a117633b724c88be90de49ccca7, type: 2}
   teleportArea: {fileID: 7260706497283614295}
   surroundingCheckSize: {x: 3, y: 3}
   chanceToTeleport: 25
   defaultChanceToTeleport: 25
   teleportGroundCheckDistance: 100
   teleportPositionPadding: 3
-  spellPrefab: {fileID: 3428880875411675170, guid: 8fbd4d45312589e40885ac4cc83c9296, type: 3}
   spellCastOffset: {x: 3, y: 3}
   spellStateCooldown: 15
   amountOfSpells: 5

@@ -2,9 +2,11 @@ using System.Collections;
 using Components.FX;
 using Controllers.Skill_Controllers;
 using Core.ObjectPool;
+using Core.ObjectPool.Configs.FX;
 using Enemies.Base;
 using Managers;
 using UnityEngine;
+using PoolManager = Core.ObjectPool.PoolManager;
 
 namespace Stats
 {
@@ -82,7 +84,7 @@ namespace Stats
         [SerializeField] public Stat lightingDamage;
 
         [SerializeField] private float ailmentsDuration = 4;
-        [SerializeField] private GameObject shockStrikePrefab;
+        [SerializeField] private ShockStrikePoolConfig shockStrikeConfig;
         
         public int CurrentHealth { get; private set; }
         public bool IsDead { get; private set; }
@@ -439,19 +441,20 @@ namespace Stats
 
             if (closestEnemy != null)
             {
-                GameObject newShockStrike = PoolManager.Instance.Spawn(PoolNames.SHOCK_STRIKE, transform.position, Quaternion.identity, shockStrikePrefab);
+                GameObject newShockStrike 
+                    = PoolManager.Instance.Spawn(shockStrikeConfig.Prefab, transform.position, Quaternion.identity);
 
                 if (newShockStrike)
                     newShockStrike.GetComponent<ShockStrikeController>().
-                        Setup(_shockDamage, closestEnemy.GetComponent<CharacterStats>());
+                        Setup(_shockDamage, closestEnemy.GetComponent<CharacterStats>(), shockStrikeConfig);
             }
         }
 
         #endregion
 
-        public Stat GetStat(StatType _statType)
+        public Stat GetStat(StatType statType)
         {
-            return _statType switch
+            return statType switch
             {
                 // Major Stats
                 StatType.strength => strength,
@@ -471,7 +474,7 @@ namespace Stats
                 StatType.fireDamage => fireDamage,
                 StatType.iceDamage => iceDamage,
                 StatType.lightingDamage => lightingDamage,
-                _ => throw new System.ArgumentOutOfRangeException($"Unhandled StatType: {_statType}")
+                _ => throw new System.ArgumentOutOfRangeException($"Unhandled StatType: {statType}")
             };
         }
     }

@@ -1,21 +1,19 @@
-using Core.ObjectPool;
-using Managers;
+using Core.ObjectPool.Configs.FX;
 using UnityEngine;
+using PoolManager = Core.ObjectPool.PoolManager;
 
 namespace Items_and_Inventory.Effects
 {
     [CreateAssetMenu(fileName = "Thunder strike effect", menuName = "Data/Item Effect/Thunder strike", order = 0)]
     public class ThunderStrikeEffect : ItemEffect
     {
-        private const float Return_To_Pool_Delay = 1f;
-        
-        [SerializeField] private GameObject thunderStrikePrefab;
+        [SerializeField] private ThunderStrikePoolConfig thunderStrikeConfig;
         public override void ExecuteEffect(Transform enemyPosition)
         {
-            GameObject newThunderStrike = PoolManager.Instance.Spawn(PoolNames.FX, 
-                enemyPosition.position, Quaternion.identity, thunderStrikePrefab);
+            GameObject newThunderStrike = PoolManager.Instance.Spawn(thunderStrikeConfig.Prefab, 
+                enemyPosition.position, Quaternion.identity);
             
-            PoolManager.Instance.Return(PoolNames.FX, newThunderStrike, Return_To_Pool_Delay);
+            PoolManager.Instance.ReturnWithDelay(newThunderStrike, thunderStrikeConfig.ReturnToPoolDelay);
         }
     }
 }

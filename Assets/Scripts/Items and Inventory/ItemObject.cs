@@ -1,38 +1,40 @@
 using Components.Audio;
 using Core.ObjectPool;
+using Core.ObjectPool.Configs;
 using Managers;
 using UnityEngine;
 
 namespace Items_and_Inventory
 {
-    public class ItemObject : MonoBehaviour, IPooledObject
+    public class ItemObject : PooledObject
     {
-        private const float Item_Bounce_Force = 7f;
-            
         [SerializeField] private Rigidbody2D rb;
         [SerializeField] private ItemData itemData;
         [SerializeField] private Vector2 velocity;
+        
+        private ItemDropPoolConfig _config;
 
-        public void SetupItem(ItemData itemData, Vector2 velocity)
+        public void SetupItem(ItemData itemData, Vector2 velocity,  ItemDropPoolConfig config)
         {
             this.itemData = itemData;
             rb.velocity = velocity;
-
+            _config = config;
+            
             SetupVisual();
         }
 
-        public void OnReturnToPool()
+        public override void ReturnToPool()
         {
-            transform.position = Vector2.zero;
             itemData = null;
-            gameObject.SetActive(false);
+            transform.position = Vector2.zero;
+            base.ReturnToPool();
         }
 
         public void PickupItem()
         {
             if (!Inventory.Instance.CanAddItem() && itemData.ItemType == ItemType.Equipment)
             {
-                rb.velocity = new Vector2(0, Item_Bounce_Force);
+                rb.velocity = new Vector2(0, _config.ItemBounceForce);
                 PlayerManager.Instance.PlayerGameObject.Fx.CreatePopUpText("Inventory is full");
                 return;
             }
@@ -40,7 +42,7 @@ namespace Items_and_Inventory
             AudioManager.Instance.PlaySFX(SFXEnum.ItemPickup, transform);
             Inventory.Instance.AddItem(itemData);
 
-            PoolManager.Instance.Return(PoolNames.Drop, gameObject);
+            ReturnToPool();
         }
 
         private void SetupVisual()

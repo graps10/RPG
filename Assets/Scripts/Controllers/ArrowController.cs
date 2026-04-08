@@ -1,26 +1,21 @@
 using Core.ObjectPool;
+using Core.ObjectPool.Configs;
 using Core.Utilities;
-using Managers;
 using Stats;
 using UnityEngine;
 
 namespace Controllers
 {
-    public class ArrowController : MonoBehaviour, ISpawnedPooledObject
+    public class ArrowController : PooledObject
     {
-        private const float Arrow_Return_To_Pool_Delay = 6f;
         private const int Arrow_Flip_Multiplier = -1;
-    
-        [SerializeField] private int damage;
-        [SerializeField] private LayerMask whatIsPlayer;
-        [SerializeField] private LayerMask whatIsEnemy;
-        [SerializeField] private LayerMask whatIsGround;
-    
+        
         private Rigidbody2D _rb;
         private CapsuleCollider2D _cd;
         private ParticleSystem _trailFx;
     
         private CharacterStats _myStats;
+        private ArrowPoolConfig _config;
 
         private LayerMask _targetLayer;
     
@@ -35,6 +30,20 @@ namespace Controllers
             _cd = GetComponent<CapsuleCollider2D>();
             _trailFx = GetComponentInChildren<ParticleSystem>();
         }
+        
+        private void OnEnable() 
+        {
+            _rb.isKinematic = false;
+            _rb.constraints = RigidbodyConstraints2D.None;
+            
+            _cd.enabled = false;
+            _canMove = false;
+            _flipped = false;
+    
+            _trailFx.Play();
+            
+            CancelInvoke(nameof(ReturnToPool));
+        }
 
         private void Update()
         {
@@ -42,25 +51,14 @@ namespace Controllers
                 _rb.velocity = new Vector2(_xVelocity, _rb.velocity.y);
         }
 
-        public void OnSpawn()
+        public override void ReturnToPool()
         {
-            _rb.isKinematic = false;
-            _rb.constraints = RigidbodyConstraints2D.None;
-            _cd.enabled = true;
-
-            _canMove = true;
-            _flipped = false;
-            
-            _targetLayer = whatIsPlayer;
-            _trailFx.Play();
-            
-            PoolManager.Instance.Return(PoolNames.ARROW, gameObject, Arrow_Return_To_Pool_Delay);
-        }
-
-        public void OnReturnToPool()
-        {
-            _targetLayer = whatIsPlayer;
             _trailFx.Stop();
+            _targetLayer = _config.WhatIsPlayer;
+            transform.parent = null;
+            
+            CancelInvoke();
+            base.ReturnToPool();
         }
 
         private void OnTriggerEnter2D(Collider2D collision)
@@ -72,14 +70,22 @@ namespace Controllers
                 StuckInto(collision);
             }
         
-            if (((1 << collision.gameObject.layer) & whatIsGround) != 0)
+            if (((1 << collision.gameObject.layer) & _config.WhatIsGround) != 0)
                 StuckInto(collision);
         }
 
-        public void SetupArrow(CharacterStats myStats, float speed)
+        public void SetupArrow(CharacterStats myStats, ArrowPoolConfig config, int facingDir)
         {
             _myStats = myStats;
-            _xVelocity = speed;
+            _config = config;
+    
+            _xVelocity = _config.Speed * facingDir;
+            _targetLayer = _config.WhatIsPlayer;  
+            
+            _cd.enabled = true;
+            _canMove = true;
+            
+            Invoke(nameof(ReturnToPool), _config.MissReturnDelay);
         }
 
         public void FlipArrow()
@@ -91,19 +97,20 @@ namespace Controllers
             _flipped = true;
 
             transform.Rotate(TransformUtils.FlipAngle);
-
-            _targetLayer = whatIsEnemy;
+            _targetLayer = _config.WhatIsEnemy;
         }
 
         private void StuckInto(Collider2D collision)
         {
-            _trailFx.Stop();
             _cd.enabled = false;
-
             _canMove = false;
             _rb.isKinematic = true;
             _rb.constraints = RigidbodyConstraints2D.FreezeAll;
+            
             transform.parent = collision.transform;
+            
+            CancelInvoke(nameof(ReturnToPool));
+            Invoke(nameof(ReturnToPool), _config.HitReturnDelay);
         }
     }
 }

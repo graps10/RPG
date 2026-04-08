@@ -9,11 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 06812537e082f0f45b2388ab44d6f738, type: 3}
-  m_Name: ItemsDropPoolConfig
+  m_Script: {fileID: 11500000, guid: bea9514f03d145a8b1ab3946ee84d0e7, type: 3}
+  m_Name: IceAndFirePoolConfig
   m_EditorClassIdentifier: 
-  Key: drop
-  Prefabs:
-  - {fileID: 1914593840508665066, guid: e6e381a1def9d2c4599315b197d60c1c, type: 3}
-  InitialSize: 10
-  AllowExpand: 1
+  prefab: {fileID: 2523160509485384208, guid: bcadf8eee9e29404b86303067fee6617, type: 3}

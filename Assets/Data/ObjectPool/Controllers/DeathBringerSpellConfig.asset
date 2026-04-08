@@ -9,11 +9,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 06812537e082f0f45b2388ab44d6f738, type: 3}
+  m_Script: {fileID: 11500000, guid: 0aa34bdc86a34970913c5e34de0cd81a, type: 3}
   m_Name: DeathBringerSpellConfig
   m_EditorClassIdentifier: 
-  Key: deathBringerSpell
-  Prefabs:
-  - {fileID: 3428880875411675170, guid: 8fbd4d45312589e40885ac4cc83c9296, type: 3}
-  InitialSize: 10
-  AllowExpand: 1
+  prefab: {fileID: 4181839481851023160, guid: 8fbd4d45312589e40885ac4cc83c9296, type: 3}
+  spellCastOffset: {x: 3, y: 3}
+  spellStateCooldown: 15
+  amountOfSpells: 5
+  spellCooldown: 1
+  whatIsPlayer:
+    serializedVersion: 2
+    m_Bits: 64

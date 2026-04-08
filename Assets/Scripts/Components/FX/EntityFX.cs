@@ -1,9 +1,12 @@
 using System.Collections;
 using Core.ObjectPool;
+using Core.ObjectPool.Configs;
+using Core.ObjectPool.Configs.FX;
 using Managers;
 using TMPro;
 using UI_Elements;
 using UnityEngine;
+using PoolManager = Core.ObjectPool.PoolManager;
 
 namespace Components.FX
 {
@@ -26,9 +29,12 @@ namespace Components.FX
         private static readonly Color visibleColor = Color.white;
         private static readonly Color blinkColor = Color.red;
         
+        [Header("Popup Text FX")]
+        [SerializeField] private PopupTextPoolConfig textConfig;
+        
         [Header("Hits FX")]
-        [SerializeField] private GameObject hitFXPrefab;
-        [SerializeField] private GameObject criticalHitFXPrefab;
+        [SerializeField] private HitFXPoolConfig hitFXConfig;
+        [SerializeField] private CritHitFXPoolConfig criticalHitFXConfig;
 
         [Header("Flash FX")]
         [SerializeField] private float flashDuration;
@@ -65,12 +71,11 @@ namespace Components.FX
             float randomX = Random.Range(popupXPositionRange.x, popupXPositionRange.y);
             float randomY = Random.Range(popupYPositionRange.x, popupYPositionRange.y);
 
-            Vector3 positionOffset = new Vector3(randomX, randomY, 0);
-            GameObject newText = PoolManager.Instance.Spawn(PoolNames.POPUP_TEXT, 
-                transform.position + positionOffset, Quaternion.identity);
-
-            if (newText)
-                newText.GetComponent<TextMeshPro>().text = text;
+            Vector3 spawnPosition = transform.position + new Vector3(randomX, randomY, 0);
+            GameObject newTextObj = PoolManager.Instance.Spawn(textConfig.Prefab, spawnPosition, Quaternion.identity);
+            
+            if (newTextObj.TryGetComponent(out PopUpTextFX popUpText)) 
+                popUpText.Setup(text, textConfig);
         }
 
         public void MakeTransparent(bool transparent)
@@ -94,12 +99,12 @@ namespace Components.FX
             float yPosition = Random.Range(hitYPositionRange.x, hitYPositionRange.y);
 
             Vector3 hitFXRotation = new Vector3(0, 0, zRotation);
-
-            GameObject hitFX = hitFXPrefab;
+            
+            GameObject prefabToSpawn = hitFXConfig.Prefab;
 
             if (critical)
             {
-                hitFX = criticalHitFXPrefab;
+                prefabToSpawn = criticalHitFXConfig.Prefab;
 
                 float yRotation = 0f;
                 zRotation = Random.Range(critHitZRotationRange.x, critHitZRotationRange.y);
@@ -110,12 +115,11 @@ namespace Components.FX
                 hitFXRotation = new Vector3(0, yRotation, zRotation);
             }
             
-            GameObject newHitFX = PoolManager.Instance.Spawn(PoolNames.HIT_FX, 
-                target.position + new Vector3(xPosition, yPosition), Quaternion.identity, hitFX);
-
-            newHitFX.transform.Rotate(hitFXRotation);
-
-            PoolManager.Instance.Return(PoolNames.HIT_FX, newHitFX, Hit_Return_To_Pool_Delay);
+            Vector3 spawnPosition = target.position + new Vector3(xPosition, yPosition, 0);
+            Quaternion spawnRotation = Quaternion.Euler(hitFXRotation);
+            
+            GameObject newHitFX = PoolManager.Instance.Spawn(prefabToSpawn, spawnPosition, spawnRotation);
+            PoolManager.Instance.ReturnWithDelay(newHitFX, Hit_Return_To_Pool_Delay);
         }
 
         public void IgniteFxFor(float seconds)

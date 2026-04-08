@@ -1,23 +1,16 @@
+using System.Collections;
 using Core;
 using Core.ObjectPool;
-using Managers;
+using Core.ObjectPool.Configs.FX;
 using Stats;
 using UnityEngine;
 
 namespace Controllers.Skill_Controllers
 {
-    public class ShockStrikeController : MonoBehaviour, IPooledObject
+    public class ShockStrikeController : PooledObject
     {
-        private const float Hit_Distance_Threshold = 0.1f;
-        private const float Damage_Delay = 0.2f;
-        private const float Return_Delay = 0.4f;
-    
-        private static readonly Vector2 animLocalPosition = new(0f, 0.5f);
-        private static readonly Vector2 hitScale = new(3f, 3f);
-        
-        [SerializeField] private float speed;
-    
         private CharacterStats _targetStats;
+        private ShockStrikePoolConfig  _config;
         private Animator _anim;
     
         private int _damage;
@@ -25,16 +18,18 @@ namespace Controllers.Skill_Controllers
 
         private void Awake()
         {
-            _anim = GetComponentInChildren<Animator>();
+            if(_anim == null)
+                _anim = GetComponentInChildren<Animator>();
         }
 
-        public void Setup(int damage, CharacterStats targetStats)
+        public void Setup(int damage, CharacterStats targetStats,  ShockStrikePoolConfig config)
         {
             _damage = damage;
             _targetStats = targetStats;
+            _config = config;
         }
 
-        public void OnReturnToPool()
+        public override void ReturnToPool()
         {
             _triggered = false;
             _targetStats = null;
@@ -43,6 +38,7 @@ namespace Controllers.Skill_Controllers
             transform.localScale = Vector3.one;
 
             _anim.transform.localPosition = Vector3.zero;
+            base.ReturnToPool();
         }
 
         private void Update()
@@ -51,31 +47,33 @@ namespace Controllers.Skill_Controllers
                 return;
         
             transform.position = Vector2.MoveTowards(transform.position, 
-                _targetStats.transform.position, speed * Time.deltaTime);
+                _targetStats.transform.position, _config.Speed * Time.deltaTime);
         
             transform.right = transform.position - _targetStats.transform.position;
 
-            if (Vector2.Distance(transform.position, _targetStats.transform.position) < Hit_Distance_Threshold)
+            if (Vector2.Distance(transform.position, _targetStats.transform.position) < _config.HitDistanceThreshold)
             {
                 _triggered = true;
 
                 _anim.transform.localRotation = Quaternion.identity;
-                _anim.transform.localPosition = animLocalPosition;
+                _anim.transform.localPosition = _config.AnimLocalPosition;
 
                 transform.localRotation = Quaternion.identity;
-                transform.localScale = hitScale;
+                transform.localScale = _config.HitScale;
 
-                Invoke(nameof(DamageAndSelfDestroy), Damage_Delay);
+                StartCoroutine(DamageAndSelfDestroy());
                 _anim.SetTrigger(AnimatorHashes.Hit);
             }
         }
 
-        private void DamageAndSelfDestroy()
+        private IEnumerator DamageAndSelfDestroy()
         {
+            yield return new WaitForSeconds(_config.DamageDelay);
             _targetStats.ApplyShock(true);
-
             _targetStats.TakeDamage(_damage);
-            PoolManager.Instance.Return(PoolNames.SHOCK_STRIKE, gameObject, Return_Delay);
+            
+            yield return new WaitForSeconds(_config.ReturnDelay);
+            ReturnToPool();
         }
     }
 }

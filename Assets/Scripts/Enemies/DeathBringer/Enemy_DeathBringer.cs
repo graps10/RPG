@@ -1,10 +1,11 @@
 using Controllers;
 using Core;
 using Core.Interfaces;
-using Core.ObjectPool;
+using Core.ObjectPool.Configs;
 using Enemies.Base;
 using Managers;
 using UnityEngine;
+using PoolManager = Core.ObjectPool.PoolManager;
 
 namespace Enemies.DeathBringer
 {
@@ -19,11 +20,7 @@ namespace Enemies.DeathBringer
         [SerializeField] private float teleportPositionPadding = 3f;
 
         [Header("Spell Cast Specific")]
-        [SerializeField] private GameObject spellPrefab;
-        [SerializeField] private Vector2 spellCastOffset;
-        [SerializeField] private float spellStateCooldown;
-        [SerializeField] private int amountOfSpells;
-        [SerializeField] private float spellCooldown;
+        [SerializeField] private DeathBringerSpellPoolConfig spellConfig;
         [HideInInspector] public float lastTimeCast;
 
         #region States
@@ -72,12 +69,14 @@ namespace Enemies.DeathBringer
             float xOffset = 0;
 
             if (player.Rb.velocity.x != 0)
-                xOffset = player.FacingDir * spellCastOffset.x;
+                xOffset = player.FacingDir * spellConfig.SpellCastOffset.x;
 
-            Vector3 spellPosition = new Vector3(player.transform.position.x + xOffset, player.transform.position.y + spellCastOffset.y);
+            Vector3 spellPosition 
+                = new Vector3(player.transform.position.x + xOffset, 
+                    player.transform.position.y + spellConfig.SpellCastOffset.y);
 
-            GameObject newSpell = PoolManager.Instance.Spawn(PoolNames.DeathBringerSpell, spellPosition, Quaternion.identity);
-            newSpell.GetComponent<DeathBringerSpellController>().SetupSpell(Stats);
+            GameObject newSpell = PoolManager.Instance.Spawn(spellConfig.Prefab, spellPosition, Quaternion.identity);
+            newSpell.GetComponent<DeathBringerSpellController>().SetupSpell(Stats, spellConfig);
         }
 
         public bool CanTeleport()
@@ -93,7 +92,7 @@ namespace Enemies.DeathBringer
 
         public bool CanCastSpell()
         {
-            if (Time.time >= lastTimeCast + spellStateCooldown)
+            if (Time.time >= lastTimeCast + spellConfig.SpellStateCooldown)
             {
                 return true;
             }
@@ -116,7 +115,8 @@ namespace Enemies.DeathBringer
                 teleportArea.bounds.max.y - teleportPositionPadding);
 
             transform.position = new Vector3(x, y);
-            transform.position = new Vector3(transform.position.x, transform.position.y - GroundBelow().distance + (Cd.size.y / 2));
+            transform.position = new Vector3(transform.position.x, 
+                transform.position.y - GroundBelow().distance + (Cd.size.y / 2));
 
             if (!GroundBelow() || SomethingIsAround())
                 FindAvailableTeleportPosition();
@@ -124,23 +124,26 @@ namespace Enemies.DeathBringer
     
         public void IncreaseChangeToTeleport(int value) => chanceToTeleport += value;
         
-        public int GetAmountOfSpells() => amountOfSpells;
-        public float GetSpellCooldown() => spellCooldown;
+        public int GetAmountOfSpells() => spellConfig.AmountOfSpells;
+        public float GetSpellCooldown() => spellConfig.SpellCooldown;
         
         public void SetBossFightBegin(bool begun) => _bossFightBegun = begun; // bullshit code
         public bool IsBossFightBegun() => _bossFightBegun;
 
         private RaycastHit2D GroundBelow() 
-            => Physics2D.Raycast(transform.position, Vector2.down, teleportGroundCheckDistance, whatIsGround);
+            => Physics2D.Raycast(transform.position, 
+                Vector2.down, teleportGroundCheckDistance, whatIsGround);
 
         private bool SomethingIsAround() 
-            => Physics2D.BoxCast(transform.position, surroundingCheckSize, 0, Vector2.zero, 0, whatIsGround);
+            => Physics2D.BoxCast(transform.position, 
+                surroundingCheckSize, 0, Vector2.zero, 0, whatIsGround);
         
         protected override void OnDrawGizmos()
         {
             base.OnDrawGizmos();
 
-            Gizmos.DrawLine(transform.position, new Vector3(transform.position.x, transform.position.y - GroundBelow().distance));
+            Gizmos.DrawLine(transform.position, new Vector3(transform.position.x, 
+                transform.position.y - GroundBelow().distance));
             Gizmos.DrawWireCube(transform.position, surroundingCheckSize);
         }
     }

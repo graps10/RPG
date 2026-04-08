@@ -21,16 +21,16 @@ namespace ChunkGeneration.Configs
         
         public bool HasBoss => bossChunks != null && bossChunks.Count > 0;
 
-        public ChunkConfig GetRandomOrdinaryChunk()
+        public ChunkConfig GetOrdinaryChunk(int index)
         {
             if (ordinaryChunks.Count == 0) return null;
-            return ordinaryChunks[Random.Range(0, ordinaryChunks.Count)];
+            return ordinaryChunks[index % ordinaryChunks.Count];
         }
-
-        public BossChunkConfig GetRandomBossChunk()
+        
+        public BossChunkConfig GetBossChunk(int index)
         {
             if (bossChunks.Count == 0) return null;
-            return bossChunks[Random.Range(0, bossChunks.Count)];
+            return bossChunks[index % bossChunks.Count];
         }
     }
 }

@@ -184,7 +184,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 938450bf310e4fb46b47d9a0020a6de0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 1
-  disappearanceSpeed: 15
-  colorDisappearanceSpeed: 2
-  lifeTime: 1
+  config: {fileID: 11400000, guid: 3717f6eff98d86d4e932fc64ae480159, type: 2}

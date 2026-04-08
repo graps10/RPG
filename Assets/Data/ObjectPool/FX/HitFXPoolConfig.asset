@@ -9,11 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 06812537e082f0f45b2388ab44d6f738, type: 3}
-  m_Name: ChunksPoolConfig
+  m_Script: {fileID: 11500000, guid: d62981ee08414fb397b61e9f9694b5b9, type: 3}
+  m_Name: HitFXPoolConfig
   m_EditorClassIdentifier: 
-  Key: chunk
-  Prefabs:
-  - {fileID: 752500295555284995, guid: 127c90d3111a75d40ab07a16cdfa1923, type: 3}
-  InitialSize: 3
-  AllowExpand: 1
+  prefab: {fileID: 3565648858792789450, guid: 3786c0af4259414428e82c63db846bb3, type: 3}

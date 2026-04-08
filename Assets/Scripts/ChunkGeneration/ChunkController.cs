@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace ChunkGeneration
 {
-    public class ChunkController : MonoBehaviour, IPooledObject
+    public class ChunkController : PooledObject
     {
         private const float Check_Chunk_Delay = 1f;
         
@@ -41,7 +41,7 @@ namespace ChunkGeneration
             SetupTriggers();
         }
 
-        public void OnReturnToPool()
+        public override void ReturnToPool()
         {
             if (_checkChunkCoroutine != null)
                 StopCoroutine(_checkChunkCoroutine);
@@ -51,6 +51,7 @@ namespace ChunkGeneration
             
             ClearAllSpawnedEnemies();
             UnlockDoors();
+            base.ReturnToPool();
         }
 
         #region Triggers

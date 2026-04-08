@@ -1,15 +1,13 @@
+using Core.ObjectPool.Configs;
 using UnityEngine;
 
 namespace ChunkGeneration.Configs
 {
     [CreateAssetMenu(fileName = "ChunkConfig", menuName = "Level Generation/Chunk Config")]
-    public class ChunkConfig : ScriptableObject
+    public class ChunkConfig : BasePoolConfig
     {
-        [Space]
-        [SerializeField] private GameObject chunkPrefab;
         [SerializeField] private float chunkLength;
         
-        public GameObject ChunkPrefab => chunkPrefab;
         public float ChunkLength => chunkLength;
     }
     

@@ -1,30 +1,27 @@
 using System.Collections.Generic;
-using Core.ObjectPool;
-using Managers;
+using Core.ObjectPool.Configs;
 using UnityEngine;
+using PoolManager = Core.ObjectPool.PoolManager;
 
 namespace Items_and_Inventory
 {
     public class ItemDrop : MonoBehaviour
     {
-        private static readonly Vector2 dropVelocityXRange = new(-5f, 5f);
-        private static readonly Vector2 dropVelocityYRange = new(15f, 20f);
-    
         [SerializeField] private int maxItemsToDrop;
-        [SerializeField] private ItemData[] itemPool;
-        [SerializeField] private GameObject dropPrefab;
+        [SerializeField] private ItemData[] itemList;
+        [SerializeField] private ItemDropPoolConfig itemDropConfig;
     
-        private List<ItemData> _possibleDrop = new();
+        private readonly List<ItemData> _possibleDrop = new();
 
         public virtual void GenerateDrop()
         {
-            if (itemPool.Length == 0)
+            if (itemList.Length == 0)
             {
                 Debug.Log("Item Pool is empty. Enemy cannot drop items.");
                 return;
             }
 
-            foreach (ItemData item in itemPool)
+            foreach (ItemData item in itemList)
             {
                 if (item != null && Random.Range(0, 100) < item.DropChance)
                     _possibleDrop.Add(item);
@@ -45,14 +42,14 @@ namespace Items_and_Inventory
 
         protected void DropItem(ItemData itemData)
         {
-            GameObject newDrop = PoolManager.Instance.Spawn(PoolNames.Drop, transform.position, Quaternion.identity, dropPrefab);
+            GameObject newDrop = PoolManager.Instance.Spawn(itemDropConfig.Prefab, transform.position, Quaternion.identity);
 
             Vector2 randomVelocity = new Vector2(
-                Random.Range(dropVelocityXRange.x, dropVelocityXRange.y),
-                Random.Range(dropVelocityYRange.x, dropVelocityYRange.y)
+                Random.Range(itemDropConfig.DropVelocityXRange.x, itemDropConfig.DropVelocityXRange.y),
+                Random.Range(itemDropConfig.DropVelocityYRange.x, itemDropConfig.DropVelocityYRange.y)
             );
 
-            newDrop.GetComponent<ItemObject>().SetupItem(itemData, randomVelocity);
+            newDrop.GetComponent<ItemObject>().SetupItem(itemData, randomVelocity, itemDropConfig);
         }
     }
 }

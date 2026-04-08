@@ -20050,8 +20050,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8b54dcceb77ee014d853810f4fdea4a1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hitFXPrefab: {fileID: 1699656547998446530, guid: 3786c0af4259414428e82c63db846bb3, type: 3}
-  criticalHitFXPrefab: {fileID: 1057830787675581550, guid: 8ab1744b468a47d4fad32bb8f781d610, type: 3}
+  textConfig: {fileID: 11400000, guid: 3717f6eff98d86d4e932fc64ae480159, type: 2}
+  hitFXConfig: {fileID: 11400000, guid: 85dad7f26bf21b942800e347c0219fa7, type: 2}
+  criticalHitFXConfig: {fileID: 11400000, guid: a0436c8216c051d419455ba1fdab7fd8, type: 2}
   flashDuration: 0.2
   hitMat: {fileID: 2100000, guid: 7947b23ac27a33b4598dd7e23abe4469, type: 2}
   igniteColor:
@@ -20190,7 +20191,7 @@ MonoBehaviour:
     baseValue: 0
     modifiers: 
   ailmentsDuration: 4
-  shockStrikePrefab: {fileID: 8912282936253123872, guid: 4d37f0b7dda799247959915ab3f3ee67, type: 3}
+  shockStrikeConfig: {fileID: 11400000, guid: ddabd98dd8e2f4247be4e06582f199f7, type: 2}
 --- !u!114 &6182141712252325145
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -20204,8 +20205,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxItemsToDrop: 3
-  itemPool: []
-  dropPrefab: {fileID: 1914593840508665066, guid: e6e381a1def9d2c4599315b197d60c1c, type: 3}
+  itemList: []
+  dropConfig: {fileID: 11400000, guid: 27ecf18bcbb2bae49b75deed81e0bc0a, type: 2}
   chanceToLooseItems: 75
   chanceToLooseMaterials: 75
 --- !u!114 &8451371641576957351

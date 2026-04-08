@@ -1,6 +1,7 @@
-using Core.ObjectPool;
+using Core.ObjectPool.Configs.FX;
 using Managers;
 using UnityEngine;
+using PoolManager = Core.ObjectPool.PoolManager;
 
 namespace Items_and_Inventory.Effects
 {
@@ -8,8 +9,8 @@ namespace Items_and_Inventory.Effects
     public class IceAndFireEffect : ItemEffect
     {
         private const int Third_Attack_Combo_Index = 2;
-        private const float Return_To_Pool_Delay = 10f;
-        [SerializeField] private GameObject iceAndFirePrefab;
+        
+        [SerializeField] private IceAndFirePoolConfig iceAndFireConfig;
         [SerializeField] private float xVelocity;
 
         public override void ExecuteEffect(Transform respawnPosition)
@@ -20,12 +21,11 @@ namespace Items_and_Inventory.Effects
 
             if (thirdAttack)
             {
-                GameObject newIceAndFire = PoolManager.Instance.Spawn(PoolNames.FX, respawnPosition.position, 
-                    player.transform.rotation, iceAndFirePrefab);
+                GameObject newIceAndFire = PoolManager.Instance
+                    .Spawn(iceAndFireConfig.Prefab, respawnPosition.position, player.transform.rotation);
                 
                 newIceAndFire.GetComponent<Rigidbody2D>().velocity = new Vector2(xVelocity * player.FacingDir, 0);
-
-                PoolManager.Instance.Return(PoolNames.FX, newIceAndFire, Return_To_Pool_Delay);
+                PoolManager.Instance.ReturnWithDelay(newIceAndFire, iceAndFireConfig.ReturnToPoolDelay);
             }
         }
     }

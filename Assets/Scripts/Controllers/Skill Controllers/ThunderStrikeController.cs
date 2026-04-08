@@ -1,11 +1,11 @@
-using Enemies.Base;
+using Core.ObjectPool;
 using Managers;
 using Stats;
 using UnityEngine;
 
 namespace Controllers.Skill_Controllers
 {
-    public class ThunderStrikeController : MonoBehaviour
+    public class ThunderStrikeController : PooledObject
     {
         protected virtual void OnTriggerEnter2D(Collider2D collision) 
         {
