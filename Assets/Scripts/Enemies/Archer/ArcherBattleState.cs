@@ -8,29 +8,27 @@ namespace Enemies.Archer
         public ArcherBattleState(EnemyArcher enemy, EnemyStateMachine stateMachine, int animBoolName) : 
             base(enemy, stateMachine, animBoolName) { }
 
-        public override void Update()
-        {
-            base.Update();
-
-            HandleBattleBehavior();
-            CalculateMoveDirection();
-
-            ChasePlayer();
-        }
-
         protected override void HandleBattleBehavior()
         {
-            if (enemy.IsPlayerDetected())
+            if (moveDir != 0 && moveDir != enemy.FacingDir)
+                enemy.Flip();
+            
+            var hit = enemy.IsPlayerDetected();
+
+            if (hit)
             {
                 stateTimer = enemy.GetBattleTime();
-
-                if (enemy.IsPlayerDetected().distance < enemy.GetSafeDistance())
+                
+                if (hit.distance < enemy.GetSafeDistance())
                 {
                     if (enemy.CanJump())
+                    {
                         stateMachine.ChangeState(enemy.JumpState);
+                        return;
+                    }
                 }
-
-                if (enemy.IsPlayerDetected().distance < enemy.GetAttackDistance())
+                
+                if (hit.distance < enemy.GetAttackDistance())
                 {
                     if (enemy.CanAttack())
                         stateMachine.ChangeState(enemy.AttackState);
@@ -38,12 +36,6 @@ namespace Enemies.Archer
             }
             else
             {
-                if (!flippedOnce)
-                {
-                    flippedOnce = true;
-                    enemy.Flip();
-                }
-
                 if (CanReturnToIdle())
                     stateMachine.ChangeState(enemy.IdleState);
             }

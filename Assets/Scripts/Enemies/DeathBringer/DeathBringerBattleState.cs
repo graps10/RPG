@@ -7,35 +7,22 @@ namespace Enemies.DeathBringer
     {
         public DeathBringerBattleState(EnemyDeathBringer enemy, EnemyStateMachine stateMachine, int animBoolName) : 
             base(enemy, stateMachine, animBoolName) { }
-        
-        public override void Update()
-        {
-            base.Update();
-
-            HandleBattleBehavior();
-            CalculateMoveDirection();
-
-            ChasePlayer();
-        }
 
         protected override void HandleBattleBehavior()
         {
-            if (enemy.IsPlayerDetected())
+            if (moveDir != 0 && moveDir != enemy.FacingDir)
+                enemy.Flip();
+
+            var hit = enemy.IsPlayerDetected();
+
+            if (hit)
             {
                 stateTimer = enemy.GetBattleTime();
 
-                if (enemy.IsPlayerDetected().distance < enemy.GetAttackDistance())
+                if (hit.distance < enemy.GetAttackDistance())
                 {
                     if (enemy.CanAttack())
                         stateMachine.ChangeState(enemy.AttackState);
-                }
-            }
-            else
-            {
-                if (!flippedOnce)
-                {
-                    flippedOnce = true;
-                    enemy.Flip();
                 }
             }
         }

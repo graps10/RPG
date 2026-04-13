@@ -200,7 +200,7 @@ namespace ChunkGeneration
         {
             foreach (var enemy in _spawnedEnemies)
                 if (enemy != null)
-                    Destroy(enemy);
+                    PoolManager.Instance.Return(enemy.gameObject);
             
             _spawnedEnemies.Clear();
         }

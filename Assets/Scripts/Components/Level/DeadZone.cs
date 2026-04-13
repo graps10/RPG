@@ -1,3 +1,4 @@
+using Core.ObjectPool;
 using Stats;
 using UnityEngine;
 
@@ -10,7 +11,7 @@ namespace Components.Level
             if (collision.GetComponent<CharacterStats>() != null)
                 collision.GetComponent<CharacterStats>().KillEntity();
             else
-                Destroy(collision.gameObject);
+                PoolManager.Instance.Return(collision.gameObject);
         }
     }
 }

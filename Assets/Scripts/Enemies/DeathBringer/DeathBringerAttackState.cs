@@ -11,8 +11,7 @@ namespace Enemies.DeathBringer
         public override void Enter()
         {
             base.Enter();
-
-            enemy.IncreaseChangeToTeleport(5);
+            enemy.IncreaseChangeToTeleport(5); // TODO Make a const or move it to config
         }
         
         public override void Update()
@@ -22,7 +21,6 @@ namespace Enemies.DeathBringer
             enemy.SetZeroVelocity();
 
             if (!triggerCalled) return;
-
             stateMachine.ChangeState(enemy.CanTeleport() ? enemy.TeleportState : enemy.BattleState);
         }
     }

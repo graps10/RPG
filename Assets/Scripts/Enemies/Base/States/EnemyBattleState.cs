@@ -8,10 +8,10 @@ namespace Enemies.Base.States
     public class EnemyBattleState<TEnemy> : EnemyState<TEnemy> where TEnemy : Enemy
     {
         protected const float ATTACK_DISTANCE_THRESHOLD = 0.5f;
-        protected const float MAX_CHASE_DISTANCE = 10f;
+        protected const float MAX_CHASE_DISTANCE = 15f;
+        protected const float FLIP_DISTANCE_THRESHOLD = 0.5f;
         
         protected int moveDir;
-        protected bool flippedOnce;
         
         public EnemyBattleState(TEnemy enemy, EnemyStateMachine stateMachine, int animBoolName) : 
             base(enemy, stateMachine, animBoolName) { }
@@ -24,19 +24,35 @@ namespace Enemies.Base.States
                 stateMachine.ChangeState(enemy.MoveState);
             
             stateTimer = enemy.GetBattleTime();
-            flippedOnce = false;
+            CalculateMoveDirection();
+            if (moveDir != 0 && moveDir != enemy.FacingDir)
+                enemy.Flip();
+        }
+        
+        public override void Update()
+        {
+            base.Update();
+            
+            CalculateMoveDirection(); 
+
+            HandleBattleBehavior();
+            
+            if (stateMachine.CurrentState == this)
+                ChasePlayer();
         }
 
         protected virtual void HandleBattleBehavior()
         {
-            if (enemy.IsPlayerDetected())
+            if (moveDir != 0 && moveDir != enemy.FacingDir)
+                enemy.Flip();
+            
+            var hit = enemy.IsPlayerDetected();
+
+            if (hit)
             {
                 stateTimer = enemy.GetBattleTime();
                 
-                if (moveDir != 0 && moveDir != enemy.FacingDir)
-                    enemy.Flip();
-                
-                if (enemy.IsPlayerDetected().distance < enemy.GetAttackDistance())
+                if (hit.distance < enemy.GetAttackDistance())
                 {
                     if (enemy is IAttackable attackable && attackable.CanAttack())
                         stateMachine.ChangeState(attackable.AttackState);
@@ -44,12 +60,6 @@ namespace Enemies.Base.States
             }
             else
             {
-                if (!flippedOnce)
-                {
-                    flippedOnce = true;
-                    enemy.Flip();
-                }
-                
                 if (CanReturnToIdle())
                     stateMachine.ChangeState(enemy.IdleState);
             }
@@ -57,7 +67,9 @@ namespace Enemies.Base.States
 
         protected virtual void ChasePlayer()
         {
-            if (enemy.IsPlayerDetected().distance < enemy.GetAttackDistance() - ATTACK_DISTANCE_THRESHOLD)
+            var hit = enemy.IsPlayerDetected();
+            
+            if (hit && hit.distance < enemy.GetAttackDistance() - ATTACK_DISTANCE_THRESHOLD)
                 enemy.Anim.SetFloat(AnimatorHashes.XVelocity, 0);
             else
             {
@@ -70,15 +82,20 @@ namespace Enemies.Base.States
         {
             bool battleTimeExpired = stateTimer < 0;
             bool playerTooFar = 
-                Vector2.Distance(PlayerManager.Instance.PlayerGameObject.transform.position, enemy.transform.position) > MAX_CHASE_DISTANCE;
+                Vector2.Distance(PlayerManager.Instance.PlayerGameObject.transform.position, 
+                    enemy.transform.position) > MAX_CHASE_DISTANCE;
 
             return battleTimeExpired || playerTooFar;
         }
 
         protected virtual void CalculateMoveDirection()
         {
-            moveDir = PlayerManager.Instance.PlayerGameObject.transform.position.x 
-                      > enemy.transform.position.x ? 1 : -1;
+            float xDistance = PlayerManager.Instance.PlayerGameObject.transform.position.x - enemy.transform.position.x;
+            
+            if (Mathf.Abs(xDistance) < FLIP_DISTANCE_THRESHOLD) 
+                moveDir = enemy.FacingDir; 
+            else
+                moveDir = xDistance > 0 ? 1 : -1;
         }
     }
 }
