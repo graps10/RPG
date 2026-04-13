@@ -9,12 +9,15 @@ namespace ChunkGeneration
 {
     public class ChunkGenerator : MonoBehaviour
     {
+        private const int Max_Spawned_Chunks_Count = 2;
+        
         [Header("World Progression")]
         [Tooltip("Valley, Forest, Castle")]
         [SerializeField] private List<LocationConfig> locations;
 
         [Header("Generation Rules")]
         [SerializeField] private int chunksAhead = 1;
+        [SerializeField] private float chunkGap = 0f;
 
         public static int LoopCount { get; private set; } = 0;
         public static float DifficultyMultiplier => 1f + (LoopCount * 0.5f);
@@ -40,10 +43,14 @@ namespace ChunkGeneration
             }
 
             _activeTheme = locations[0].Theme;
-
-            for (int i = 0; i < chunksAhead; i++)
-                SpawnNextChunk();
-
+            
+            SpawnNextChunk();
+            if (_activeChunks.Count > 0)
+            {
+                GameObject firstChunk = _activeChunks.Peek();
+                firstChunk.GetComponent<ChunkController>().OnPlayerEntry();
+            }
+            
             if (_playerSpawnSpot != null)
                 PlayerManager.Instance.TeleportPlayer(_playerSpawnSpot.position);
         }
@@ -59,7 +66,7 @@ namespace ChunkGeneration
             SpawnNextChunk();
         }
 
-        private void SpawnNextChunk()
+        public void SpawnNextChunk()
         {
             LocationConfig currentLocation = locations[_currentLocationIndex];
             ChunkConfig chunkToSpawn = null;
@@ -93,15 +100,31 @@ namespace ChunkGeneration
                 return;
             }
 
-            GameObject newChunk = PoolManager.Instance.Spawn(chunkToSpawn.Prefab, new Vector3(_nextSpawnPosition, 0, 0), Quaternion.identity);
+            float halfLength = chunkToSpawn.ChunkLength / 2f;
+            float spawnX = _nextSpawnPosition + halfLength;
+
+            Vector3 spawnPosition = new Vector3(spawnX, 0, 0);
+            
+            GameObject newChunk = PoolManager.Instance.Spawn(chunkToSpawn.Prefab, spawnPosition, Quaternion.identity);
+
             ChunkController chunkController = newChunk.GetComponent<ChunkController>();
             chunkController.Initialize(chunkToSpawn, this, currentLocation.Theme, spawningBossChunk);
-
-            _nextSpawnPosition += chunkToSpawn.ChunkLength;
+            
+            _nextSpawnPosition = spawnX + halfLength + chunkGap;
+            
             _activeChunks.Enqueue(newChunk);
 
             if (_playerSpawnSpot == null)
                 _playerSpawnSpot = chunkController.GetPlayerSpawnSpot();
+        }
+        
+        public void DespawnOldestChunk()
+        {
+            if (_activeChunks.Count > Max_Spawned_Chunks_Count) 
+            {
+                GameObject oldestChunk = _activeChunks.Dequeue();
+                PoolManager.Instance.Return(oldestChunk);
+            }
         }
 
         private void AdvanceToNextLocation()

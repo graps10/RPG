@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using ChunkGeneration.Configs;
 using ChunkGeneration.Triggers;
 using Core.ObjectPool;
+using Enemies.Base;
+using Enemies.DeathBringer;
 using UnityEngine;
 
 namespace ChunkGeneration
@@ -16,7 +18,6 @@ namespace ChunkGeneration
 
         [SerializeField] private ChunkEntryTrigger entryTrigger;
         [SerializeField] private ChunkExitTrigger exitTrigger;
-        [SerializeField] private ChunkGenerationTrigger generationTrigger;
 
         private ChunkConfig _config;
         private ChunkGenerator _levelGenerator;
@@ -26,6 +27,7 @@ namespace ChunkGeneration
         private List<GameObject> _spawnedEnemies = new();
         private bool _isBossChunk;
         private bool _chunkCompleted;
+        private bool _playerInside;
         
         private Coroutine _checkChunkCoroutine;
 
@@ -35,10 +37,13 @@ namespace ChunkGeneration
             _levelGenerator = generator;
             _chunkTheme = theme;
             _isBossChunk = isBossChunk;
-
-            UnlockDoors();
+            _chunkCompleted = false;
+            _playerInside = false;
+            
             SetupEnemies();
+
             SetupTriggers();
+            DeactivateWalls();
         }
 
         public override void ReturnToPool()
@@ -47,25 +52,37 @@ namespace ChunkGeneration
                 StopCoroutine(_checkChunkCoroutine);
             
             _chunkCompleted = false;
+            _playerInside = false;
             transform.position = Vector3.zero;
             
             ClearAllSpawnedEnemies();
-            UnlockDoors();
+            DeactivateWalls();
+            
             base.ReturnToPool();
         }
 
         #region Triggers
         public void OnPlayerEntry()
         {
-            _levelGenerator.UpdateActiveTheme(_chunkTheme);
-            LockDoors();
+            if (_playerInside) return;
+            _playerInside = true;
+            
+            ActivateWalls();
+            
+            _levelGenerator.DespawnOldestChunk();
+            
+            if (_isBossChunk)
+                WakeUpBoss();
+            
+            if (!_chunkCompleted)
+                _checkChunkCoroutine = StartCoroutine(CheckChunkCompletion());
         }
+        
         public void OnPlayerExitedLastChunk() => _levelGenerator.OnPlayerExitedLastChunk();
-        public void OnPlayerExitedCurrentChunk() => Debug.Log("Player exited chunk");
+        public void OnPlayerExitedCurrentChunk() { } //Debug.Log("Player exited chunk");
 
         private void SetupTriggers()
         {
-            generationTrigger.Initialize(this);
             entryTrigger.Initialize(this);
             exitTrigger.Initialize(this);
         }
@@ -83,6 +100,12 @@ namespace ChunkGeneration
                 SpawnEnemyBoss();
             else
                 SpawnOrdinaryEnemies();
+            
+            if (_spawnedEnemies.Count == 0)
+            {
+                CompleteChunk();
+                return;
+            }
             
             _checkChunkCoroutine = StartCoroutine(CheckChunkCompletion());
         }
@@ -137,6 +160,18 @@ namespace ChunkGeneration
                 _spawnedEnemies.Add(boss);
             }
         }
+        
+        private void WakeUpBoss()
+        {
+            foreach (var enemyObj in _spawnedEnemies)
+            {
+                if (enemyObj.TryGetComponent(out EnemyDeathBringer boss))
+                {
+                    boss.StartBattle();
+                    break;
+                }
+            }
+        }
 
         private void ClearAllSpawnedEnemies()
         {
@@ -151,25 +186,12 @@ namespace ChunkGeneration
         {
             while (!_chunkCompleted)
             {
-                if (_spawnedEnemies.Count > 0)
-                {
-                    bool allDead = true;
+                _spawnedEnemies.RemoveAll(enemy => enemy == null 
+                                                   || !enemy.activeInHierarchy 
+                                                   || enemy.GetComponent<Enemy>().Stats.IsDead);
 
-                    foreach (var enemy in _spawnedEnemies)
-                    {
-                        if (enemy != null)
-                        {
-                            allDead = false;
-                            break;
-                        }
-                    }
-
-                    if (allDead)
-                    {
-                        CompleteChunk();
-                        yield break; 
-                    }
-                }
+                if (_spawnedEnemies.Count == 0)
+                    CompleteChunk();
 
                 yield return new WaitForSeconds(Check_Chunk_Delay);
             }
@@ -180,19 +202,22 @@ namespace ChunkGeneration
         private void CompleteChunk()
         {
             _chunkCompleted = true;
-            UnlockDoors();
+            
+            DeactivateWalls();
+            
+            _levelGenerator.SpawnNextChunk();
         }
 
-        private void LockDoors()
+        private void ActivateWalls()
         {
-            entryTrigger.DisableTrigger();
-            exitTrigger.DisableTrigger();
+            entryTrigger.EnablePhysicalWall();
+            exitTrigger.EnablePhysicalWall();
         }
 
-        private void UnlockDoors()
+        private void DeactivateWalls()
         {
-            entryTrigger.EnableTrigger();
-            exitTrigger.EnableTrigger();
+            entryTrigger.DisablePhysicalWall();
+            exitTrigger.DisablePhysicalWall();
         }
         
         public Transform GetPlayerSpawnSpot() => playerSpawnSpot;

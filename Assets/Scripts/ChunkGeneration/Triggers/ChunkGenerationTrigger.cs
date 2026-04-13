@@ -10,7 +10,7 @@ namespace ChunkGeneration.Triggers
             trigger.enabled = true;
         }
 
-        public override void OnTriggerExit2D(Collider2D collision)
+        public void OnTriggerExit2D(Collider2D collision)
         {
             if (collision.GetComponent<Player.Player>() != null)
             {

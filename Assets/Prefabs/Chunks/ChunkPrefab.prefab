@@ -70,7 +70,7 @@ MonoBehaviour:
   - {fileID: 4242896527622705656}
   entryTrigger: {fileID: 4618994935457985039}
   exitTrigger: {fileID: 5520887514290418099}
-  generationTrigger: {fileID: 8246877902695218647}
+  debugConfig: {fileID: 0}
 --- !u!1 &959882228539865699
 GameObject:
   m_ObjectHideFlags: 0
@@ -3654,7 +3654,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &7111224035438365699
 Transform:
   m_ObjectHideFlags: 0

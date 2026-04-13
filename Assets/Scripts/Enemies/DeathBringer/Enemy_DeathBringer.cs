@@ -29,8 +29,6 @@ namespace Enemies.DeathBringer
         public EnemyState SpellCastState { get; private set; }
         
         #endregion
-        
-        private bool _bossFightBegun;
 
         protected override void Awake()
         {
@@ -107,6 +105,12 @@ namespace Enemies.DeathBringer
             StateMachine.ChangeState(DeadState);
         }
         
+        public void StartBattle()
+        {
+            if (StateMachine.CurrentState == IdleState) 
+                StateMachine.ChangeState(BattleState);
+        }
+        
         public void FindAvailableTeleportPosition()
         {
             float x = Random.Range(teleportArea.bounds.min.x + teleportPositionPadding, 
@@ -126,9 +130,6 @@ namespace Enemies.DeathBringer
         
         public int GetAmountOfSpells() => spellConfig.AmountOfSpells;
         public float GetSpellCooldown() => spellConfig.SpellCooldown;
-        
-        public void SetBossFightBegin(bool begun) => _bossFightBegun = begun; // bullshit code
-        public bool IsBossFightBegun() => _bossFightBegun;
 
         private RaycastHit2D GroundBelow() 
             => Physics2D.Raycast(transform.position, 
