@@ -6,27 +6,33 @@ namespace UI_Elements.Background
     {
         [SerializeField] private GameObject cam;
         [SerializeField] private SpriteRenderer length;
-        [SerializeField] private float parallaxEffect;
+        [Header("Parallax Settings")]
+        [SerializeField] private float parallaxEffect; 
+        [SerializeField] private float parallaxEffectY;
 
         private float _xPos;
+        private float _yPos;
         private float _bounds;
    
         private void Start()
         {
             _xPos = transform.position.x;
+            _yPos = transform.position.y;
             _bounds = length.bounds.size.x;
         }
-
-        private void Update()
+        
+        private void LateUpdate()
         {
-            float distanceMoved = cam.transform.position.x * (1 - parallaxEffect);
-
-            float distanceToMove = cam.transform.position.x * parallaxEffect;
-            transform.position = new Vector3(_xPos + distanceToMove, transform.position.y);
-
-            if (distanceMoved > _xPos + _bounds)
+            float distanceMovedX = cam.transform.position.x * (1 - parallaxEffect);
+            float distanceToMoveX = cam.transform.position.x * parallaxEffect;
+            
+            float distanceToMoveY = cam.transform.position.y * parallaxEffectY;
+            
+            transform.position = new Vector3(_xPos + distanceToMoveX, _yPos + distanceToMoveY, transform.position.z);
+            
+            if (distanceMovedX > _xPos + _bounds)
                 _xPos += _bounds;
-            else if (distanceMoved < _xPos - _bounds)
+            else if (distanceMovedX < _xPos - _bounds)
                 _xPos -= _bounds;
         }
     }
