@@ -976,7 +976,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxItemsToDrop: 0
   itemList: []
-  dropConfig: {fileID: 11400000, guid: 27ecf18bcbb2bae49b75deed81e0bc0a, type: 2}
+  itemDropConfig: {fileID: 11400000, guid: 27ecf18bcbb2bae49b75deed81e0bc0a, type: 2}
 --- !u!114 &5898013196290452530
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1000,7 +1000,7 @@ MonoBehaviour:
   wallCheckDistance: 1.5
   whatIsGround:
     serializedVersion: 2
-    m_Bits: 8
+    m_Bits: 2056
   whatIsPlayer:
     serializedVersion: 2
     m_Bits: 64
@@ -1016,17 +1016,13 @@ MonoBehaviour:
   attackDistance: 6.5
   attackCooldown: 0
   attackCooldownRange: {x: 1, y: 2}
-  spellConfig: {fileID: 11400000, guid: 24706a117633b724c88be90de49ccca7, type: 2}
   teleportArea: {fileID: 7260706497283614295}
   surroundingCheckSize: {x: 3, y: 3}
   chanceToTeleport: 25
   defaultChanceToTeleport: 25
   teleportGroundCheckDistance: 100
   teleportPositionPadding: 3
-  spellCastOffset: {x: 3, y: 3}
-  spellStateCooldown: 15
-  amountOfSpells: 5
-  spellCooldown: 1
+  spellConfig: {fileID: 11400000, guid: 24706a117633b724c88be90de49ccca7, type: 2}
   lastTimeCast: 0
 --- !u!1001 &26776515700817613
 PrefabInstance:

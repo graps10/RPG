@@ -1,6 +1,7 @@
 using Controllers;
 using Core;
 using Core.Interfaces;
+using Core.ObjectPool.Configs.Enemies;
 using Enemies.Base;
 using UnityEngine;
 
@@ -9,11 +10,7 @@ namespace Enemies.Shady
     public class EnemyShady : Enemy, IStunnable
     {
         [Header("Shady Specific")]
-        [SerializeField] private float battleStateMoveSpeed;
-
-        [SerializeField] private GameObject explosivePrefab;
-        [SerializeField] private float growSpeed;
-        [SerializeField] private float maxSize;
+        [SerializeField] private ShadyPoolConfig config;
 
         #region States
         public EnemyState StunnedState { get; private set; }
@@ -31,13 +28,6 @@ namespace Enemies.Shady
             DeadState = new ShadyDeadState(this, StateMachine, AnimatorHashes.EnemyDeadState);
         }
 
-        protected override void Start()
-        {
-            base.Start();
-
-            StateMachine.Initialize(IdleState);
-        }
-
         public bool CanBeStunned()
         {
             if (!canBeStunned) return 
@@ -51,21 +41,21 @@ namespace Enemies.Shady
         public override void Die()
         {
             base.Die();
-
             StateMachine.ChangeState(DeadState);
         }
 
         public override void AnimationSpecialAttackTrigger()
         {
-            GameObject newExplosive = Instantiate(explosivePrefab, attackCheck.position, Quaternion.identity);
+            GameObject newExplosive = Instantiate(config.ExplosivePrefab, attackCheck.position, Quaternion.identity);
 
-            newExplosive.GetComponent<ExplosiveController>().SetupExplosive(Stats, growSpeed, maxSize, attackCheckRadius);
+            newExplosive.GetComponent<ExplosiveController>()
+                .SetupExplosive(Stats, config.GrowSpeed, config.MaxSize, attackCheckRadius);
 
             Cd.enabled = false;
             Rb.gravityScale = 0;
         }
 
-        public float GetBattleStateMoveSpeed() => battleStateMoveSpeed;
+        public float GetBattleStateMoveSpeed() => config.BattleStateMoveSpeed;
         public void SelfDestroy() => Destroy(gameObject);
     }
 }

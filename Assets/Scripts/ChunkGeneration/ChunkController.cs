@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using ChunkGeneration.Configs;
 using ChunkGeneration.Triggers;
+using Core.Interfaces;
 using Core.ObjectPool;
 using Enemies.Base;
 using Enemies.DeathBringer;
@@ -22,9 +23,10 @@ namespace ChunkGeneration
         private ChunkConfig _config;
         private ChunkGenerator _levelGenerator;
         
+        private readonly List<Enemy> _spawnedEnemies = new();
+        
         private LocationTheme _chunkTheme;
-
-        private List<GameObject> _spawnedEnemies = new();
+        
         private bool _isBossChunk;
         private bool _chunkCompleted;
         private bool _playerInside;
@@ -53,7 +55,12 @@ namespace ChunkGeneration
             
             _chunkCompleted = false;
             _playerInside = false;
-            transform.position = Vector3.zero;
+            
+            foreach (var enemy in _spawnedEnemies)
+            {
+                if (enemy != null && enemy is IMinionSpawner spawner)
+                    spawner.OnMinionSpawned -= HandleMinionSpawned;
+            }
             
             ClearAllSpawnedEnemies();
             DeactivateWalls();
@@ -70,6 +77,7 @@ namespace ChunkGeneration
             ActivateWalls();
             
             _levelGenerator.DespawnOldestChunk();
+            _levelGenerator.UpdateActiveTheme(_chunkTheme);
             
             if (_isBossChunk)
                 WakeUpBoss();
@@ -128,14 +136,19 @@ namespace ChunkGeneration
                 {
                     if (Random.value <= enemyType.SpawnChance)
                     {
-                        GameObject enemy = Instantiate(
-                            enemyType.EnemyPrefab,
+                        GameObject enemyObj = PoolManager.Instance.Spawn(
+                            enemyType.Config.Prefab,
                             spot.position,
-                            Quaternion.identity,
-                            spot
+                            Quaternion.identity
                         );
                         
-                        _spawnedEnemies.Add(enemy);
+                        if (enemyObj.TryGetComponent(out Enemy enemyScript))
+                        {
+                            _spawnedEnemies.Add(enemyScript);
+                            if (enemyScript is IMinionSpawner spawner)
+                                spawner.OnMinionSpawned += HandleMinionSpawned;
+                        }
+                
                         break;
                     }
                 }
@@ -150,14 +163,24 @@ namespace ChunkGeneration
             if (bossConfig.BossData != null)
             {
                 Transform bossSpot = enemySpawnSpots[0];
-                GameObject boss = Instantiate(
-                    bossConfig.BossData.EnemyPrefab,
+                GameObject bossObj = PoolManager.Instance.Spawn(
+                    bossConfig.BossData.Config.Prefab,
                     bossSpot.position,
-                    Quaternion.identity,
-                    bossSpot
+                    Quaternion.identity
                 );
                 
-                _spawnedEnemies.Add(boss);
+                if (bossObj.TryGetComponent(out Enemy bossScript))
+                    _spawnedEnemies.Add(bossScript);
+            }
+        }
+        
+        private void HandleMinionSpawned(Enemy newMinion)
+        {
+            if (!_spawnedEnemies.Contains(newMinion))
+            {
+                _spawnedEnemies.Add(newMinion);
+                if (newMinion is IMinionSpawner spawner)
+                    spawner.OnMinionSpawned += HandleMinionSpawned;
             }
         }
         
@@ -187,8 +210,8 @@ namespace ChunkGeneration
             while (!_chunkCompleted)
             {
                 _spawnedEnemies.RemoveAll(enemy => enemy == null 
-                                                   || !enemy.activeInHierarchy 
-                                                   || enemy.GetComponent<Enemy>().Stats.IsDead);
+                                                   || !enemy.gameObject.activeInHierarchy 
+                                                   || enemy.Stats.IsDead);
 
                 if (_spawnedEnemies.Count == 0)
                     CompleteChunk();

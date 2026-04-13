@@ -1,0 +1,15 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c94bfb8efe56472ca7700fdfa7613daa, type: 3}
+  m_Name: ArcherPoolConfig
+  m_EditorClassIdentifier: 
+  prefab: {fileID: 7656670257762040362, guid: e442bc2694c7c024d9c83152ba4627f2, type: 3}

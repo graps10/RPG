@@ -69,7 +69,7 @@ MonoBehaviour:
   wallCheckDistance: 0.8
   whatIsGround:
     serializedVersion: 2
-    m_Bits: 8
+    m_Bits: 2056
   whatIsPlayer:
     serializedVersion: 2
     m_Bits: 64
@@ -249,7 +249,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxItemsToDrop: 2
   itemList: []
-  dropConfig: {fileID: 11400000, guid: 27ecf18bcbb2bae49b75deed81e0bc0a, type: 2}
+  itemDropConfig: {fileID: 11400000, guid: 27ecf18bcbb2bae49b75deed81e0bc0a, type: 2}
 --- !u!1 &388911931758306081
 GameObject:
   m_ObjectHideFlags: 0

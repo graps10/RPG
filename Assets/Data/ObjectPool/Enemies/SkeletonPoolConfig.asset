@@ -1,0 +1,15 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 861b0dc28fe34f9f8a55b3b7dbd3b709, type: 3}
+  m_Name: SkeletonPoolConfig
+  m_EditorClassIdentifier: 
+  prefab: {fileID: 2762583471415981110, guid: 5c84086843a841f4d9ac6a254757bcf7, type: 3}

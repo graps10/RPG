@@ -41,13 +41,6 @@ namespace Enemies.DeathBringer
             SpellCastState = new DeathBringerSpellCastState(this, StateMachine, AnimatorHashes.EnemySpellCastState);
             DeadState = new DeathBringerDeadState(this, StateMachine, AnimatorHashes.EnemyIdleState);
         }
-
-        protected override void Start()
-        {
-            base.Start();
-
-            StateMachine.Initialize(IdleState);
-        }
         
         public bool CanAttack()
         {

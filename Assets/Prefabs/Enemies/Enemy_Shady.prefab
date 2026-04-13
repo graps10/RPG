@@ -422,7 +422,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxItemsToDrop: 0
   itemList: []
-  dropConfig: {fileID: 11400000, guid: 27ecf18bcbb2bae49b75deed81e0bc0a, type: 2}
+  itemDropConfig: {fileID: 11400000, guid: 27ecf18bcbb2bae49b75deed81e0bc0a, type: 2}
 --- !u!114 &679803618332397563
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -446,7 +446,7 @@ MonoBehaviour:
   wallCheckDistance: 0.5
   whatIsGround:
     serializedVersion: 2
-    m_Bits: 8
+    m_Bits: 2056
   whatIsPlayer:
     serializedVersion: 2
     m_Bits: 64
@@ -462,10 +462,7 @@ MonoBehaviour:
   attackDistance: 0.5
   attackCooldown: 0
   attackCooldownRange: {x: 1, y: 2}
-  battleStateMoveSpeed: 6
-  explosivePrefab: {fileID: 2283389122960958411, guid: 2ed38bce3a8dd914486cae0d40a78ca1, type: 3}
-  growSpeed: 15
-  maxSize: 7
+  config: {fileID: 11400000, guid: d74c43bf70076dc42b37ff45937c10a2, type: 2}
 --- !u!1 &5791938942886144037
 GameObject:
   m_ObjectHideFlags: 0

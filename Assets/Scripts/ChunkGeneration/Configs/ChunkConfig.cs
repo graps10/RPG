@@ -1,4 +1,5 @@
 using Core.ObjectPool.Configs;
+using Core.ObjectPool.Configs.Enemies;
 using UnityEngine;
 
 namespace ChunkGeneration.Configs
@@ -14,7 +15,7 @@ namespace ChunkGeneration.Configs
     [System.Serializable]
     public class EnemySpawnData
     {
-        public GameObject EnemyPrefab;
+        public EnemyPoolConfig Config;
         [Range(0f, 1f)] public float SpawnChance;
     }
 }

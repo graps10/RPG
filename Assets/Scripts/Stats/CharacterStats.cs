@@ -1,12 +1,12 @@
+using System;
 using System.Collections;
 using Components.FX;
 using Controllers.Skill_Controllers;
-using Core.ObjectPool;
 using Core.ObjectPool.Configs.FX;
 using Enemies.Base;
-using Managers;
 using UnityEngine;
 using PoolManager = Core.ObjectPool.PoolManager;
+using Random = UnityEngine.Random;
 
 namespace Stats
 {
@@ -43,6 +43,7 @@ namespace Stats
         private const float Ignite_Damage_Cooldown = 0.3f;
         private const float Chill_Chance = 0.5f;
         private const float Shock_Chance = 0.5f;
+        private const float Shock_Cooldown = 0.5f;
 
         private const float Ignite_Damage_Multiplier = 0.2f;
         private const float Shock_Damage_Multiplier = 0.1f;
@@ -89,7 +90,9 @@ namespace Stats
         public int CurrentHealth { get; private set; }
         public bool IsDead { get; private set; }
         
-        public System.Action OnHealthChanged;
+        public Action OnHealthChanged;
+        
+        private EntityFX _fx;
         
         private bool _isIgnited;
         private bool _isChilled;
@@ -106,15 +109,19 @@ namespace Stats
         private int _igniteDamage;
         
         private int _shockDamage;
-        
-        private EntityFX _fx;
+        private float _lastShockTime;
 
-        protected virtual void Start()
+        protected virtual void Awake()
         {
-            CurrentHealth = GetMaxHealthValue();
-
             _fx = GetComponent<EntityFX>();
         }
+
+        protected virtual void OnEnable()
+        {
+            CurrentHealth = GetMaxHealthValue();
+        }
+
+        protected virtual void Start() { }
 
         protected virtual void Update()
         {
@@ -223,10 +230,11 @@ namespace Stats
                     _targetStats.ApplyAilments(canApplyIgnite, canApplyChill, canApplyShock);
                     return;
                 }
-
-                if (Random.value < Shock_Chance && _lightingDamage > 0)
+                
+                if (Random.value < Shock_Chance && Time.time < _lastShockTime + Shock_Cooldown && _lightingDamage > 0)
                 {
                     canApplyShock = true;
+                    _lastShockTime = Time.time;
                     _targetStats.ApplyAilments(canApplyIgnite, canApplyChill, canApplyShock);
                     return;
                 }
@@ -474,8 +482,15 @@ namespace Stats
                 StatType.fireDamage => fireDamage,
                 StatType.iceDamage => iceDamage,
                 StatType.lightingDamage => lightingDamage,
-                _ => throw new System.ArgumentOutOfRangeException($"Unhandled StatType: {statType}")
+                _ => throw new ArgumentOutOfRangeException($"Unhandled StatType: {statType}")
             };
+        }
+        
+        public virtual void ResetStats()
+        {
+            IsDead = false;
+            CurrentHealth = GetMaxHealthValue();
+            OnHealthChanged?.Invoke();
         }
     }
 }

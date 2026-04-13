@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using Core;
 using Core.ObjectPool;
@@ -10,16 +11,22 @@ namespace Controllers.Skill_Controllers
     public class ShockStrikeController : PooledObject
     {
         private CharacterStats _targetStats;
-        private ShockStrikePoolConfig  _config;
+        private ShockStrikePoolConfig _config;
         private Animator _anim;
     
         private int _damage;
         private bool _triggered;
+        private Quaternion _animInitialRotation;
 
         private void Awake()
         {
             if(_anim == null)
                 _anim = GetComponentInChildren<Animator>();
+        }
+
+        private void Start()
+        {
+            _animInitialRotation = _anim.transform.rotation;
         }
 
         public void Setup(int damage, CharacterStats targetStats,  ShockStrikePoolConfig config)
@@ -36,8 +43,13 @@ namespace Controllers.Skill_Controllers
 
             transform.position = Vector2.zero;
             transform.localScale = Vector3.one;
-
+            
             _anim.transform.localPosition = Vector3.zero;
+            _anim.transform.localRotation = _animInitialRotation;
+            
+            _anim.Rebind();
+            _anim.Update(0f);
+            
             base.ReturnToPool();
         }
 

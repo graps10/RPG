@@ -15,8 +15,8 @@ TagManager:
   - Enemy
   - Sword
   - Item
-  - Trigger
-  - 
+  - PlayerTrigger
+  - Wall
   - 
   - 
   - 

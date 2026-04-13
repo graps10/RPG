@@ -26,13 +26,6 @@ namespace Enemies.Skeleton
             DeadState = new SkeletonDeadState(this, StateMachine, AnimatorHashes.EnemyIdleState);
         }
 
-        protected override void Start()
-        {
-            base.Start();
-
-            StateMachine.Initialize(IdleState);
-        }
-
         public bool CanBeStunned()
         {
             if (!canBeStunned) return 
@@ -58,7 +51,6 @@ namespace Enemies.Skeleton
         public override void Die()
         {
             base.Die();
-
             StateMachine.ChangeState(DeadState);
         }
     }

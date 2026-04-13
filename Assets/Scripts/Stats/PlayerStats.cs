@@ -12,10 +12,9 @@ namespace Stats
         
         private Player.Player _player;
 
-        protected override void Start()
+        protected override void Awake()
         {
-            base.Start();
-
+            base.Awake();
             _player = GetComponent<Player.Player>();
         }
 

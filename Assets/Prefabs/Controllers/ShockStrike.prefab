@@ -151,5 +151,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 57ab2f1ec1da158468016a65c98800d7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetStats: {fileID: 0}
-  speed: 35

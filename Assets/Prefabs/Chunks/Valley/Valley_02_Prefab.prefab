@@ -818,8 +818,8 @@ Tilemap:
   - first: {x: 16, y: -8, z: 0}
     second:
       serializedVersion: 2
-      m_TileIndex: 21
-      m_TileSpriteIndex: 21
+      m_TileIndex: 22
+      m_TileSpriteIndex: 22
       m_TileMatrixIndex: 0
       m_TileColorIndex: 0
       m_TileObjectToInstantiateIndex: 65535
@@ -2539,9 +2539,9 @@ Tilemap:
     m_Data: {fileID: 11400000, guid: 5a9c676098a2cbd4fb19c991dd7b3db9, type: 2}
   - m_RefCount: 2
     m_Data: {fileID: 11400000, guid: 692bb32cf2c829c48be196b32ff30320, type: 2}
-  - m_RefCount: 11
+  - m_RefCount: 10
     m_Data: {fileID: 11400000, guid: 3c8f0dcc89ad08047b15acff03377a26, type: 2}
-  - m_RefCount: 169
+  - m_RefCount: 170
     m_Data: {fileID: 11400000, guid: e077e63bb1a54ab4faebbd713dca57d1, type: 2}
   - m_RefCount: 10
     m_Data: {fileID: 11400000, guid: d97cd495e2cade4408503247485b5c19, type: 2}
@@ -2588,9 +2588,9 @@ Tilemap:
     m_Data: {fileID: 21300000, guid: b6964c0e0dc1ba84c8cfb275f3ca3071, type: 3}
   - m_RefCount: 2
     m_Data: {fileID: 21300000, guid: 840dbd00375d02646b8d5128da6bb675, type: 3}
-  - m_RefCount: 11
+  - m_RefCount: 10
     m_Data: {fileID: 21300000, guid: 90d10d4ec25a7e54f9becdea0c8dfef1, type: 3}
-  - m_RefCount: 169
+  - m_RefCount: 170
     m_Data: {fileID: 21300000, guid: 7bae39282af46fa449bb7fd77041f40d, type: 3}
   - m_RefCount: 10
     m_Data: {fileID: 21300000, guid: e5db2e6269cab6942b3c1a074c187b31, type: 3}
@@ -3007,12 +3007,12 @@ GameObject:
   m_Component:
   - component: {fileID: 2064628059077507022}
   - component: {fileID: 5176081194010379539}
-  m_Layer: 10
+  m_Layer: 11
   m_Name: SolidWall
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 0
 --- !u!4 &2064628059077507022
 Transform:
@@ -3124,7 +3124,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &8857290845588876189
 Transform:
@@ -3247,7 +3247,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &8957289480541555946
 Transform:
@@ -3826,12 +3826,12 @@ GameObject:
   m_Component:
   - component: {fileID: 4669687715960904964}
   - component: {fileID: 3294773058713538410}
-  m_Layer: 10
+  m_Layer: 11
   m_Name: SolidWall
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 0
 --- !u!4 &4669687715960904964
 Transform:

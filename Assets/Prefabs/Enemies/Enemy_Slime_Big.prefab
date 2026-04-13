@@ -422,7 +422,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxItemsToDrop: 3
   itemList: []
-  dropConfig: {fileID: 11400000, guid: 27ecf18bcbb2bae49b75deed81e0bc0a, type: 2}
+  itemDropConfig: {fileID: 11400000, guid: 27ecf18bcbb2bae49b75deed81e0bc0a, type: 2}
 --- !u!114 &4615921348450462959
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -446,7 +446,7 @@ MonoBehaviour:
   wallCheckDistance: 1.5
   whatIsGround:
     serializedVersion: 2
-    m_Bits: 8
+    m_Bits: 2056
   whatIsPlayer:
     serializedVersion: 2
     m_Bits: 64
@@ -462,11 +462,7 @@ MonoBehaviour:
   attackDistance: 1.8
   attackCooldown: 0
   attackCooldownRange: {x: 1, y: 2}
-  slimeType: 0
-  slimesToCreate: 2
-  slimePrefab: {fileID: 8684695651257718815, guid: ba82a72bbcf6d6f4f98a2d4ed8ba4eb1, type: 3}
-  minCreationVelocity: {x: 0.5, y: 0.5}
-  maxCreationVelocity: {x: 2, y: 2}
+  config: {fileID: 11400000, guid: 277e745f3d1898d4fa0005ce280c243a, type: 2}
 --- !u!1 &3266068826948562580
 GameObject:
   m_ObjectHideFlags: 0

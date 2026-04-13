@@ -61,18 +61,27 @@ namespace Enemies.Base
             StateMachine = new EnemyStateMachine();
             _defaultMoveSpeed = moveSpeed;
         }
+        
+        protected override void OnEnable()
+        {
+            base.OnEnable();
+            
+            moveSpeed = _defaultMoveSpeed;
+            
+            if (StateMachine != null && IdleState != null)
+                StateMachine.Initialize(IdleState);
+        }
 
         protected override void Start()
         {
             base.Start();
-
-            Fx = GetComponent<EntityFX>();
+            if(Fx == null)
+                Fx = GetComponent<EntityFX>();
         }
         
         protected override void Update()
         {
             base.Update();
-
             StateMachine.CurrentState.Update();
         }
 
@@ -87,7 +96,6 @@ namespace Enemies.Base
         protected override void ReturnDefaultSpeed()
         {
             base.ReturnDefaultSpeed();
-
             moveSpeed = _defaultMoveSpeed;
         }
 

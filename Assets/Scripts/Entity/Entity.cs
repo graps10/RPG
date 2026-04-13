@@ -1,12 +1,13 @@
 using System;
 using System.Collections;
+using Core.ObjectPool;
 using Core.Utilities;
 using Stats;
 using UnityEngine;
 
 namespace Entity
 {
-    public class Entity : MonoBehaviour
+    public class Entity : PooledObject
     {
         [Header("KnockBack Info")]
         [SerializeField] protected Vector2 knockbackPower = new(7, 12);
@@ -50,7 +51,32 @@ namespace Entity
             
             Stats = GetComponent<CharacterStats>();
         }
-
+        
+        protected virtual void OnEnable()
+        {
+            isKnocked = false;
+            
+            FacingDir = 1;
+            facingRight = true;
+            transform.localRotation = Quaternion.identity;
+            
+            if (Cd != null) 
+                Cd.enabled = true;
+            
+            if (Rb != null)
+                Rb.isKinematic = false;
+            
+            if (Anim != null)
+            {
+                Anim.speed = 1;
+                Anim.Rebind();
+                Anim.Update(0f);
+            }
+            
+            if (Stats != null)
+                Stats.ResetStats();
+        }
+        
         protected virtual void Start() { }
 
         protected virtual void Update() { }

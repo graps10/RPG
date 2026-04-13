@@ -7,6 +7,9 @@ namespace Core.ObjectPool
 {
     public class PoolManager : MonoBehaviour
     {
+        private const int Default_Capacity = 10;
+        private const int Max_Size = 500;
+        
         public static PoolManager Instance { get; private set; }
         
         private Dictionary<int, IObjectPool<GameObject>> _pools = new();
@@ -39,17 +42,20 @@ namespace Core.ObjectPool
                 createFunc: () =>
                 {
                     GameObject obj = Instantiate(prefab, poolParent);
-                    PooledObject pooledObj = obj.AddComponent<PooledObject>();
+                    
+                    if (!obj.TryGetComponent(out PooledObject pooledObj))
+                        pooledObj = obj.AddComponent<PooledObject>();
+                    
                     pooledObj.SetPool(_pools[prefabId]); 
                     return obj;
                 },
                 actionOnGet: obj => obj.SetActive(true),
                 actionOnRelease: obj => obj.SetActive(false),
                 actionOnDestroy: obj => Destroy(obj),
-                defaultCapacity: 10,
-                maxSize: 500
+                defaultCapacity: Default_Capacity,
+                maxSize: Max_Size
             );
-
+            
             _pools.Add(prefabId, pool);
         }
         

@@ -17,9 +17,9 @@ MonoBehaviour:
   minEnemies: 3
   maxEnemies: 4
   enemiesData:
-  - EnemyPrefab: {fileID: 3224313224280886796, guid: 74f0f99771668e045bc4fde30e1de57a, type: 3}
+  - Config: {fileID: 11400000, guid: 277e745f3d1898d4fa0005ce280c243a, type: 2}
     SpawnChance: 0.5
-  - EnemyPrefab: {fileID: 8684695651257718815, guid: ba82a72bbcf6d6f4f98a2d4ed8ba4eb1, type: 3}
+  - Config: {fileID: 11400000, guid: 2b23eaa2ef3da0647a558ecd3be8a26a, type: 2}
     SpawnChance: 0.5
-  - EnemyPrefab: {fileID: 8077859740426728682, guid: 48712f3fd1858644a8d3265b152422ae, type: 3}
+  - Config: {fileID: 11400000, guid: 2b23eaa2ef3da0647a558ecd3be8a26a, type: 2}
     SpawnChance: 0.35

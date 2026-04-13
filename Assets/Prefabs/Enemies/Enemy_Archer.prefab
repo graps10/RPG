@@ -211,7 +211,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxItemsToDrop: 3
   itemList: []
-  dropConfig: {fileID: 11400000, guid: 27ecf18bcbb2bae49b75deed81e0bc0a, type: 2}
+  itemDropConfig: {fileID: 11400000, guid: 27ecf18bcbb2bae49b75deed81e0bc0a, type: 2}
 --- !u!114 &7656670257762040362
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -235,7 +235,7 @@ MonoBehaviour:
   wallCheckDistance: 1.5
   whatIsGround:
     serializedVersion: 2
-    m_Bits: 8
+    m_Bits: 2056
   whatIsPlayer:
     serializedVersion: 2
     m_Bits: 64
@@ -251,7 +251,6 @@ MonoBehaviour:
   attackDistance: 15
   attackCooldown: 0
   attackCooldownRange: {x: 1, y: 2}
-  arrowSpeed: 7
   arrowConfig: {fileID: 11400000, guid: df7983e0073b16647b5a3cf89a4c0981, type: 2}
   jumpVelocity: {x: 25, y: 20}
   jumpCooldown: 1

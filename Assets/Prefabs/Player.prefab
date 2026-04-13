@@ -20206,7 +20206,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxItemsToDrop: 3
   itemList: []
-  dropConfig: {fileID: 11400000, guid: 27ecf18bcbb2bae49b75deed81e0bc0a, type: 2}
+  itemDropConfig: {fileID: 11400000, guid: 27ecf18bcbb2bae49b75deed81e0bc0a, type: 2}
   chanceToLooseItems: 75
   chanceToLooseMaterials: 75
 --- !u!114 &8451371641576957351

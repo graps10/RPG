@@ -17,5 +17,5 @@ MonoBehaviour:
   minEnemies: 1
   maxEnemies: 1
   enemiesData:
-  - EnemyPrefab: {fileID: 8077859740426728682, guid: 48712f3fd1858644a8d3265b152422ae, type: 3}
+  - Config: {fileID: 11400000, guid: 4a246e4b6f1d13a4d8f9cf0ba36e360f, type: 2}
     SpawnChance: 1

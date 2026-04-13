@@ -44,13 +44,6 @@ namespace Enemies.Archer
             DeadState = new ArcherDeadState(this, StateMachine, AnimatorHashes.EnemyIdleState);
         }
 
-        protected override void Start()
-        {
-            base.Start();
-
-            StateMachine.Initialize(IdleState);
-        }
-
         public bool CanBeStunned()
         {
             if (!canBeStunned) return 
@@ -90,7 +83,6 @@ namespace Enemies.Archer
         public override void Die()
         {
             base.Die();
-
             StateMachine.ChangeState(DeadState);
         }
 

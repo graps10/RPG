@@ -15,6 +15,8 @@ namespace Components.FX
         private const float Hit_Return_To_Pool_Delay = 0.5f;
         private const float Effect_Repeat_Interval = 0.3f;
         
+        private const float Text_Spawn_Cooldown = 0.1f;
+        
         private static Vector2 popupXPositionRange = new(-1f, 1f);
         private static Vector2 popupYPositionRange = new(1.5f, 3f);
         
@@ -31,6 +33,7 @@ namespace Components.FX
         
         [Header("Popup Text FX")]
         [SerializeField] private PopupTextPoolConfig textConfig;
+        private float _lastTextSpawnTime;
         
         [Header("Hits FX")]
         [SerializeField] private HitFXPoolConfig hitFXConfig;
@@ -68,6 +71,9 @@ namespace Components.FX
 
         public void CreatePopUpText(string text)
         {
+            if (Time.time < _lastTextSpawnTime + Text_Spawn_Cooldown) return;
+            _lastTextSpawnTime = Time.time;
+            
             float randomX = Random.Range(popupXPositionRange.x, popupXPositionRange.y);
             float randomY = Random.Range(popupYPositionRange.x, popupYPositionRange.y);
 

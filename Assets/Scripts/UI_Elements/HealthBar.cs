@@ -23,6 +23,9 @@ namespace UI_Elements
         {
             _entity.OnFlipped += FlipUI;
             _myStats.OnHealthChanged += UpdateHealthUI;
+            
+            _myTransform.localRotation = Quaternion.identity;
+            UpdateHealthUI();
         }
         
         private void OnDisable()
@@ -30,8 +33,6 @@ namespace UI_Elements
             _entity.OnFlipped -= FlipUI;
             _myStats.OnHealthChanged -= UpdateHealthUI;
         }
-
-        private void Start() => UpdateHealthUI();
 
         private void UpdateHealthUI()
         {

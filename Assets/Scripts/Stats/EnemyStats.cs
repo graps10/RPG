@@ -7,8 +7,6 @@ namespace Stats
 {
     public class EnemyStats : CharacterStats
     {
-        private const float Destroy_Delay = 3f;
-        
         [Header("Level Details")]
         [SerializeField] private int level = 1;
 
@@ -21,15 +19,18 @@ namespace Stats
         
         private Stat _soulsDropAmount = new();
 
-        protected override void Start()
+        protected override void Awake()
         {
-            _soulsDropAmount.SetDefaultValue(initialSoulsDropAmount);
-            ApplyLevelModifiers();
-
-            base.Start();
-
+            base.Awake();
             _enemy = GetComponent<Enemy>();
             _myDropSystem = GetComponent<ItemDrop>();
+        }
+
+        protected override void OnEnable()
+        {
+            base.OnEnable();
+            _soulsDropAmount.SetDefaultValue(initialSoulsDropAmount);
+            ApplyLevelModifiers();
         }
 
         protected override void Die()
@@ -39,12 +40,10 @@ namespace Stats
             if (_enemy != null)
             {
                 _enemy.Die();
-
                 _myDropSystem.GenerateDrop();
             }
         
             PlayerManager.Instance.AddCurrency(_soulsDropAmount.GetValue());
-            Destroy(gameObject, Destroy_Delay);
         }
 
         private void ApplyLevelModifiers()
