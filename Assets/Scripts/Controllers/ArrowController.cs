@@ -108,6 +108,7 @@ namespace Controllers
             _rb.constraints = RigidbodyConstraints2D.FreezeAll;
             
             transform.parent = collision.transform;
+            _trailFx.Stop();
             
             CancelInvoke(nameof(ReturnToPool));
             Invoke(nameof(ReturnToPool), _config.HitReturnDelay);
