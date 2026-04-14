@@ -1,5 +1,6 @@
 using Core.ObjectPool;
 using Core.ObjectPool.Configs;
+using Core.ObjectPool.Configs.Controllers;
 using Stats;
 using UnityEngine;
 

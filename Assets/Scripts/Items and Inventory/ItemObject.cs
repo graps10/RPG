@@ -1,6 +1,7 @@
 using Components.Audio;
 using Core.ObjectPool;
 using Core.ObjectPool.Configs;
+using Core.ObjectPool.Configs.Inventory;
 using Managers;
 using UnityEngine;
 

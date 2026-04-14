@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
 
-namespace Core.ObjectPool.Configs
+namespace Core.ObjectPool.Configs.Inventory
 {
-    [CreateAssetMenu(fileName = "ItemsDropPoolConfig", menuName = "ObjectPool/Configs/Item Drop")]
+    [CreateAssetMenu(fileName = "ItemsDropPoolConfig", menuName = "ObjectPool/Configs/Inventory/Item Drop")]
     public class ItemDropPoolConfig : BasePoolConfig
     {
         [Header("Item Drop Specific Settings")]

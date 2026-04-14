@@ -2,6 +2,7 @@ using Controllers;
 using Core;
 using Core.Interfaces;
 using Core.ObjectPool.Configs;
+using Core.ObjectPool.Configs.Controllers;
 using Enemies.Base;
 using Managers;
 using UnityEngine;

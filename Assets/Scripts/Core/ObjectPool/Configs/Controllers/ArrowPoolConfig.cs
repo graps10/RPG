@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
 
-namespace Core.ObjectPool.Configs
+namespace Core.ObjectPool.Configs.Controllers
 {
-    [CreateAssetMenu(fileName = "ArrowsPoolConfig", menuName = "ObjectPool/Configs/Arrow")]
+    [CreateAssetMenu(fileName = "ArrowsPoolConfig", menuName = "ObjectPool/Configs/Controllers/Arrow")]
     public class ArrowPoolConfig : BasePoolConfig
     {
         [Header("Arrow Specific Settings")]

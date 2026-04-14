@@ -1,4 +1,6 @@
 using Core;
+using Core.ObjectPool;
+using Core.ObjectPool.Configs.Controllers;
 using Enemies.Base;
 using Items_and_Inventory;
 using Skills;
@@ -7,32 +9,28 @@ using UnityEngine;
 
 namespace Controllers.Skill_Controllers
 {
-    public class CrystalSkillController : MonoBehaviour
+    public class CrystalSkillController : PooledObject
     {
-        private const float Closest_Target_Min_Distance = 1f;
-        
-        private static readonly Vector2 growTargetScale = new(3f, 3f);
-        
-        [SerializeField] private float growSpeed = 5;
-        [SerializeField] private LayerMask whatIsEnemy;
-        
         private Player.Player _player;
         private Animator _anim => GetComponent<Animator>();
         private CircleCollider2D _cd => GetComponent<CircleCollider2D>();
         
+        private CrystalPoolConfig _config;
+        
         private float _moveSpeed;
         private float _crystalExistTimer;
-
-        private bool _canExplode;
+        
         private bool _canMove;
         private bool _canGrow;
+        private bool _canExplode;
         
         private Transform _closestTarget;
 
-        public void SetupCrystal(float crystalDuration, bool canExplode, bool canMove, float moveSpeed, 
-            Transform closestTarget, Player.Player player)
+        public void SetupCrystal(CrystalPoolConfig config, float crystalDuration, bool canExplode, bool canMove, float moveSpeed,
+            Transform closestTarget,  Player.Player player)
         {
             _player = player;
+            _config = config;
             _crystalExistTimer = crystalDuration;
             _canExplode = canExplode;
             _canMove = canMove;
@@ -40,11 +38,32 @@ namespace Controllers.Skill_Controllers
             _closestTarget = closestTarget;
         }
 
+        public override void ReturnToPool()
+        {
+            transform.localPosition = Vector3.zero;
+            transform.localRotation = Quaternion.identity;
+            transform.localScale = Vector3.one;
+            
+            _moveSpeed = 0f;
+            _crystalExistTimer = 0f;
+            
+            _canMove = false;
+            _canGrow = false;
+            _canExplode = false;
+            
+            _closestTarget = null;
+            
+            _anim.Rebind();
+            _anim.Update(0f);
+            
+            base.ReturnToPool();
+        }
+
         public void ChooseRandomEnemy()
         {
             float radius = SkillManager.Instance.BlackHole.GetBlackHoleRadius();
 
-            Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, radius, whatIsEnemy);
+            Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, radius, _config.WhatIsEnemy);
             if (colliders.Length > 0)
                 _closestTarget = colliders[Random.Range(0, colliders.Length)].transform;
         }
@@ -54,16 +73,14 @@ namespace Controllers.Skill_Controllers
             _crystalExistTimer -= Time.deltaTime;
 
             if (_crystalExistTimer < 0)
-            {
                 FinishCrystal();
-            }
 
             if (_canMove)
                 FaceClosestTarget();
 
             if (_canGrow)
                 transform.localScale = Vector2.Lerp(transform.localScale, 
-                    growTargetScale, growSpeed * Time.deltaTime);
+                    _config.GrowTargetScale, _config.GrowSpeed * Time.deltaTime);
         }
 
         public void FinishCrystal()
@@ -75,10 +92,10 @@ namespace Controllers.Skill_Controllers
                 _canMove = false;
             }
             else
-                SelfDestroy();
+                ReturnToPool();
         }
-
-        public void SelfDestroy() => Destroy(gameObject);
+        
+        public void SelfDestroy() => ReturnToPool();
 
         private void AnimationExplodeEvent()
         {
@@ -106,7 +123,7 @@ namespace Controllers.Skill_Controllers
                 transform.position = Vector2.MoveTowards(transform.position, _closestTarget.position, 
                     _moveSpeed * Time.deltaTime);
 
-                if (Vector2.Distance(transform.position, _closestTarget.position) < Closest_Target_Min_Distance)
+                if (Vector2.Distance(transform.position, _closestTarget.position) < _config.ClosestTargetMinDistance)
                     FinishCrystal();
             }
         }

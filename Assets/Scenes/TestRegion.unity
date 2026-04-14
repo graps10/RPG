@@ -11517,7 +11517,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cooldownDuration: 0
-  crystalPrefab: {fileID: 1936017902787144323, guid: 3d6672224ae45c14e8db50a294b74fdb, type: 3}
+  config: {fileID: 11400000, guid: 48f360d3d1221ab4db6839005b2b4ce5, type: 2}
   crystalDuration: 3.5
   unlockCrystalButton: {fileID: 643378564}
   teleportCooldown: 0.5

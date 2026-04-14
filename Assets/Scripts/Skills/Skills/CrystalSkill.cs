@@ -1,5 +1,7 @@
 using System.Collections.Generic;
 using Controllers.Skill_Controllers;
+using Core.ObjectPool;
+using Core.ObjectPool.Configs.Controllers;
 using UI_Elements;
 using UnityEngine;
 
@@ -7,7 +9,7 @@ namespace Skills.Skills
 {
     public class CrystalSkill : Skill
     {
-        [SerializeField] private GameObject crystalPrefab;
+        [SerializeField] private CrystalPoolConfig config;
         [SerializeField] private float crystalDuration;
         
         [Header("Crystal Skill")]
@@ -39,7 +41,7 @@ namespace Skills.Skills
 
         private bool _crystalUnlocked;
         
-        private GameObject _currentCrystal;
+        private CrystalSkillController _currentCrystal;
         private bool _canTeleport = true;
 
         private void OnEnable()
@@ -92,12 +94,13 @@ namespace Skills.Skills
 
         public void CreateCrystal()
         {
-            _currentCrystal = Instantiate(crystalPrefab, player.transform.position, Quaternion.identity);
-            CrystalSkillController currentCrystalScript = 
-                _currentCrystal.GetComponent<CrystalSkillController>();
-
-            currentCrystalScript.SetupCrystal(crystalDuration, canExplode, 
-                canMoveToEnemy, moveSpeed, FindClosestEnemy(_currentCrystal.transform), player);
+            GameObject crystalObj = PoolManager.Instance.Spawn(config.Prefab, player.transform.position, Quaternion.identity);
+            
+            if (crystalObj.TryGetComponent(out _currentCrystal))
+            {
+                _currentCrystal.SetupCrystal(config, crystalDuration, canExplode, 
+                    canMoveToEnemy, moveSpeed, FindClosestEnemy(crystalObj.transform), player);
+            }
         }
 
         public void CurrentCrystalChooseRandomTarget() 
@@ -148,47 +151,46 @@ namespace Skills.Skills
         private void HandleCloneCreation()
         {
             SkillManager.Instance.Clone.CreateClone(_currentCrystal.transform, Vector3.zero);
-            Destroy(_currentCrystal);
+            PoolManager.Instance.Return(_currentCrystal.gameObject);
 
             Invoke(nameof(UnlockTeleport), teleportCooldown);
         }
 
         private void HandleCrystalFinish()
         {
-            _currentCrystal.GetComponent<CrystalSkillController>()?.FinishCrystal();
-
+            _currentCrystal?.FinishCrystal();
             Invoke(nameof(UnlockTeleport), teleportCooldown);
         }
 
         private bool CanUseMultiCrystal()
         {
-            if (canUseMultiStacks)
+            if (!canUseMultiStacks || crystalsLeft.Count == 0)
+                return false;
+            
+            if (crystalsLeft.Count == amountOfStacks)
+                Invoke(nameof(ResetAbility), useTimeWindow);
+
+            SetCooldownDuration(0f);
+            
+            int lastIndex = crystalsLeft.Count - 1;
+            GameObject crystalToSpawn = crystalsLeft[lastIndex];
+            crystalsLeft.RemoveAt(lastIndex); 
+
+            GameObject newCrystalObj = PoolManager.Instance.Spawn(crystalToSpawn, player.transform.position, Quaternion.identity);
+
+            if (newCrystalObj.TryGetComponent(out CrystalSkillController newCrystalScript))
             {
-                if (crystalsLeft.Count > 0)
-                {
-                    if (crystalsLeft.Count == amountOfStacks)
-                        Invoke(nameof(ResetAbility), useTimeWindow);
-
-                    SetCooldownDuration(0f);
-
-                    GameObject crystalToSpawn = crystalsLeft[^1];
-                    GameObject newCrystal = Instantiate(crystalToSpawn, player.transform.position, Quaternion.identity);
-
-                    crystalsLeft.Remove(crystalToSpawn);
-                    newCrystal.GetComponent<CrystalSkillController>().
-                        SetupCrystal(crystalDuration, canExplode, canMoveToEnemy, moveSpeed, 
-                            FindClosestEnemy(newCrystal.transform), player);
-
-                    if (crystalsLeft.Count <= 0)
-                    {
-                        SetCooldownDuration(multiStackCooldown);
-                        RefillCrystal();
-                    }
-                    return true;
-                }
+                newCrystalScript.SetupCrystal(config, crystalDuration, canExplode, canMoveToEnemy, 
+                    moveSpeed, FindClosestEnemy(newCrystalObj.transform), player);
+            }
+            
+            if (crystalsLeft.Count == 0)
+            {
+                SetCooldownDuration(multiStackCooldown);
+                RefillCrystal();
             }
 
-            return false;
+            return true;
         }
 
         private void RefillCrystal()
@@ -196,9 +198,7 @@ namespace Skills.Skills
             int amountToAdd = amountOfStacks - crystalsLeft.Count;
 
             for (int i = 0; i < amountToAdd; i++)
-            {
-                crystalsLeft.Add(crystalPrefab);
-            }
+                crystalsLeft.Add(config.Prefab);
         }
 
         private void ResetAbility()

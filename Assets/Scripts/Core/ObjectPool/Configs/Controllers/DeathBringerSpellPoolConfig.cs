@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
 
-namespace Core.ObjectPool.Configs
+namespace Core.ObjectPool.Configs.Controllers
 {
-    [CreateAssetMenu(fileName = "DeathBringerSpellConfig", menuName = "ObjectPool/Configs/Death Bringer Spell")]
+    [CreateAssetMenu(fileName = "DeathBringerSpellConfig", menuName = "ObjectPool/Configs/Controllers/Death Bringer Spell")]
     public class DeathBringerSpellPoolConfig : BasePoolConfig
     {
         [Header("Spell Cast Specific Settings")]

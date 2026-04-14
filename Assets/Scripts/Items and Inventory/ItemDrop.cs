@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Core.ObjectPool.Configs;
+using Core.ObjectPool.Configs.Inventory;
 using UnityEngine;
 using PoolManager = Core.ObjectPool.PoolManager;
 

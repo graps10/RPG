@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c4cd10bf5aa643db994201d24cc8a350, type: 3}
+  m_Name: CrystalPoolConfig
+  m_EditorClassIdentifier: 
+  prefab: {fileID: 5278867246715804419, guid: 3d6672224ae45c14e8db50a294b74fdb, type: 3}
+  growSpeed: 5
+  growTargetScale: {x: 3, y: 3}
+  closestTargetMinDistance: 1
+  whatIsEnemy:
+    serializedVersion: 2
+    m_Bits: 128
