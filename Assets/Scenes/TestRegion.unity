@@ -11479,10 +11479,7 @@ MonoBehaviour:
   returnSpeed: 15
   timeStopUnlockButton: {fileID: 675757186}
   vulnerableUnlockButton: {fileID: 1450507245}
-  numberOfDots: 20
-  spaceBetweenDots: 0.07
-  dotPrefab: {fileID: 5479973832032325638, guid: a7a2aad0337f7b6498307887f2f0b971, type: 3}
-  dotsParent: {fileID: 0}
+  dotsConfig: {fileID: 11400000, guid: e009da7f88d903247bdbe6bfe1f3ee46, type: 2}
 --- !u!114 &820886655
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11496,14 +11493,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cooldownDuration: 1
-  blackHolePrefab: {fileID: 4482749464725597154, guid: cd82af2563422424c83898a4a9fdf9ff, type: 3}
+  blackHoleConfig: {fileID: 11400000, guid: 04f6f4e0e3da7fa4d907f736eac9d49e, type: 2}
   blackHoleUnlockButton: {fileID: 1123406818}
-  amountOfAttacks: 5
-  cloneCooldown: 0.35
-  blackHoleDuration: 4
-  maxSize: 15
-  growSpeed: 3
-  shrinkSpeed: 6
 --- !u!114 &820886656
 MonoBehaviour:
   m_ObjectHideFlags: 0

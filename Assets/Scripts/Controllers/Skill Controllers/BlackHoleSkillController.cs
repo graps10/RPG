@@ -1,4 +1,6 @@
 using System.Collections.Generic;
+using Core.ObjectPool;
+using Core.ObjectPool.Configs.Controllers;
 using Enemies.Base;
 using Managers;
 using Skills;
@@ -6,30 +8,20 @@ using UnityEngine;
 
 namespace Controllers.Skill_Controllers
 {
-    public class BlackHoleSkillController : MonoBehaviour
+    public class BlackHoleSkillController : PooledObject
     {
-        private const float Clone_X_Spawn_Offset = -2f;
-        private const int Clone_X_Spawn_Chance_Threshold = 50;
-        private const float Finish_Black_Hole_Delay = 1f;
-        
-        private static readonly Vector2 shrinkTargetScale = new(-1f, -1f);
-        private static readonly Vector3 Hotkey_Spawn_Offset = new(0f, 3f, 0f);
-    
-        [SerializeField] private GameObject hotKeyPrefab;
-        [SerializeField] private List<KeyCode> keyCodeList;
-
         public bool PlayerCanExitState { get; private set; }
-
-        private float _maxSize;
-        private float _growSpeed;
-        private float _shrinkSpeed;
+        
+        private BlackHolePoolConfig _config;
         private float _blackHoleTimer;
 
         private bool _canGrow = true;
         private bool _canShrink;
+        
         private bool _canCreateHotKeys = true;
+        
         private bool _cloneAttackReleased;
-        private bool _playerCanDisapear = true;
+        private bool _playerCanDisappear = true;
     
         private int _amountOfAttacks;
         private float _cloneAttackCooldown;
@@ -37,24 +29,45 @@ namespace Controllers.Skill_Controllers
 
         private List<Transform> _targets = new();
         private List<GameObject> _createdHotKeys = new();
+        private List<KeyCode> _availableKeyCodes = new();
     
-        public void SetupBlackHole(float maxSize, float growSpeed, float shrinkSpeed, 
-            int amountOfAttacks, float cloneAttackCooldown, float blackHoleDuration)
+        public void SetupBlackHole(BlackHolePoolConfig config)
         {
-            _maxSize = maxSize;
-            _growSpeed = growSpeed;
-            _shrinkSpeed = shrinkSpeed;
-            _amountOfAttacks = amountOfAttacks;
-            _cloneAttackCooldown = cloneAttackCooldown;
-        
-            _blackHoleTimer = blackHoleDuration;
+            _config = config;
+            
+            _amountOfAttacks = _config.AmountOfAttacks;
+            _blackHoleTimer = _config.BlackHoleDuration;
+            
+            _canGrow = true;
+            _canShrink = false;
+            _canCreateHotKeys = true;
+            _cloneAttackReleased = false;
+            PlayerCanExitState = false;
+            
+            _availableKeyCodes = new List<KeyCode>(_config.KeyCodeList);
+            
+            transform.localScale = Vector3.zero;
 
-            if(SkillManager.Instance.Clone.IsCrystalInsteadOfClone())
-                _playerCanDisapear = false;
+            _playerCanDisappear = !SkillManager.Instance.Clone.IsCrystalInsteadOfClone();
+        }
+        
+        public override void ReturnToPool()
+        {
+            ClearHotKeys();
+            
+            _targets.Clear();
+            _availableKeyCodes.Clear();
+
+            PlayerCanExitState = false;
+            transform.localScale = Vector3.zero; 
+            
+            base.ReturnToPool();
         }
 
         private void Update()
         {
+            if (_config == null) return;
+            
             _cloneAttackTimer -= Time.deltaTime;
             _blackHoleTimer -= Time.deltaTime;
 
@@ -69,25 +82,23 @@ namespace Controllers.Skill_Controllers
             }
 
             if (Input.GetKeyDown(KeyCode.R))
-            {
                 ReleaseCloneAttack();
-            }
 
             CloneAttackLogic();
 
             if (_canGrow && !_canShrink)
             {
                 transform.localScale = Vector2.Lerp(transform.localScale, 
-                    new Vector2(_maxSize, _maxSize), _growSpeed * Time.deltaTime);
+                    new Vector2(_config.MaxSize, _config.MaxSize), _config.GrowSpeed * Time.deltaTime);
             }
 
             if (_canShrink)
             {
                 transform.localScale = Vector2.Lerp(transform.localScale, 
-                    shrinkTargetScale, _shrinkSpeed * Time.deltaTime);
+                    _config.ShrinkTargetScale, _config.ShrinkSpeed * Time.deltaTime);
             
                 if (transform.localScale.x < 0)
-                    Destroy(gameObject);
+                    ReturnToPool();
             }
         }
 
@@ -95,13 +106,13 @@ namespace Controllers.Skill_Controllers
         {
             if(_targets.Count <= 0) return;
 
-            DestroyHotKeys();
+            ClearHotKeys();
             _cloneAttackReleased = true;
             _canCreateHotKeys = false;
 
-            if(_playerCanDisapear)
+            if(_playerCanDisappear)
             {
-                _playerCanDisapear = false;
+                _playerCanDisappear = false;
                 PlayerManager.Instance.PlayerGameObject.Fx.MakeTransparent(true);
             }
         }
@@ -110,14 +121,12 @@ namespace Controllers.Skill_Controllers
         {
             if (_cloneAttackTimer < 0 && _cloneAttackReleased && _amountOfAttacks > 0)
             {
-                _cloneAttackTimer = _cloneAttackCooldown;
+                _cloneAttackTimer = _config.CloneCooldown;
                 int randomIndex = Random.Range(0, _targets.Count);
 
-                float xOffset;
-                if (Random.Range(0, 100) > Clone_X_Spawn_Chance_Threshold)
-                    xOffset = Clone_X_Spawn_Offset;
-                else
-                    xOffset = -Clone_X_Spawn_Offset;
+                float xOffset = Random.Range(0, 100) > _config.CloneXSpawnChanceThreshold 
+                    ? _config.CloneXSpawnOffset 
+                    : -_config.CloneXSpawnOffset;
 
                 if(SkillManager.Instance.Clone.IsCrystalInsteadOfClone())
                 {
@@ -130,13 +139,13 @@ namespace Controllers.Skill_Controllers
                 _amountOfAttacks--;
 
                 if (_amountOfAttacks <= 0)
-                    Invoke(nameof(FinishBlackHoleAbility), Finish_Black_Hole_Delay);
+                    Invoke(nameof(FinishBlackHoleAbility), _config.FinishBlackHoleDelay);
             }
         }
 
         private void FinishBlackHoleAbility()
         {
-            DestroyHotKeys();
+            ClearHotKeys();
             PlayerCanExitState = true;
 
             _canShrink = true;
@@ -145,49 +154,51 @@ namespace Controllers.Skill_Controllers
 
         public void AddEnemyToList(Transform _enemyTransform) => _targets.Add(_enemyTransform);
 
-        private void DestroyHotKeys()
+        private void ClearHotKeys()
         {
-            if(_createdHotKeys.Count < 0) return;
+            if(_createdHotKeys.Count <= 0) return;
 
             foreach (var hotKey in _createdHotKeys)
-                Destroy(hotKey);
+            {
+                if (hotKey != null && hotKey.activeInHierarchy)
+                    PoolManager.Instance.Return(hotKey);
+            }
+            
+            _createdHotKeys.Clear();
         }
 
         private void OnTriggerEnter2D(Collider2D collision) 
         {
-            if(collision.GetComponent<Enemy>() != null)
+            if(collision.TryGetComponent(out Enemy enemy))
             {
-                collision.GetComponent<Enemy>().FreezeTime(true);
+                enemy.FreezeTime(true);
                 CreateHotKey(collision);
             }
         }
 
         private void OnTriggerExit2D(Collider2D collision) 
         {
-            if(collision.GetComponent<Enemy>() != null)
-                collision.GetComponent<Enemy>().FreezeTime(false);
+            if(collision.TryGetComponent(out Enemy enemy))
+                enemy.FreezeTime(false);
         }
 
         private void CreateHotKey(Collider2D collision)
         {
-            if(keyCodeList.Count <= 0) 
-            {
-                Debug.Log("Not enough how keys in a key code list");
-                return;
-            }
+            if(_availableKeyCodes.Count <= 0 || !_canCreateHotKeys) return;
 
-            if(!_canCreateHotKeys) return;
-
-            GameObject newHotKey = Instantiate(hotKeyPrefab, collision.transform.position + 
-                                                             Hotkey_Spawn_Offset, Quaternion.identity);
+            GameObject newHotKey = PoolManager.Instance.Spawn(
+                _config.HotKeyConfig.Prefab, 
+                collision.transform.position + _config.HotkeySpawnOffset, 
+                Quaternion.identity
+            );
+            
             _createdHotKeys.Add(newHotKey);
 
-            KeyCode chooseKey = keyCodeList[Random.Range(0, keyCodeList.Count)];
-            keyCodeList.Remove(chooseKey);
+            KeyCode chooseKey = _availableKeyCodes[Random.Range(0, _availableKeyCodes.Count)];
+            _availableKeyCodes.Remove(chooseKey);
 
-            BlackHoleHotKeyController newHotKeyScript = newHotKey.GetComponent<BlackHoleHotKeyController>();
-        
-            newHotKeyScript.SetupHotKey(chooseKey, collision.transform, this);
+            if (newHotKey.TryGetComponent(out BlackHoleHotKeyController newHotKeyScript))
+                newHotKeyScript.SetupHotKey(chooseKey, collision.transform, this);
         }
     }
 }

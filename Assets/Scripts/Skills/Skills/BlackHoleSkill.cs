@@ -1,5 +1,6 @@
 using Components.Audio;
 using Controllers.Skill_Controllers;
+using Core.ObjectPool.Configs.Controllers;
 using Managers;
 using UI_Elements;
 using UnityEngine;
@@ -8,16 +9,8 @@ namespace Skills.Skills
 {
     public class BlackHoleSkill : Skill
     {
-        [SerializeField] private GameObject blackHolePrefab;
+        [SerializeField] private BlackHolePoolConfig blackHoleConfig;
         [SerializeField] private SkillTreeSlot blackHoleUnlockButton;
-        
-        [SerializeField] private int amountOfAttacks = 4;
-        [SerializeField] private float cloneCooldown = 0.3f;
-        [SerializeField] private float blackHoleDuration;
-        [Space]
-        [SerializeField] private float maxSize;
-        [SerializeField] private float growSpeed;
-        [SerializeField] private float shrinkSpeed;
 
         private bool _blackHoleUnlocked;
         private BlackHoleSkillController _currentBlackHole;
@@ -47,12 +40,14 @@ namespace Skills.Skills
         {
             base.UseSkill();
 
-            GameObject newBlackHole = Instantiate(blackHolePrefab, player.transform.position, Quaternion.identity);
+            GameObject newBlackHole = Core.ObjectPool.PoolManager.Instance.Spawn(
+                blackHoleConfig.Prefab, 
+                player.transform.position, 
+                Quaternion.identity
+            );
 
-            _currentBlackHole = newBlackHole.GetComponent<BlackHoleSkillController>();
-
-            _currentBlackHole.SetupBlackHole(
-                maxSize, growSpeed, shrinkSpeed, amountOfAttacks, cloneCooldown, blackHoleDuration);
+            if (newBlackHole.TryGetComponent(out _currentBlackHole))
+                _currentBlackHole.SetupBlackHole(blackHoleConfig);
 
             AudioManager.Instance.PlaySFX(SFXEnum.Bankai, player.transform);
             AudioManager.Instance.PlaySFX(SFXEnum.Chronosphere, player.transform);
@@ -72,6 +67,6 @@ namespace Skills.Skills
         }
         
         public bool IsBlackHoleUnlocked() => _blackHoleUnlocked;
-        public float GetBlackHoleRadius() => maxSize / 2;
+        public float GetBlackHoleRadius() => blackHoleConfig.MaxSize / 2;
     }
 }
