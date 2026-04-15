@@ -1,8 +1,9 @@
+using Core.ObjectPool;
 using UnityEngine;
 
 namespace Components.FX
 {
-    public class AfterImageFX : MonoBehaviour
+    public class AfterImageFX : PooledObject
     {
         private SpriteRenderer _sr;
         private float _colorLoseRate;
@@ -13,7 +14,7 @@ namespace Components.FX
             _sr.color = new Color(_sr.color.r, _sr.color.g, _sr.color.b, alpha);
 
             if (_sr.color.a <= 0)
-                Destroy(gameObject);
+                ReturnToPool();
         }
 
         public void SetupAfterImage(float losingSpeed, Sprite spriteImage)
@@ -23,6 +24,15 @@ namespace Components.FX
 
             _sr.sprite = spriteImage;
             _colorLoseRate = losingSpeed;
+            _sr.color = new Color(1f, 1f, 1f, 1f);
+        }
+        
+        public override void ReturnToPool()
+        {
+            if (_sr != null)
+                _sr.sprite = null;
+                
+            base.ReturnToPool();
         }
     }
 }

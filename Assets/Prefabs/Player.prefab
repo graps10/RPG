@@ -20070,9 +20070,7 @@ MonoBehaviour:
   shakeMultiplier: 0.2
   shakeSwordImpact: {x: 1, y: 0, z: 0}
   shakeHighDamage: {x: 1.5, y: 1.5, z: 0}
-  afterImagePrefab: {fileID: 8562539158533867421, guid: 085c1223596a7d14b831bd845bcc886f, type: 3}
-  colorLoseRate: 1.5
-  afterImageCooldown: 0.05
+  afterImageConfig: {fileID: 11400000, guid: 7d556646aeccb82408aababa37690cb6, type: 2}
   dustFX: {fileID: 1568991334782355660}
 --- !u!50 &7668367811259800569
 Rigidbody2D:
