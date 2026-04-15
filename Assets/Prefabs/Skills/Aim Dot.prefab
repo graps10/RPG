@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8501830034169053140}
   - component: {fileID: 4466198115611709724}
+  - component: {fileID: 5425327803017794343}
   m_Layer: 0
   m_Name: Aim Dot
   m_TagString: Untagged
@@ -84,3 +85,15 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &5425327803017794343
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5479973832032325638}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c419e032798e4140b29353c6b35a73a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

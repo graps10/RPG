@@ -1,4 +1,6 @@
 using Cinemachine;
+using Core.ObjectPool;
+using Core.ObjectPool.Configs.FX;
 using UnityEngine;
 
 namespace Components.FX
@@ -11,15 +13,11 @@ namespace Components.FX
         [SerializeField] private Vector3 shakeHighDamage;
         
         [Header("After Image FX")]
-        [SerializeField] private GameObject afterImagePrefab;
-        [SerializeField] private float colorLoseRate;
-        [SerializeField] private float afterImageCooldown;
-        private float _afterImageCooldownTimer;
-
-        [Space]
+        [SerializeField] private AfterImagePoolConfig afterImageConfig;
         [SerializeField] private ParticleSystem dustFX;
         
         private CinemachineImpulseSource _screenShake;
+        private float _afterImageCooldownTimer;
 
         protected override void Start()
         {
@@ -45,9 +43,16 @@ namespace Components.FX
         {
             if (_afterImageCooldownTimer < 0)
             {
-                _afterImageCooldownTimer = afterImageCooldown;
-                GameObject newAfterImage = Instantiate(afterImagePrefab, transform.position, transform.rotation);
-                newAfterImage.GetComponent<AfterImageFX>().SetupAfterImage(colorLoseRate, sr.sprite);
+                _afterImageCooldownTimer = afterImageConfig.AfterImageCooldown;
+        
+                GameObject newAfterImage = PoolManager.Instance.Spawn(
+                    afterImageConfig.Prefab, 
+                    transform.position, 
+                    transform.rotation
+                );
+                
+                if (newAfterImage.TryGetComponent(out AfterImageFX afterImageScript))
+                    afterImageScript.SetupAfterImage(afterImageConfig.ColorLoseRate, sr.sprite);
             }
         }
 

@@ -1,4 +1,6 @@
 using Core.Factories;
+using Core.ObjectPool;
+using Core.ObjectPool.Configs.FX;
 using Managers;
 using UI_Elements;
 using UnityEngine;
@@ -47,12 +49,8 @@ namespace Skills.Skills
         [Header("Passive Skills")]
         [SerializeField] private SkillTreeSlot timeStopUnlockButton;
         [SerializeField] private SkillTreeSlot vulnerableUnlockButton;
-        
-        [Header("Aim Dots")]
-        [SerializeField] private int numberOfDots;
-        [SerializeField] private float spaceBetweenDots;
-        [SerializeField] private GameObject dotPrefab;
-        [SerializeField] private Transform dotsParent;
+
+        [Header("Aim Dots")] [SerializeField] private DotPoolConfig dotsConfig;
 
         private bool _swordUnlocked;
         private bool _timeStopUnlocked;
@@ -123,7 +121,7 @@ namespace Skills.Skills
                 DotsActive(true);
                 
                 for (int i = 0; i < _dots.Length; i++)
-                    _dots[i].transform.position = DotsPosition(i * spaceBetweenDots);
+                    _dots[i].transform.position = DotsPosition(i * dotsConfig.SpaceBetweenDots);
             }
             else
                 DotsActive(false);
@@ -220,10 +218,10 @@ namespace Skills.Skills
         
         private void GenerateDots()
         {
-            _dots = new GameObject[numberOfDots];
-            for (int i = 0; i < numberOfDots; i++)
+            _dots = new GameObject[dotsConfig.NumberOfDots];
+            for (int i = 0; i < dotsConfig.NumberOfDots; i++)
             {
-                _dots[i] = Instantiate(dotPrefab, player.transform.position, Quaternion.identity, dotsParent);
+                _dots[i] = PoolManager.Instance.Spawn(dotsConfig.Prefab, player.transform.position, Quaternion.identity);
                 _dots[i].SetActive(false);
             }
         }
