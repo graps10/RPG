@@ -41,6 +41,8 @@ namespace Entity
     
         protected bool isKnocked;
         protected bool facingRight = true;
+        
+        private float _defaultGravity;
     
         protected virtual void Awake()
         {
@@ -50,6 +52,9 @@ namespace Entity
             Cd = GetComponent<CapsuleCollider2D>();
             
             Stats = GetComponent<CharacterStats>();
+            
+            if (Rb != null)
+                _defaultGravity = Rb.gravityScale;
         }
         
         protected virtual void OnEnable()
@@ -64,7 +69,10 @@ namespace Entity
                 Cd.enabled = true;
             
             if (Rb != null)
+            {
                 Rb.isKinematic = false;
+                Rb.gravityScale = _defaultGravity; 
+            }
             
             if (Anim != null)
             {
