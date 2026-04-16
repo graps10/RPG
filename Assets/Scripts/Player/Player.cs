@@ -4,7 +4,6 @@ using Core;
 using Items_and_Inventory;
 using Player.States;
 using Skills;
-using Stats;
 using UnityEngine;
 
 namespace Player

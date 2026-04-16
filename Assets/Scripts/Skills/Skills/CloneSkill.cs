@@ -1,5 +1,7 @@
 using System.Collections;
 using Controllers.Skill_Controllers;
+using Core.ObjectPool;
+using Core.ObjectPool.Configs.Controllers;
 using UI_Elements;
 using UnityEngine;
 
@@ -7,13 +9,10 @@ namespace Skills.Skills
 {
     public class CloneSkill : Skill
     {
-        private const float Clone_Delay = 0.4f;
-        
-        private static readonly Vector3 cloneOffset = new(2f, 0f, 0f);
-    
         [Header("Clone Info")]
+        [SerializeField] private ClonePoolConfig config;
         [SerializeField] private float attackMultiplier;
-        [SerializeField] private GameObject clonePrefab;
+      
         [SerializeField] private float cloneDuration;
         [Space]
 
@@ -95,22 +94,25 @@ namespace Skills.Skills
                 return;
             }
 
-            GameObject newClone = Instantiate(clonePrefab);
-            newClone.GetComponent<CloneSkillController>().
-                SetupClone(clonePosition, cloneDuration, canAttack, offset, 
-                    canDuplicateClone, chanceToDuplicate, player, attackMultiplier);
+            GameObject newClone = PoolManager.Instance.Spawn(config.Prefab, clonePosition.position, Quaternion.identity);
+            
+            if (newClone.TryGetComponent(out CloneSkillController cloneScript))
+            {
+                cloneScript.SetupClone(clonePosition, cloneDuration, canAttack, offset, 
+                    canDuplicateClone, chanceToDuplicate, player, attackMultiplier, config);
+            }
         }
 
         public void CreateCloneWithDelay(Transform enemyTransform)
         {
             StartCoroutine(CloneDelayCoroutine(enemyTransform, 
-                new Vector3(cloneOffset.x * player.FacingDir, cloneOffset.y, cloneOffset.z)));
+                new Vector3(config.CloneOffset.x * player.FacingDir, config.CloneOffset.y, config.CloneOffset.z)));
         }
 
-        private IEnumerator CloneDelayCoroutine(Transform transform, Vector3 offset)
+        private IEnumerator CloneDelayCoroutine(Transform enemyTransform, Vector3 offset)
         {
-            yield return new WaitForSeconds(Clone_Delay);
-            CreateClone(transform, offset);
+            yield return new WaitForSeconds(config.CloneDelay);
+            CreateClone(enemyTransform, offset);
         }
         
         public bool CanApplyOnHitEffect() => _canApplyOnHitEffect;
