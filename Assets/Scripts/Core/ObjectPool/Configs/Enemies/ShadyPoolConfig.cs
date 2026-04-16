@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Core.ObjectPool.Configs.FX;
+using UnityEngine;
 
 namespace Core.ObjectPool.Configs.Enemies
 {
@@ -7,12 +8,12 @@ namespace Core.ObjectPool.Configs.Enemies
     {
         [Header("Shady Specific Settings")]
         [SerializeField] private float battleStateMoveSpeed;
-        [SerializeField] private GameObject explosivePrefab;
+        [SerializeField] private ExplosivePoolConfig explosivePoolConfig;
         [SerializeField] private float growSpeed;
         [SerializeField] private float maxSize;
         
         public float BattleStateMoveSpeed =>  battleStateMoveSpeed;
-        public GameObject ExplosivePrefab => explosivePrefab;
+        public ExplosivePoolConfig ExplosiveConfig => explosivePoolConfig;
         public float GrowSpeed => growSpeed;
         public float MaxSize => maxSize;
     }

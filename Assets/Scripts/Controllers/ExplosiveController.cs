@@ -1,10 +1,11 @@
 using Core;
+using Core.ObjectPool;
 using Stats;
 using UnityEngine;
 
 namespace Controllers
 {
-    public class ExplosiveController : MonoBehaviour
+    public class ExplosiveController : PooledObject
     {
         private const float Size_Threshold = 0.5f;
         
@@ -17,14 +18,34 @@ namespace Controllers
 
         private bool _canGrow = true;
 
-        public void SetupExplosive(CharacterStats myStats, float growSpeed, float maxSize, float radius)
+        private void Awake()
         {
             _anim = GetComponent<Animator>();
-            
+        }
+        
+        public void SetupExplosive(CharacterStats myStats, float growSpeed, float maxSize, float radius)
+        {
             _myStats = myStats;
             _growSpeed = growSpeed;
             _maxSize = maxSize;
             _explosionRadius = radius;
+            
+            _canGrow = true;
+            transform.localScale = Vector3.zero;
+        }
+        
+        public override void ReturnToPool()
+        {
+            _canGrow = false;
+            _myStats = null;
+            
+            if (_anim != null)
+            {
+                _anim.Rebind();
+                _anim.Update(0f);
+            }
+            
+            base.ReturnToPool();
         }
         
         private void Update()
@@ -46,15 +67,17 @@ namespace Controllers
 
             foreach (var hit in colliders)
             {
-                if (hit.GetComponent<CharacterStats>() != null)
+                if (hit.TryGetComponent(out CharacterStats targetStats))
                 {
-                    hit.GetComponent<Entity.Entity>().SetupKnockbackDir(transform);
-                    _myStats.DoDamage(hit.GetComponent<CharacterStats>());
+                    if (hit.TryGetComponent(out Entity.Entity entity))
+                        entity.SetupKnockbackDir(transform);
+                    
+                    _myStats.DoDamage(targetStats);
                 }
             }
         }
 
-        private void SelfDestroy() => Destroy(gameObject);
+        private void SelfDestroy() => ReturnToPool();
 
         private void OnDrawGizmosSelected()
         {

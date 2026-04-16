@@ -1,6 +1,7 @@
 using Controllers;
 using Core;
 using Core.Interfaces;
+using Core.ObjectPool;
 using Core.ObjectPool.Configs.Enemies;
 using Enemies.Base;
 using UnityEngine;
@@ -46,16 +47,20 @@ namespace Enemies.Shady
 
         public override void AnimationSpecialAttackTrigger()
         {
-            GameObject newExplosive = Instantiate(config.ExplosivePrefab, attackCheck.position, Quaternion.identity);
-
-            newExplosive.GetComponent<ExplosiveController>()
-                .SetupExplosive(Stats, config.GrowSpeed, config.MaxSize, attackCheckRadius);
+            GameObject newExplosive = PoolManager.Instance.Spawn(
+                config.ExplosiveConfig.Prefab, 
+                attackCheck.position, 
+                Quaternion.identity
+            );
+            
+            if (newExplosive.TryGetComponent(out ExplosiveController explosiveScript))
+                explosiveScript.SetupExplosive(Stats, config.GrowSpeed, config.MaxSize, attackCheckRadius);
 
             Cd.enabled = false;
             Rb.gravityScale = 0;
         }
 
         public float GetBattleStateMoveSpeed() => config.BattleStateMoveSpeed;
-        public void SelfDestroy() => Destroy(gameObject);
+        public void SelfDestroy() => ReturnToPool();
     }
 }
