@@ -9,7 +9,8 @@ namespace Core.Save_and_Load
         [SerializeField] private int currency;
 
         [SerializeField] private int lostCurrencyAmount;
-        [SerializeField] private Vector2 spawnLostCurrencyRange;
+        [SerializeField] private bool showPlayerHealthBar;
+        //[SerializeField] private Vector2 spawnLostCurrencyRange;
         
         [SerializeField] private SerializableDictionary<string, bool> skillTree;
         [SerializeField] private SerializableDictionary<string, int> inventory;
@@ -23,9 +24,9 @@ namespace Core.Save_and_Load
         public GameData()
         {
             SetCurrency(1000000);
-
             SetLostCurrencyAmount(0);
-            SetSpawnLostCurrencyRange(Vector2.zero);
+            showPlayerHealthBar = true;
+            //SetSpawnLostCurrencyRange(Vector2.zero);
 
             skillTree = new SerializableDictionary<string, bool>();
             inventory = new SerializableDictionary<string, int>();
@@ -40,15 +41,18 @@ namespace Core.Save_and_Load
         public void SetCurrency(int currency) => this.currency = currency;
         
         public void SetLostCurrencyAmount(int amount) => lostCurrencyAmount = amount;
-        public void SetSpawnLostCurrencyRange(Vector2 range) => spawnLostCurrencyRange = range;
+        //public void SetSpawnLostCurrencyRange(Vector2 range) => spawnLostCurrencyRange = range;
         
-
+        public void SetShowPlayerHealthBar(bool value) => showPlayerHealthBar = value;
+        
         #region Game Data Getters
         
         public int GetCurrency() => currency;
         
         public int GetLostCurrencyAmount() => lostCurrencyAmount;
-        public Vector2 GetSpawnLostCurrencyRange() => spawnLostCurrencyRange;
+        //public Vector2 GetSpawnLostCurrencyRange() => spawnLostCurrencyRange;
+        
+        public bool ShowPlayerHealthBar => showPlayerHealthBar;
         
         public Dictionary<string, bool> GetSkillTree() => skillTree;
         

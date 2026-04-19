@@ -9,8 +9,8 @@ namespace Managers
     {
         public static AudioManager Instance;
         
-        private const string Mixer_BGM = "bgm";
-        private const string Mixer_SFX = "sfx";
+        public const string MIXER_BGM = "bgm";
+        public const string MIXER_SFX = "sfx";
         
         private const float Volume_Threshold = 0.1f;
         private const float Volume_Decrease_Rate = 0.25f;
@@ -40,14 +40,14 @@ namespace Managers
                 Instance = this;
                 DontDestroyOnLoad(gameObject);
             }
-        
+            
             AllowSFX(true);
         }
 
         private void Start()
         {
-            mixer.SetFloat(Mixer_BGM, Mathf.Log10(_bgmVolume) * volumeScaleFactor);
-            mixer.SetFloat(Mixer_SFX, Mathf.Log10(_sfxVolume) * volumeScaleFactor);
+            mixer.SetFloat(MIXER_BGM, Mathf.Log10(_bgmVolume) * volumeScaleFactor);
+            mixer.SetFloat(MIXER_SFX, Mathf.Log10(_sfxVolume) * volumeScaleFactor);
         }
 
         private void Update()

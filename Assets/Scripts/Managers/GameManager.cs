@@ -42,7 +42,7 @@ namespace Managers
         private void LoadLostCurrency(GameData data)
         {
             _lostCurrencyAmount = data.GetLostCurrencyAmount();
-            _spawnLostCurrencyRange = data.GetSpawnLostCurrencyRange();
+            //_spawnLostCurrencyRange = data.GetSpawnLostCurrencyRange();
 
             // if (_lostCurrencyAmount > 0)
             // {
@@ -68,8 +68,8 @@ namespace Managers
         {
             data.SetLostCurrencyAmount(_lostCurrencyAmount);
 
-            var playerPos = PlayerManager.Instance.PlayerGameObject.transform.position;
-            data.SetSpawnLostCurrencyRange(new Vector2(playerPos.x, playerPos.y));
+            //var playerPos = PlayerManager.Instance.PlayerGameObject.transform.position;
+            //data.SetSpawnLostCurrencyRange(new Vector2(playerPos.x, playerPos.y));
         }
 
         #endregion

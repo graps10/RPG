@@ -4,6 +4,7 @@ using Components.Audio;
 using Core.Save_and_Load;
 using Managers;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace UI_Elements
 {
@@ -27,8 +28,6 @@ namespace UI_Elements
         [SerializeField] private ItemTooltip itemTooltip;
         [SerializeField] private StatTooltip statTooltip;
         [SerializeField] private CraftWindow craftWindow;
-
-        [SerializeField] private VolumeSlider[] volumeSettings;
         
         private void Awake()
         {
@@ -57,33 +56,6 @@ namespace UI_Elements
 
             if (Input.GetKeyDown(KeyCode.Escape))
                 SwitchWithKeyTo(optionsUI);
-        }
-
-        public void LoadData(GameData data)
-        {
-            foreach (KeyValuePair<string, float> pair in data.GetVolumeSettings())
-            {
-                foreach (VolumeSlider item in volumeSettings)
-                {
-                    if (item.GetParameter() == pair.Key)
-                    {
-                        item.LoadSlider(pair.Value);
-
-                        if (item.GetParameter() == "bgm") AudioManager.Instance.SetupBGMVolume(pair.Value);
-                        else AudioManager.Instance.SetupSFXVolume(pair.Value);
-                    }
-                }
-            }
-        }
-
-        public void SaveData(ref GameData data)
-        {
-            data.GetVolumeSettings().Clear();
-
-            foreach (VolumeSlider item in volumeSettings)
-            {
-                data.GetVolumeSettings().Add(item.GetParameter(), item.GetSlider().value);
-            }
         }
 
         public SkillTooltip GetSkillTooltip() => skillTooltip;
@@ -168,6 +140,81 @@ namespace UI_Elements
             yield return new WaitForSeconds(Restart_Button_Delay);
             restartButton.SetActive(true);
         }
+
+        #region Options
+
+        [SerializeField] private VolumeSlider[] volumeSettings;
+        [SerializeField] private Toggle showHealthBarToggle;
+        
+        public static bool ShowHealthBar { get; private set; } = true;
+
+        private void OnEnable()
+        {
+            if (showHealthBarToggle != null)
+                showHealthBarToggle.onValueChanged.AddListener(TogglePlayerHealthBar);
+        }
+
+        private void OnDisable()
+        {
+            if (showHealthBarToggle != null)
+                showHealthBarToggle.onValueChanged.RemoveListener(TogglePlayerHealthBar);
+        }
+
+        private void TogglePlayerHealthBar(bool isOn)
+        {
+            ShowHealthBar = isOn;
+            
+            if (PlayerManager.Instance != null && PlayerManager.Instance.PlayerGameObject != null)
+            {
+                HealthBar playerHealthBar =
+                    PlayerManager.Instance.PlayerGameObject.GetComponentInChildren<HealthBar>(true);
+
+                if (playerHealthBar != null)
+                    playerHealthBar.gameObject.SetActive(isOn);
+            }
+        }
+
+        public void LoadData(GameData data)
+        {
+            ShowHealthBar = data.ShowPlayerHealthBar;
+
+            if (showHealthBarToggle != null)
+            {
+                showHealthBarToggle.onValueChanged.RemoveListener(TogglePlayerHealthBar);
+                showHealthBarToggle.isOn = ShowHealthBar;
+                showHealthBarToggle.onValueChanged.AddListener(TogglePlayerHealthBar);
+            }
+
+            foreach (KeyValuePair<string, float> pair in data.GetVolumeSettings())
+            {
+                foreach (VolumeSlider item in volumeSettings)
+                {
+                    if (item.GetParameter() == pair.Key)
+                    {
+                        item.LoadSlider(pair.Value);
+
+                        if (item.GetParameter() == AudioManager.MIXER_BGM)
+                            AudioManager.Instance.SetupBGMVolume(pair.Value);
+                        else
+                            AudioManager.Instance.SetupSFXVolume(pair.Value);
+                    }
+                }
+            }
+        }
+
+        public void SaveData(ref GameData data)
+        {
+            data.SetShowPlayerHealthBar(ShowHealthBar);
+
+            data.GetVolumeSettings().Clear();
+
+            foreach (VolumeSlider item in volumeSettings)
+            {
+                data.GetVolumeSettings().Add(item.GetParameter(), item.GetSlider().value);
+            }
+        }
+
+        #endregion
     }
 }
 

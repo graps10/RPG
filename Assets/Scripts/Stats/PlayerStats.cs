@@ -28,6 +28,10 @@ namespace Stats
                 inGameUI.AssignPlayerStats(this);
             else
                 Debug.LogWarning("InGameUI not found!");
+            
+            HealthBar myHealthBar = GetComponentInChildren<HealthBar>();
+            if(!UI.ShowHealthBar)
+                myHealthBar.gameObject.SetActive(false);
         }
 
         protected override void OnEvasion()
