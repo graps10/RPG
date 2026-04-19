@@ -17199,7 +17199,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1224903501
 RectTransform:
   m_ObjectHideFlags: 0
@@ -20084,6 +20084,7 @@ MonoBehaviour:
   - {fileID: 307592110}
   - {fileID: 184225830}
   showHealthBarToggle: {fileID: 1667743283}
+  saveAndExitButton: {fileID: 1224903502}
 --- !u!1 &1412454234
 GameObject:
   m_ObjectHideFlags: 0
@@ -29572,7 +29573,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fileName: data.chpion
-  encryptData: 1
+  encryptData: 0
 --- !u!1001 &6194511098844886488
 PrefabInstance:
   m_ObjectHideFlags: 0

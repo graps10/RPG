@@ -1,11 +1,10 @@
-using Controllers;
 using Core.Save_and_Load;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 namespace Managers
 {
-    public class GameManager : MonoBehaviour, ISaveManager
+    public class GameManager : MonoBehaviour // ISaveManager
     {
         public static GameManager Instance;
 

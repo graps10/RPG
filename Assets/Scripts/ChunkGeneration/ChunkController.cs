@@ -4,6 +4,7 @@ using ChunkGeneration.Configs;
 using ChunkGeneration.Triggers;
 using Core.Interfaces;
 using Core.ObjectPool;
+using Core.ObjectPool.Configs.Enemies;
 using Enemies.Base;
 using Enemies.DeathBringer;
 using UnityEngine;
@@ -121,8 +122,8 @@ namespace ChunkGeneration
         private void SpawnOrdinaryEnemies()
         {
             var ordinaryConfig = _config as OrdinaryConfig;
-            if (ordinaryConfig == null) return;
-
+            if (ordinaryConfig == null || ordinaryConfig.EnemiesData.Count == 0) return;
+            
             int enemyCount = Random.Range(ordinaryConfig.MinEnemies, ordinaryConfig.MaxEnemies + 1);
             List<Transform> availableSpots = new List<Transform>(enemySpawnSpots);
 
@@ -131,28 +132,46 @@ namespace ChunkGeneration
                 int spotIndex = Random.Range(0, availableSpots.Count);
                 Transform spot = availableSpots[spotIndex];
                 availableSpots.RemoveAt(spotIndex);
-
-                foreach (var enemyType in ordinaryConfig.EnemiesData)
-                {
-                    if (Random.value <= enemyType.SpawnChance)
-                    {
-                        GameObject enemyObj = PoolManager.Instance.Spawn(
-                            enemyType.Config.Prefab,
-                            spot.position,
-                            Quaternion.identity
-                        );
-                        
-                        if (enemyObj.TryGetComponent(out Enemy enemyScript))
-                        {
-                            _spawnedEnemies.Add(enemyScript);
-                            if (enemyScript is IMinionSpawner spawner)
-                                spawner.OnMinionSpawned += HandleMinionSpawned;
-                        }
                 
-                        break;
-                    }
+                EnemyPoolConfig selectedEnemyConfig = GetRandomEnemyByWeight(ordinaryConfig.EnemiesData);
+                
+                GameObject enemyObj = PoolManager.Instance.Spawn(
+                    selectedEnemyConfig.Prefab,
+                    spot.position,
+                    Quaternion.identity
+                );
+                
+                if (enemyObj.TryGetComponent(out Enemy enemyScript))
+                {
+                    _spawnedEnemies.Add(enemyScript);
+                    if (enemyScript is IMinionSpawner spawner)
+                        spawner.OnMinionSpawned += HandleMinionSpawned;
                 }
             }
+        }
+        
+        private EnemyPoolConfig GetRandomEnemyByWeight(List<EnemySpawnData> enemiesData)
+        {
+            float totalWeight = 0f;
+            foreach (var data in enemiesData)
+            {
+                totalWeight += data.SpawnChance;
+            }
+            
+            float randomValue = Random.Range(0f, totalWeight);
+            float cumulativeWeight = 0f;
+            
+            foreach (var data in enemiesData)
+            {
+                cumulativeWeight += data.SpawnChance;
+                
+                if (randomValue <= cumulativeWeight)
+                {
+                    return data.Config;
+                }
+            }
+            
+            return enemiesData[0].Config;
         }
 
         private void SpawnEnemyBoss()
@@ -198,10 +217,14 @@ namespace ChunkGeneration
 
         private void ClearAllSpawnedEnemies()
         {
+            if (_spawnedEnemies == null) return;
+
             foreach (var enemy in _spawnedEnemies)
-                if (enemy != null)
+            {
+                if (enemy != null && enemy.gameObject.activeInHierarchy)
                     PoolManager.Instance.Return(enemy.gameObject);
-            
+            }
+
             _spawnedEnemies.Clear();
         }
         

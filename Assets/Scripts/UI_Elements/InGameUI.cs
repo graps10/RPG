@@ -86,7 +86,6 @@ namespace UI_Elements
             
             slider.maxValue = _playerStats.GetMaxHealthValue();
             slider.value = _playerStats.CurrentHealth;
-            Debug.Log("Update health");
         }
 
         private void UpdateSkillCooldownUI(Image image, float currentTimer, float maxCooldown)
