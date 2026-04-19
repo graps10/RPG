@@ -97,6 +97,8 @@ namespace Stats
             int maxHealth, int armor, int evasion, int magicResistance,
             int fireDamage, int iceDamage, int lightingDamage)
         {
+            int initialMaxHealth = GetMaxHealthValue();
+            
             // Major Stats
             this.strength.AddModifier(strength);
             this.agility.AddModifier(agility);
@@ -118,6 +120,10 @@ namespace Stats
             this.fireDamage.AddModifier(fireDamage);
             this.iceDamage.AddModifier(iceDamage);
             this.lightingDamage.AddModifier(lightingDamage);
+            
+            int healthDelta = GetMaxHealthValue() - initialMaxHealth;
+            if (healthDelta > 0)
+                IncreaseHealthBy(healthDelta);
         }
 
         public void RemoveStats(
@@ -126,6 +132,8 @@ namespace Stats
             int maxHealth, int armor, int evasion, int magicResistance,
             int fireDamage, int iceDamage, int lightingDamage)
         {
+            int initialMaxHealth = GetMaxHealthValue();
+            
             // Major Stats
             this.strength.RemoveModifier(strength);
             this.agility.RemoveModifier(agility);
@@ -147,6 +155,17 @@ namespace Stats
             this.fireDamage.RemoveModifier(fireDamage);
             this.iceDamage.RemoveModifier(iceDamage);
             this.lightingDamage.RemoveModifier(lightingDamage);
+            
+            int healthDelta = initialMaxHealth - GetMaxHealthValue();
+            if (healthDelta > 0)
+            {
+                CurrentHealth -= healthDelta;
+                
+                if (CurrentHealth <= 0) 
+                    CurrentHealth = 1; 
+                
+                OnHealthChanged?.Invoke();
+            }
         }
     }
 }

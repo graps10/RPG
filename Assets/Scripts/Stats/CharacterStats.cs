@@ -87,7 +87,7 @@ namespace Stats
         [SerializeField] private float ailmentsDuration = 4;
         [SerializeField] private ShockStrikePoolConfig shockStrikeConfig;
         
-        public int CurrentHealth { get; private set; }
+        public int CurrentHealth { get; protected set; }
         public bool IsDead { get; private set; }
         
         public Action OnHealthChanged;
