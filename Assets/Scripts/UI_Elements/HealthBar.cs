@@ -25,6 +25,9 @@ namespace UI_Elements
             _myStats.OnHealthChanged += UpdateHealthUI;
             
             _myTransform.localRotation = Quaternion.identity;
+            if (_entity.FacingDir == -1)
+                FlipUI();
+            
             UpdateHealthUI();
         }
         
