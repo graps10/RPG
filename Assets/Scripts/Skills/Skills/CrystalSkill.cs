@@ -77,7 +77,7 @@ namespace Skills.Skills
 
             if (CanUseMultiCrystal()) return;
 
-            if (_currentCrystal == null)
+            if (_currentCrystal == null || !_currentCrystal.gameObject.activeInHierarchy)
                 CreateCrystal();
             else
             {
@@ -159,6 +159,7 @@ namespace Skills.Skills
         private void HandleCrystalFinish()
         {
             _currentCrystal?.FinishCrystal();
+            _currentCrystal = null;
             Invoke(nameof(UnlockTeleport), teleportCooldown);
         }
 
