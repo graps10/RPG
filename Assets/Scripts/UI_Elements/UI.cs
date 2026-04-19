@@ -4,6 +4,7 @@ using Components.Audio;
 using Core.Save_and_Load;
 using Managers;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 namespace UI_Elements
@@ -12,6 +13,8 @@ namespace UI_Elements
     {
         private const float End_Text_Delay = 1f;
         private const float Restart_Button_Delay = 1.5f;
+        
+        private const float Load_Scene_Fade_Duration = 0f;
         
         [Header("End Screen")] 
         [SerializeField] private FadeScreen fadeScreen;
@@ -102,7 +105,6 @@ namespace UI_Elements
         public void SwitchOnEndScreen()
         {
             fadeScreen.FadeOut();
-
             StartCoroutine(EndScreenRoutine());
         }
 
@@ -145,6 +147,7 @@ namespace UI_Elements
 
         [SerializeField] private VolumeSlider[] volumeSettings;
         [SerializeField] private Toggle showHealthBarToggle;
+        [SerializeField] private Button saveAndExitButton;
         
         public static bool ShowHealthBar { get; private set; } = true;
 
@@ -152,12 +155,18 @@ namespace UI_Elements
         {
             if (showHealthBarToggle != null)
                 showHealthBarToggle.onValueChanged.AddListener(TogglePlayerHealthBar);
+            
+            if (saveAndExitButton != null)
+                saveAndExitButton.onClick.AddListener(SaveAndExit);
         }
 
         private void OnDisable()
         {
             if (showHealthBarToggle != null)
                 showHealthBarToggle.onValueChanged.RemoveListener(TogglePlayerHealthBar);
+            
+            if (saveAndExitButton != null)
+                saveAndExitButton.onClick.RemoveListener(SaveAndExit);
         }
 
         private void TogglePlayerHealthBar(bool isOn)
@@ -172,6 +181,24 @@ namespace UI_Elements
                 if (playerHealthBar != null)
                     playerHealthBar.gameObject.SetActive(isOn);
             }
+        }
+
+        private void SaveAndExit()
+        {
+            SaveManager.Instance.SaveGame();
+            StartCoroutine(LoadMainMenuCoroutine());
+        }
+
+        private IEnumerator LoadMainMenuCoroutine()
+        {
+            fadeScreen.FadeIn();
+            
+            yield return new WaitForSecondsRealtime(Load_Scene_Fade_Duration); 
+            
+            if (GameManager.Instance != null)
+                GameManager.PauseGame(false);
+            
+            SceneManager.LoadScene("MainMenu");
         }
 
         public void LoadData(GameData data)
