@@ -1,4 +1,6 @@
 ﻿using Controllers.Skill_Controllers.SwordSkill;
+using Core.ObjectPool;
+using Core.ObjectPool.Configs.Controllers;
 using Skills.Skills;
 using UnityEngine;
 
@@ -6,52 +8,66 @@ namespace Core.Factories
 {
     public static class SwordFactory
     {
-        public static SwordSkillController CreateSword(SwordType type, GameObject templatePrefab, 
-        Vector2 position, Quaternion rotation, SwordConfig config)
-    {
-        if (templatePrefab == null)
-            throw new System.ArgumentNullException(nameof(templatePrefab));
-    
-        if (config == null)
-            throw new System.ArgumentNullException(nameof(config));
-        
-        GameObject swordObject = Object.Instantiate(templatePrefab, position, rotation);
-        SwordSkillController controller = AddControllerByType(type, swordObject);
-        
-        controller.SetupSword(config.Direction, config.Gravity, config.Player, 
-            config.FreezeTimeDuration, config.ReturnSpeed);
-        
-        SetupControllerByType(controller, config);
-        
-        return controller;
-    }
-    
-    private static SwordSkillController AddControllerByType(SwordType type, GameObject swordObject)
-    {
-        return type switch
+        public static SwordSkillController CreateSword(
+            SwordType type, 
+            Vector2 position, 
+            Quaternion rotation, 
+            Vector2 direction, 
+            Player.Player player, 
+            SwordPoolConfig config)
         {
-            SwordType.Bounce => swordObject.AddComponent<BounceSwordSkillController>(),
-            SwordType.Pierce => swordObject.AddComponent<PierceSwordSkillController>(),
-            SwordType.Spin => swordObject.AddComponent<SpinSwordSkillController>(),
-            _ => swordObject.AddComponent<RegularSwordSkillController>()
-        };
-    }
-    
-    private static void SetupControllerByType(SwordSkillController controller, SwordConfig config)
-    {
-        switch (controller)
-        {
-            case BounceSwordSkillController bounce:
-                bounce.SetupBounce(true, config.BounceAmount, config.BounceSpeed);
-                break;
-            case PierceSwordSkillController pierce:
-                pierce.SetupPierce(config.PierceAmount);
-                break;
-            case SpinSwordSkillController spin:
-                spin.SetupSpin(true, config.MaxTravelDistance, config.SpinDuration, config.HitCooldown);
-                break;
+            if (config == null)
+                throw new System.ArgumentNullException(nameof(config));
+            
+            GameObject prefabToSpawn;
+            float gravity;
+
+            switch (type)
+            {
+                case SwordType.Bounce:
+                    prefabToSpawn = config.BouncePrefab;
+                    gravity = config.BounceGravity;
+                    break;
+                case SwordType.Pierce:
+                    prefabToSpawn = config.PiercePrefab;
+                    gravity = config.PierceGravity;
+                    break;
+                case SwordType.Spin:
+                    prefabToSpawn = config.SpinPrefab;
+                    gravity = config.SpinGravity;
+                    break;
+                default:
+                    prefabToSpawn = config.Prefab; // regular prefab
+                    gravity = config.RegularGravity;
+                    break;
+            }
+            
+            GameObject swordObject = PoolManager.Instance.Spawn(prefabToSpawn, position, rotation);
+            
+            if (swordObject.TryGetComponent(out SwordSkillController controller))
+            {
+                controller.SetupSword(direction, gravity, player, config.FreezeTimeDuration, config.ReturnSpeed);
+                SetupControllerByType(controller, config);
+            }
+            
+            return controller;
         }
-    }
+        
+        private static void SetupControllerByType(SwordSkillController controller, SwordPoolConfig config)
+        {
+            switch (controller)
+            {
+                case BounceSwordSkillController bounce:
+                    bounce.SetupBounce(true, config.BounceAmount, config.BounceSpeed);
+                    break;
+                case PierceSwordSkillController pierce:
+                    pierce.SetupPierce(config.PierceAmount);
+                    break;
+                case SpinSwordSkillController spin:
+                    spin.SetupSpin(true, config.MaxTravelDistance, config.SpinDuration, config.HitCooldown);
+                    break;
+            }
+        }
 }
 
     public class SwordConfig

@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eabb90d1bbe9417f97cbab92185e5422, type: 3}
+  m_Name: SwordPoolConfig
+  m_EditorClassIdentifier: 
+  prefab: {fileID: 8332216622123594047, guid: ab568be5d6441764eb152d11cb329878, type: 3}
+  bouncePrefab: {fileID: 1374984701418041517, guid: 8b2b7089b79f0a44db5a2ce5701f9485, type: 3}
+  piercePrefab: {fileID: 1374984701418041517, guid: fb346bd74b9c44a4fb3c40c3c19b25de, type: 3}
+  spinPrefab: {fileID: 1374984701418041517, guid: 38934f329688d8d4d9d7640811bbda3d, type: 3}
+  freezeTimeDuration: 1.5
+  returnSpeed: 15
+  launchForce: {x: 35, y: 25}
+  regularGravity: 4.5
+  bounceAmount: 5
+  bounceGravity: 5
+  bounceSpeed: 20
+  pierceAmount: 2
+  pierceGravity: 0.25
+  hitCooldown: 0.35
+  maxTravelDistance: 5
+  spinDuration: 5
+  spinGravity: 1

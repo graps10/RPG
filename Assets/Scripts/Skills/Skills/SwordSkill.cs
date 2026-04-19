@@ -1,5 +1,6 @@
 using Core.Factories;
 using Core.ObjectPool;
+using Core.ObjectPool.Configs.Controllers;
 using Core.ObjectPool.Configs.FX;
 using Managers;
 using UI_Elements;
@@ -20,32 +21,13 @@ namespace Skills.Skills
         
         [SerializeField] private SwordType swordType = SwordType.Regular;
 
-        [Header("Bounce Info")]
-        [SerializeField] private SkillTreeSlot bounceUnlockButton;
-        [SerializeField] private int bounceAmount;
-        [SerializeField] private float bounceGravity;
-        [SerializeField] private float bounceSpeed;
-
-        [Header("Pierce Info")]
-        [SerializeField] private SkillTreeSlot pierceUnlockButton;
-        [SerializeField] private int pierceAmount;
-        [SerializeField] private float pierceGravity;
-
-        [Header("Spin Info")]
-        [SerializeField] private SkillTreeSlot spinUnlockButton;
-        [SerializeField] private float hitCooldown = 0.35f;
-        [SerializeField] private float maxTravelDistance = 7;
-        [SerializeField] private float spinDuration = 2;
-        [SerializeField] private float spinGravity = 1;
+        [Header("Skill Info")] [SerializeField] private SwordPoolConfig swordConfig;
         
-        [Header("Skill Info")]
-        [SerializeField] private SkillTreeSlot swordUnlockButton;
-        [SerializeField] private GameObject swordPrefab;
-        [SerializeField] private Vector2 launchForce;
-        [SerializeField] private float swordGravity;
-        [SerializeField] private float freezeTimeDuration;
-        [SerializeField] private float returnSpeed;
-
+        [Header("Bounce Info")] [SerializeField] private SkillTreeSlot bounceUnlockButton;
+        [Header("Pierce Info")] [SerializeField] private SkillTreeSlot pierceUnlockButton;
+        [Header("Spin Info")] [SerializeField] private SkillTreeSlot spinUnlockButton;
+        [Header("Skill Info")] [SerializeField] private SkillTreeSlot swordUnlockButton;
+        
         [Header("Passive Skills")]
         [SerializeField] private SkillTreeSlot timeStopUnlockButton;
         [SerializeField] private SkillTreeSlot vulnerableUnlockButton;
@@ -55,6 +37,8 @@ namespace Skills.Skills
         private bool _swordUnlocked;
         private bool _timeStopUnlocked;
         private bool _vulnerableUnlocked;
+        
+        private float _swordGravity;
 
         private Vector2 _finalDir;
         private GameObject[] _dots;
@@ -101,12 +85,12 @@ namespace Skills.Skills
 
         private void SetupGravity()
         {
-            swordGravity = swordType switch
+            _swordGravity = swordType switch
             {
-                SwordType.Bounce => bounceGravity,
-                SwordType.Pierce => pierceGravity,
-                SwordType.Spin => spinGravity,
-                _ => swordGravity
+                SwordType.Bounce => swordConfig.BounceGravity,
+                SwordType.Pierce => swordConfig.PierceGravity,
+                SwordType.Spin => swordConfig.SpinGravity,
+                _ => swordConfig.RegularGravity
             };
         }
 
@@ -128,30 +112,21 @@ namespace Skills.Skills
             
             if (Input.GetKeyUp(KeyCode.Mouse1))
             {
-                _finalDir = new Vector2(AimDirection().normalized.x * launchForce.x, 
-                    AimDirection().normalized.y * launchForce.y);
+                _finalDir = new Vector2(AimDirection().normalized.x * swordConfig.LaunchForce.x, 
+                    AimDirection().normalized.y * swordConfig.LaunchForce.y);
             }
         }
 
         public void CreateSword()
         {
-            var config = new SwordConfig
-            {
-                Direction = _finalDir,
-                Gravity = swordGravity,
-                Player = player,
-                FreezeTimeDuration = freezeTimeDuration,
-                ReturnSpeed = returnSpeed,
-                BounceAmount = bounceAmount,
-                BounceSpeed = bounceSpeed,
-                PierceAmount = pierceAmount,
-                MaxTravelDistance = maxTravelDistance,
-                SpinDuration = spinDuration,
-                HitCooldown = hitCooldown
-            };
-            
-            var swordController = SwordFactory.CreateSword(swordType, swordPrefab, 
-                player.transform.position, transform.rotation, config);
+            var swordController = SwordFactory.CreateSword(
+                swordType, 
+                player.transform.position, 
+                transform.rotation, 
+                _finalDir, 
+                player, 
+                swordConfig
+            );
             
             player.AssignNewSword(swordController.gameObject);
             DotsActive(false);
@@ -229,8 +204,11 @@ namespace Skills.Skills
         private Vector2 DotsPosition(float t)
         {
             Vector2 position = (Vector2)player.transform.position + new Vector2(
-                AimDirection().normalized.x * launchForce.x,
-                AimDirection().normalized.y * launchForce.y) * t + Physics2D.gravity * (Gravity_Scale * swordGravity * (t * t));
+                AimDirection().normalized.x * swordConfig.LaunchForce.x,
+                AimDirection().normalized.y 
+                * swordConfig.LaunchForce.y) 
+                * t + Physics2D.gravity 
+                * (Gravity_Scale * _swordGravity * (t * t));
 
             return position;
         }

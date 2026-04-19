@@ -66,6 +66,7 @@ namespace Controllers.Skill_Controllers.SwordSkill
                 {
                     _isBouncing = false;
                     isReturning = true;
+                    transform.right = transform.position - player.transform.position; 
                     return;
                 }
                 
@@ -74,6 +75,9 @@ namespace Controllers.Skill_Controllers.SwordSkill
                 
                 return; 
             }
+            
+            Vector2 targetDir = (_enemyTarget[_targetIndex].position - transform.position).normalized;
+            transform.right = targetDir;
             
             transform.position = Vector2.MoveTowards(transform.position, 
                 _enemyTarget[_targetIndex].position, _bounceSpeed * Time.deltaTime);
@@ -92,6 +96,7 @@ namespace Controllers.Skill_Controllers.SwordSkill
             {
                 _isBouncing = false;
                 isReturning = true;
+                transform.right = transform.position - player.transform.position;
             }
 
             if (_targetIndex >= _enemyTarget.Count)
@@ -100,16 +105,31 @@ namespace Controllers.Skill_Controllers.SwordSkill
         
         private void SetupTargetsForBounce(Collider2D collision)
         {
-            if (collision.GetComponent<Enemy>() == null) 
+            if (!collision.TryGetComponent(out Enemy _)) 
                 return;
 
             if (!_isBouncing || _enemyTarget.Count > 0) 
                 return;
-            
+    
             Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, Bounce_Target_Search_Radius);
+    
             foreach (var hit in colliders)
-                if (hit.GetComponent<Enemy>() != null)
+            {
+                if (hit.TryGetComponent(out Enemy _))
                     _enemyTarget.Add(hit.transform);
+            }
+        }
+        
+        public override void ReturnToPool()
+        {
+            _isBouncing = false;
+            _bounceAmount = 0;
+            _targetIndex = 0;
+    
+            if (_enemyTarget != null)
+                _enemyTarget.Clear();
+        
+            base.ReturnToPool();
         }
     }
 }

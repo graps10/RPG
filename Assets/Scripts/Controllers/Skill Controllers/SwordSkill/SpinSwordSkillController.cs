@@ -96,5 +96,15 @@ namespace Controllers.Skill_Controllers.SwordSkill
                         SwordSkillDamage(hit.GetComponent<Enemy>());
             }
         }
+        
+        public override void ReturnToPool()
+        {
+            _isSpinning = false;
+            _wasStopped = false;
+            _spinTimer = 0;
+            _hitTimer = 0;
+            
+            base.ReturnToPool();
+        }
     }
 }

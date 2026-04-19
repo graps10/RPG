@@ -1,4 +1,5 @@
 ﻿using Core;
+using Core.ObjectPool;
 using Enemies.Base;
 using Items_and_Inventory;
 using Stats;
@@ -6,15 +7,16 @@ using UnityEngine;
 
 namespace Controllers.Skill_Controllers.SwordSkill
 {
-    public class SwordSkillController: MonoBehaviour
+    public class SwordSkillController: PooledObject
     {
         private const float Catch_Distance_Threshold = 1f;     
-        private const float Destroy_Sword_Delay = 7f;      
+        private const float Return_To_Pool_Delay = 7f;      
         
         protected Animator anim;     
         protected Rigidbody2D rb;     
         protected CircleCollider2D cd;     
-        protected Player.Player player;      
+        protected Player.Player player;    
+        protected ParticleSystem dustFX;
         
         protected bool isReturning;      
         
@@ -27,6 +29,7 @@ namespace Controllers.Skill_Controllers.SwordSkill
             anim = GetComponentInChildren<Animator>();
             rb = GetComponent<Rigidbody2D>();
             cd = GetComponent<CircleCollider2D>();
+            dustFX = GetComponentInChildren<ParticleSystem>();
         }
         
         public virtual void SetupSword(Vector2 dir, float gravityScale,
@@ -39,7 +42,7 @@ namespace Controllers.Skill_Controllers.SwordSkill
             rb.velocity = dir;
             rb.gravityScale = gravityScale;
 
-            Invoke(nameof(DestroySword), Destroy_Sword_Delay);
+            Invoke(nameof(DestroySword), Return_To_Pool_Delay);
         }
         
         protected virtual void FixedUpdate()
@@ -60,13 +63,12 @@ namespace Controllers.Skill_Controllers.SwordSkill
         {
             if (isReturning) return;
 
-            if (collision.GetComponent<Enemy>() != null)
-            {
-                Enemy enemy = collision.GetComponent<Enemy>();
+            if (collision.TryGetComponent(out Enemy enemy))
                 SwordSkillDamage(enemy);
-            }
-
-            player.Stats.DoDamage(collision.GetComponent<CharacterStats>());
+            
+            if (collision.TryGetComponent(out CharacterStats targetStats))
+                player.Stats.DoDamage(targetStats);
+            
             StuckInto(collision);
         }
         
@@ -78,7 +80,7 @@ namespace Controllers.Skill_Controllers.SwordSkill
             rb.isKinematic = true;
             rb.constraints = RigidbodyConstraints2D.FreezeAll;
 
-            GetComponentInChildren<ParticleSystem>().Play();
+            dustFX.Play();
 
             anim.SetBool(AnimatorHashes.Rotation, false);
             transform.parent = collision.transform;
@@ -107,7 +109,43 @@ namespace Controllers.Skill_Controllers.SwordSkill
             transform.parent = null;
             isReturning = true;
         }
+
+        private void DestroySword() => ReturnToPool();
         
-        private void DestroySword() => Destroy(gameObject);
+        public override void ReturnToPool()
+        {
+            CancelInvoke(nameof(DestroySword));
+            
+            isReturning = false;
+            _canRotate = true;
+            
+            transform.parent = null;
+            
+            if (rb != null)
+            {
+                rb.isKinematic = false;
+                rb.constraints = RigidbodyConstraints2D.None;
+            }
+
+            if (cd != null)
+                cd.enabled = true;
+            
+            if (anim != null)
+            {
+                anim.SetBool(AnimatorHashes.Rotation, false);
+                anim.Rebind();
+                anim.Update(0f);
+            }
+            
+            if (dustFX != null)
+            {
+                dustFX.Stop();
+                dustFX.Clear();
+            }
+
+            player = null;
+    
+            base.ReturnToPool();
+        }
     }
 }

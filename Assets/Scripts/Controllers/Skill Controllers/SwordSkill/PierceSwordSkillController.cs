@@ -22,5 +22,11 @@ namespace Controllers.Skill_Controllers.SwordSkill
             
             base.StuckInto(collision);
         }
+        
+        public override void ReturnToPool()
+        {
+            _pierceAmount = 0;
+            base.ReturnToPool();
+        }
     }
 }
