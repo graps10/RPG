@@ -19,9 +19,9 @@ namespace Components.FX
         private CinemachineImpulseSource _screenShake;
         private float _afterImageCooldownTimer;
 
-        protected override void Start()
+        protected override void Awake()
         {
-            base.Start();
+            base.Awake();
             _screenShake = GetComponent<CinemachineImpulseSource>();
         }
         

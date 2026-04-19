@@ -324,7 +324,7 @@ namespace Stats
             {
                 _fx.CreatePopUpText(damage.ToString());
                 GetComponent<Entity.Entity>().DamageImpact();
-                _fx.StartCoroutine("FlashFX"); // TODO: Fix null ref
+                _fx.StartCoroutine("FlashFX");
             }
         }
 

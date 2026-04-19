@@ -59,14 +59,22 @@ namespace Components.FX
         private Material _originalMat;
         private GameObject _myHealthBar;
 
-        protected virtual void Start()
+        protected virtual void Awake()
         {
             sr = GetComponentInChildren<SpriteRenderer>();
-            player = PlayerManager.Instance.PlayerGameObject;
-
-            _originalMat = sr.material;
-
-            _myHealthBar = GetComponentInChildren<HealthBar>().gameObject;
+            
+            if (sr != null)
+                _originalMat = sr.material;
+            
+            HealthBar healthBar = GetComponentInChildren<HealthBar>(true);
+            if (healthBar != null)
+                _myHealthBar = healthBar.gameObject;
+        }
+        
+        protected virtual void Start()
+        {
+            if (PlayerManager.Instance != null)
+                player = PlayerManager.Instance.PlayerGameObject;
         }
 
         public void CreatePopUpText(string text)
@@ -164,6 +172,8 @@ namespace Components.FX
 
         private IEnumerator FlashFX()
         {
+            if (sr == null || hitMat == null) yield break;
+            
             sr.material = hitMat;
 
             Color currentColor = sr.color;
