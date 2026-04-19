@@ -34,7 +34,7 @@ namespace Managers
         private void Awake()
         {
             if (Instance != null)
-                Destroy(Instance.gameObject);
+                Destroy(gameObject); 
             else
             {
                 Instance = this;
