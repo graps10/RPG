@@ -102,13 +102,33 @@ namespace Skills.Skills
 
             if (isAiming && Input.GetKey(KeyCode.Mouse1))
             {
-                DotsActive(true);
-                
                 for (int i = 0; i < _dots.Length; i++)
-                    _dots[i].transform.position = DotsPosition(i * dotsConfig.SpaceBetweenDots);
+                {
+                    Vector2 dotPos = DotsPosition(i * dotsConfig.SpaceBetweenDots);
+                    
+                    float distanceToDot = Vector2.Distance(player.transform.position, dotPos);
+                    bool isTooFar = false;
+                    
+                    if (swordType == SwordType.Spin && distanceToDot > swordConfig.MaxTravelDistance)
+                        isTooFar = true;
+                    else if (swordType == SwordType.Pierce && distanceToDot > swordConfig.MaxPierceDistance)
+                        isTooFar = true;
+                    
+                    if (isTooFar)
+                    {
+                        _dots[i].SetActive(false);
+                    }
+                    else
+                    {
+                        _dots[i].SetActive(true);
+                        _dots[i].transform.position = dotPos;
+                    }
+                }
             }
             else
+            {
                 DotsActive(false);
+            }
             
             if (Input.GetKeyUp(KeyCode.Mouse1))
             {
@@ -173,7 +193,6 @@ namespace Skills.Skills
 
         #endregion
         
-        
         #region Aim Region
 
         private Vector2 AimDirection()
@@ -203,12 +222,19 @@ namespace Skills.Skills
         
         private Vector2 DotsPosition(float t)
         {
-            Vector2 position = (Vector2)player.transform.position + new Vector2(
-                AimDirection().normalized.x * swordConfig.LaunchForce.x,
-                AimDirection().normalized.y 
-                * swordConfig.LaunchForce.y) 
-                * t + Physics2D.gravity 
-                * (Gravity_Scale * _swordGravity * (t * t));
+            Vector2 aimDirection = AimDirection().normalized;
+            Vector2 launchVelocity = new Vector2(
+                aimDirection.x * swordConfig.LaunchForce.x,
+                aimDirection.y * swordConfig.LaunchForce.y);
+            
+            if (swordType == SwordType.Pierce || swordType == SwordType.Spin)
+            {
+                return (Vector2)player.transform.position + launchVelocity * t;
+            }
+            
+            Vector2 position = (Vector2)player.transform.position 
+                               + launchVelocity * t 
+                               + Physics2D.gravity * (Gravity_Scale * _swordGravity * (t * t));
 
             return position;
         }

@@ -26,6 +26,7 @@ namespace Core.ObjectPool.Configs.Controllers
         [Header("Pierce Info")]
         [SerializeField] private int pierceAmount = 2;
         [SerializeField] private float pierceGravity = 0.5f;
+        [SerializeField] private float maxPierceDistance = 12f;
 
         [Header("Spin Info")]
         [SerializeField] private float hitCooldown = 0.35f;
@@ -49,6 +50,7 @@ namespace Core.ObjectPool.Configs.Controllers
 
         public int PierceAmount => pierceAmount;
         public float PierceGravity => pierceGravity;
+        public float MaxPierceDistance => maxPierceDistance;
 
         public float HitCooldown => hitCooldown;
         public float MaxTravelDistance => maxTravelDistance;

@@ -25,6 +25,7 @@ MonoBehaviour:
   bounceSpeed: 20
   pierceAmount: 2
   pierceGravity: 0.25
+  maxPierceDistance: 14
   hitCooldown: 0.35
   maxTravelDistance: 5
   spinDuration: 5
