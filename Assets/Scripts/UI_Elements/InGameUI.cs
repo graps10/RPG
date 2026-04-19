@@ -10,7 +10,6 @@ namespace UI_Elements
 {
     public class InGameUI : MonoBehaviour
     {
-        [SerializeField] private PlayerStats playerStats;
         [SerializeField] private Slider slider;
 
         [SerializeField] private Image dashImage;
@@ -26,17 +25,32 @@ namespace UI_Elements
         [SerializeField] private float increaseRate = 100;
 
         private SkillManager _skills;
+        private PlayerStats _playerStats;
 
         private void Start()
         {
-            if (playerStats != null)
-                playerStats.OnHealthChanged += UpdateHealthUI;
-
             _skills = SkillManager.Instance;
+        }
+        
+        public void AssignPlayerStats(PlayerStats stats)
+        {
+            _playerStats = stats;
+            _playerStats.OnHealthChanged += UpdateHealthUI;
+            
+            UpdateHealthUI(); 
+        }
+
+        private void OnDestroy()
+        {
+            if (_playerStats != null)
+                _playerStats.OnHealthChanged -= UpdateHealthUI;
         }
 
         private void Update()
         {
+            if (_playerStats == null || PlayerManager.Instance.PlayerGameObject == null)
+                return;
+            
             UpdateSoulsUI();
 
             UpdateSkillCooldownUI(dashImage, 
@@ -68,8 +82,11 @@ namespace UI_Elements
 
         private void UpdateHealthUI()
         {
-            slider.maxValue = playerStats.GetMaxHealthValue();
-            slider.value = playerStats.CurrentHealth;
+            if (_playerStats == null) return;
+            
+            slider.maxValue = _playerStats.GetMaxHealthValue();
+            slider.value = _playerStats.CurrentHealth;
+            Debug.Log("Update health");
         }
 
         private void UpdateSkillCooldownUI(Image image, float currentTimer, float maxCooldown)

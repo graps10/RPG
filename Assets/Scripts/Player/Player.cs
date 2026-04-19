@@ -64,6 +64,12 @@ namespace Player
         {
             base.Awake();
 
+            Fx = GetComponent<PlayerFX>();
+            
+            _defaultMoveSpeed = moveSpeed;
+            _defaultJumpForce = jumpForce;
+            _defaultDashSpeed = dashSpeed;
+
             StateMachine = new PlayerStateMachine();
 
             IdleState = new PlayerIdleState(this, StateMachine, AnimatorHashes.PlayerIdleState);
@@ -89,14 +95,8 @@ namespace Player
         {
             base.Start();
             
-            Fx = GetComponent<PlayerFX>();
             Skill = SkillManager.Instance;
-
             StateMachine.Initialize(IdleState);
-
-            _defaultMoveSpeed = moveSpeed;
-            _defaultJumpForce = jumpForce;
-            _defaultDashSpeed = dashSpeed;
         }
 
         protected override void Update()
@@ -120,7 +120,6 @@ namespace Player
         public override void Die()
         {
             base.Die();
-
             StateMachine.ChangeState(DeadState);
         }
 

@@ -1,6 +1,7 @@
 using Components.Audio;
 using Items_and_Inventory;
 using Managers;
+using UI_Elements;
 using UnityEngine;
 
 namespace Stats
@@ -16,6 +17,17 @@ namespace Stats
         {
             base.Awake();
             _player = GetComponent<Player.Player>();
+        }
+
+        protected override void Start()
+        {
+            base.Start();
+            
+            var inGameUI = FindAnyObjectByType<InGameUI>(FindObjectsInactive.Include);
+            if (inGameUI != null)
+                inGameUI.AssignPlayerStats(this);
+            else
+                Debug.LogWarning("InGameUI not found!");
         }
 
         protected override void OnEvasion()
