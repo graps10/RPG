@@ -10,6 +10,8 @@ namespace UI_Elements
         [SerializeField] private Transform craftSlotParent;
         [SerializeField] private GameObject craftSlotPrefab;
         [SerializeField] private List<ItemData_Equipment> craftEquipment;
+        
+        private List<CraftSlot> _pooledSlots = new();
 
         private void Start()
         {
@@ -21,13 +23,26 @@ namespace UI_Elements
         {
             for (int i = 0; i < craftSlotParent.childCount; i++)
             {
-                Destroy(craftSlotParent.GetChild(i).gameObject);
+                craftSlotParent.GetChild(i).gameObject.SetActive(false);
             }
-
+            
             for (int i = 0; i < craftEquipment.Count; i++)
             {
-                GameObject newSlot = Instantiate(craftSlotPrefab, craftSlotParent);
-                newSlot.GetComponent<CraftSlot>().SetupCraftSlot(craftEquipment[i]);
+                CraftSlot currentSlot = null;
+                
+                if (i < _pooledSlots.Count)
+                {
+                    currentSlot = _pooledSlots[i];
+                    currentSlot.gameObject.SetActive(true);
+                }
+                else
+                {
+                    GameObject newSlotObj = Instantiate(craftSlotPrefab, craftSlotParent);
+                    currentSlot = newSlotObj.GetComponent<CraftSlot>();
+                    _pooledSlots.Add(currentSlot);
+                }
+                
+                currentSlot.SetupCraftSlot(craftEquipment[i]);
             }
         }
 
@@ -38,7 +53,7 @@ namespace UI_Elements
 
         public void SetupDefaultCraftWindow()
         {
-            if (craftEquipment[0] != null)
+            if (craftEquipment != null && craftEquipment.Count > 0 && craftEquipment[0] != null)
                 GetComponentInParent<UI>().GetCraftWindow().SetupCraftWindow(craftEquipment[0]);
         }
     }
