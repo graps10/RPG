@@ -120,7 +120,7 @@ namespace Enemies.DeathBringer
                 FindAvailableTeleportPosition();
         }
     
-        public void IncreaseChangeToTeleport(int value) => chanceToTeleport += value;
+        public void IncreaseTheChanceToTeleport(int value) => chanceToTeleport += value;
         
         public int GetAmountOfSpells() => spellConfig.AmountOfSpells;
         public float GetSpellCooldown() => spellConfig.SpellCooldown;

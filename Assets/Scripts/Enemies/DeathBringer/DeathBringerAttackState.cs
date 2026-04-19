@@ -5,13 +5,15 @@ namespace Enemies.DeathBringer
 {
     public class DeathBringerAttackState : EnemyAttackState<EnemyDeathBringer>
     {
+        private const int Teleport_Increase_Chance_Rate = 5;
+            
         public DeathBringerAttackState(EnemyDeathBringer enemy, EnemyStateMachine stateMachine, int animBoolName) : 
             base(enemy, stateMachine, animBoolName) { }
 
         public override void Enter()
         {
             base.Enter();
-            enemy.IncreaseChangeToTeleport(5); // TODO Make a const or move it to config
+            enemy.IncreaseTheChanceToTeleport(Teleport_Increase_Chance_Rate);
         }
         
         public override void Update()
