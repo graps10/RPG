@@ -44,8 +44,9 @@ namespace Controllers.Skill_Controllers
             _config = config;
             _attackMultiplier = attackMultiplier;
             _player = player;
-            if(_playerStats == null) // TODO: Can do better
-                _playerStats = player.GetComponent<PlayerStats>();
+            
+            if (_playerStats == null)
+                _playerStats = player.Stats as PlayerStats;
             
             _cloneTimer = cloneDuration;
             
