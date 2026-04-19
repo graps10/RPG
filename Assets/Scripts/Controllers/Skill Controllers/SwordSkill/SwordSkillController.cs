@@ -116,6 +116,9 @@ namespace Controllers.Skill_Controllers.SwordSkill
         {
             CancelInvoke(nameof(DestroySword));
             
+            if (player != null)
+                player.AssignNewSword(null);
+            
             isReturning = false;
             _canRotate = true;
             
