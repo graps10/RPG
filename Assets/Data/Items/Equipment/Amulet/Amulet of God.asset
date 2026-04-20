@@ -16,23 +16,27 @@ MonoBehaviour:
   ItemName: Amulet of God
   Icon: {fileID: -245851270, guid: a9ca9a41598dd2e44b125928045c518f, type: 3}
   ItemID: 7e3cbe6980b75464392d5d10bb651ff0
-  DropChance: 0
   equipmentType: 2
   itemCooldown: 0
-  itemEffects:
-  - {fileID: 11400000, guid: 245907bfd5b8f65499698f29aa9e05dd, type: 2}
-  strength: 0
-  agility: 0
-  intelligence: 0
-  vitality: 0
+  itemEffects: []
+  strength: 10
+  agility: 10
+  intelligence: 10
+  vitality: 10
   damage: 0
   critChance: 0
   critPower: 0
-  health: 20
+  health: 0
   armor: 0
   evasion: 0
-  magicResistance: 15
+  magicResistance: 0
   fireDamage: 0
   iceDamage: 0
-  lightingDamage: 10
-  craftingMaterials: []
+  lightingDamage: 0
+  craftingMaterials:
+  - data: {fileID: 11400000, guid: e5160fcc0422b374ea14c3bc80bdddea, type: 2}
+    stackSize: 1
+  - data: {fileID: 11400000, guid: 1e443f44bc18f0f4eb5e0ef094c5dd52, type: 2}
+    stackSize: 1
+  - data: {fileID: 11400000, guid: 2ce79669c8af36e4c90ce30a84cfdc28, type: 2}
+    stackSize: 30

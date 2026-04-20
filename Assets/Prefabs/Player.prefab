@@ -20147,10 +20147,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   strength:
-    baseValue: 0
+    baseValue: 5
     modifiers: 
   agility:
-    baseValue: 0
+    baseValue: 5
     modifiers: 
   intelligence:
     baseValue: 0
@@ -20159,16 +20159,16 @@ MonoBehaviour:
     baseValue: 5
     modifiers: 
   damage:
-    baseValue: 1
+    baseValue: 5
     modifiers: 
   critChance:
-    baseValue: 15
+    baseValue: 5
     modifiers: 
   critPower:
-    baseValue: 0
+    baseValue: 150
     modifiers: 
   maxHealth:
-    baseValue: 100
+    baseValue: 50
     modifiers: 
   armor:
     baseValue: 0
@@ -20180,7 +20180,7 @@ MonoBehaviour:
     baseValue: 0
     modifiers: 
   fireDamage:
-    baseValue: 1
+    baseValue: 0
     modifiers: 
   iceDamage:
     baseValue: 0
@@ -20202,11 +20202,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b5887f9232ff7cd469cefc5138999caf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxItemsToDrop: 3
-  itemList: []
   itemDropConfig: {fileID: 11400000, guid: 27ecf18bcbb2bae49b75deed81e0bc0a, type: 2}
-  chanceToLooseItems: 75
-  chanceToLooseMaterials: 75
+  chanceToLooseItems: 20
+  chanceToLooseMaterials: 50
 --- !u!114 &8451371641576957351
 MonoBehaviour:
   m_ObjectHideFlags: 0

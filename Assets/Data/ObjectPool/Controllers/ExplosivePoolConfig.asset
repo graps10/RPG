@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa6cd270a8bf41e9a3145dd169a39afe, type: 3}
   m_Name: ExplosivePoolConfig
   m_EditorClassIdentifier: 
-  prefab: {fileID: 0}
+  prefab: {fileID: 7515531291260425346, guid: 2ed38bce3a8dd914486cae0d40a78ca1, type: 3}

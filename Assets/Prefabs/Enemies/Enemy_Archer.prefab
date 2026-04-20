@@ -13,8 +13,8 @@ GameObject:
   - component: {fileID: 2631475961209964101}
   - component: {fileID: 1430992102294738425}
   - component: {fileID: 4514353212984039851}
-  - component: {fileID: 1055091641041975665}
   - component: {fileID: 7656670257762040362}
+  - component: {fileID: 8164128408773020440}
   m_Layer: 7
   m_Name: Enemy_Archer
   m_TagString: Untagged
@@ -134,22 +134,22 @@ MonoBehaviour:
     baseValue: 0
     modifiers: 
   damage:
-    baseValue: 1
+    baseValue: 18
     modifiers: 
   critChance:
-    baseValue: 0
+    baseValue: 10
     modifiers: 
   critPower:
-    baseValue: 0
+    baseValue: 150
     modifiers: 
   maxHealth:
-    baseValue: 100
+    baseValue: 20
     modifiers: 
   armor:
     baseValue: 0
     modifiers: 
   evasion:
-    baseValue: 0
+    baseValue: 5
     modifiers: 
   magicResistance:
     baseValue: 0
@@ -158,7 +158,7 @@ MonoBehaviour:
     baseValue: 0
     modifiers: 
   iceDamage:
-    baseValue: 1
+    baseValue: 3
     modifiers: 
   lightingDamage:
     baseValue: 0
@@ -167,7 +167,7 @@ MonoBehaviour:
   shockStrikeConfig: {fileID: 11400000, guid: ddabd98dd8e2f4247be4e06582f199f7, type: 2}
   level: 1
   percentageModifier: 0.4
-  initialSoulsDropAmount: 100
+  initialSoulsDropAmount: 15
 --- !u!114 &4514353212984039851
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -197,21 +197,6 @@ MonoBehaviour:
   igniteFx: {fileID: 9163520908989604016}
   chillFx: {fileID: 8841039427499579928}
   shockFx: {fileID: 4587973918378667573}
---- !u!114 &1055091641041975665
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 50979775065540776}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3b08a18df41db074da2b02a4ca061947, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  maxItemsToDrop: 3
-  itemList: []
-  itemDropConfig: {fileID: 11400000, guid: 27ecf18bcbb2bae49b75deed81e0bc0a, type: 2}
 --- !u!114 &7656670257762040362
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -259,6 +244,27 @@ MonoBehaviour:
   groundBehindCheck: {fileID: 5477200796658543965}
   groundBehindCheckSize: {x: 2, y: 8}
   wallBehindExtraDistance: 2
+--- !u!114 &8164128408773020440
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 50979775065540776}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1bb9cd6b11c1445dbbebfac5646d62e9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemDropConfig: {fileID: 11400000, guid: 27ecf18bcbb2bae49b75deed81e0bc0a, type: 2}
+  maxItemsToDrop: 3
+  dropList:
+  - item: {fileID: 11400000, guid: c8057499c5ffae64fba425aa6986c484, type: 2}
+    dropChance: 40
+  - item: {fileID: 11400000, guid: a7c301e88a476cd4b8f7a81884d042d2, type: 2}
+    dropChance: 40
+  - item: {fileID: 11400000, guid: 2ce79669c8af36e4c90ce30a84cfdc28, type: 2}
+    dropChance: 20
 --- !u!1 &233225095406134249
 GameObject:
   m_ObjectHideFlags: 0

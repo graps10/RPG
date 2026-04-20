@@ -16,7 +16,6 @@ MonoBehaviour:
   ItemName: Plate armor
   Icon: {fileID: -1581127718, guid: a9ca9a41598dd2e44b125928045c518f, type: 3}
   ItemID: e2fac72d89a1ca949b1846de1228d215
-  DropChance: 0
   equipmentType: 1
   itemCooldown: 0
   itemEffects: []
@@ -27,11 +26,17 @@ MonoBehaviour:
   damage: 0
   critChance: 0
   critPower: 0
-  health: 15
+  health: 50
   armor: 10
-  evasion: 0
+  evasion: -5
   magicResistance: 0
   fireDamage: 0
   iceDamage: 0
   lightingDamage: 0
-  craftingMaterials: []
+  craftingMaterials:
+  - data: {fileID: 11400000, guid: 29e04b4dc8f0e484ca394ec4e7032af5, type: 2}
+    stackSize: 1
+  - data: {fileID: 11400000, guid: a7c301e88a476cd4b8f7a81884d042d2, type: 2}
+    stackSize: 15
+  - data: {fileID: 11400000, guid: 31c49433047bf6d49aed80da8565d32a, type: 2}
+    stackSize: 5

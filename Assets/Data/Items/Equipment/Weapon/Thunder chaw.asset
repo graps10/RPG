@@ -16,7 +16,6 @@ MonoBehaviour:
   ItemName: Thunder chaw
   Icon: {fileID: 367297872, guid: a9ca9a41598dd2e44b125928045c518f, type: 3}
   ItemID: 3033d33e400f6194aa86d3af11116422
-  DropChance: 0
   equipmentType: 0
   itemCooldown: 0
   itemEffects:
@@ -25,14 +24,20 @@ MonoBehaviour:
   agility: 0
   intelligence: 0
   vitality: 0
-  damage: 1
+  damage: 10
   critChance: 0
-  critPower: 0
+  critPower: 50
   health: 0
   armor: 0
-  evasion: 0
+  evasion: 10
   magicResistance: 0
   fireDamage: 0
   iceDamage: 0
-  lightingDamage: 1
-  craftingMaterials: []
+  lightingDamage: 25
+  craftingMaterials:
+  - data: {fileID: 11400000, guid: 35ebf87b80cb42b46b35a75e4ac4d408, type: 2}
+    stackSize: 1
+  - data: {fileID: 11400000, guid: 2ce79669c8af36e4c90ce30a84cfdc28, type: 2}
+    stackSize: 30
+  - data: {fileID: 11400000, guid: a7c301e88a476cd4b8f7a81884d042d2, type: 2}
+    stackSize: 10

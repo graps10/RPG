@@ -316,7 +316,7 @@ namespace Stats
 
         public virtual void TakeDamage(int damage)
         {
-            if (_isInvincible) return;
+            if (_isInvincible || IsDead) return;
 
             DecreaseHealthBy(damage);
         

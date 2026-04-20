@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 5662558861325632104}
   - component: {fileID: 8203518467100471503}
   - component: {fileID: 1011992461096980259}
-  - component: {fileID: 2334185353459780349}
+  - component: {fileID: 1530290259521730244}
   m_Layer: 7
   m_Name: Enemy_Skeleton
   m_TagString: Untagged
@@ -198,22 +198,22 @@ MonoBehaviour:
     baseValue: 0
     modifiers: 
   vitality:
-    baseValue: 10
+    baseValue: 0
     modifiers: 
   damage:
-    baseValue: 1
+    baseValue: 12
     modifiers: 
   critChance:
-    baseValue: 0
+    baseValue: 5
     modifiers: 
   critPower:
-    baseValue: 0
+    baseValue: 150
     modifiers: 
   maxHealth:
-    baseValue: 100
+    baseValue: 50
     modifiers: 
   armor:
-    baseValue: 0
+    baseValue: 2
     modifiers: 
   evasion:
     baseValue: 0
@@ -222,7 +222,7 @@ MonoBehaviour:
     baseValue: 0
     modifiers: 
   fireDamage:
-    baseValue: 0
+    baseValue: 3
     modifiers: 
   iceDamage:
     baseValue: 0
@@ -234,8 +234,8 @@ MonoBehaviour:
   shockStrikeConfig: {fileID: 11400000, guid: ddabd98dd8e2f4247be4e06582f199f7, type: 2}
   level: 1
   percentageModifier: 0.4
-  initialSoulsDropAmount: 100
---- !u!114 &2334185353459780349
+  initialSoulsDropAmount: 12
+--- !u!114 &1530290259521730244
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -244,12 +244,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 233287652356747905}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3b08a18df41db074da2b02a4ca061947, type: 3}
+  m_Script: {fileID: 11500000, guid: 1bb9cd6b11c1445dbbebfac5646d62e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxItemsToDrop: 2
-  itemList: []
   itemDropConfig: {fileID: 11400000, guid: 27ecf18bcbb2bae49b75deed81e0bc0a, type: 2}
+  maxItemsToDrop: 1
+  dropList:
+  - item: {fileID: 11400000, guid: c8057499c5ffae64fba425aa6986c484, type: 2}
+    dropChance: 50
+  - item: {fileID: 11400000, guid: a7c301e88a476cd4b8f7a81884d042d2, type: 2}
+    dropChance: 50
 --- !u!1 &388911931758306081
 GameObject:
   m_ObjectHideFlags: 0

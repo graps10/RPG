@@ -16,9 +16,8 @@ MonoBehaviour:
   ItemName: Fire flask
   Icon: {fileID: 1073501139, guid: a9ca9a41598dd2e44b125928045c518f, type: 3}
   ItemID: 7fd4b18feb2686b4d9b8619ee47e9554
-  DropChance: 0
   equipmentType: 3
-  itemCooldown: 5
+  itemCooldown: 45
   itemEffects:
   - {fileID: 11400000, guid: ab4a68ff849df8343a8dd78b1173b6a6, type: 2}
   strength: 0
@@ -35,4 +34,8 @@ MonoBehaviour:
   fireDamage: 0
   iceDamage: 0
   lightingDamage: 0
-  craftingMaterials: []
+  craftingMaterials:
+  - data: {fileID: 11400000, guid: e345c2647f7fc0e4e86fc513496a31fc, type: 2}
+    stackSize: 1
+  - data: {fileID: 11400000, guid: 2ce79669c8af36e4c90ce30a84cfdc28, type: 2}
+    stackSize: 15

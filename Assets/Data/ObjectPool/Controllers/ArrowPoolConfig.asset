@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: ArrowPoolConfig
   m_EditorClassIdentifier: 
   prefab: {fileID: 3195399012004361935, guid: 3987992e824b7154d819f73b20be679c, type: 3}
-  damage: 25
+  damage: 18
   speed: 7
   hitReturnDelay: 6
   missReturnDelay: 15

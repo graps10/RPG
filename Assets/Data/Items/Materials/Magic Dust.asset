@@ -9,10 +9,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d5cc6bb98f07ef34190c4b90c76507c1, type: 3}
-  m_Name: Fire dmg on hit buff
+  m_Script: {fileID: 11500000, guid: 98f214b6a14a3a34eba7f6d0032edbf0, type: 3}
+  m_Name: Magic Dust
   m_EditorClassIdentifier: 
-  effectDescription: Increases fire damage on hit.
-  buffType: 11
-  buffAmount: 5
-  buffDuration: 10
+  ItemType: 0
+  ItemName: Magic Dust
+  Icon: {fileID: 600882348, guid: a9ca9a41598dd2e44b125928045c518f, type: 3}
+  ItemID: 2ce79669c8af36e4c90ce30a84cfdc28
+  DropChance: 0

@@ -14,6 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   prefab: {fileID: 679803618332397563, guid: 222bd04128ea92b40b3ec6b2f65a8db3, type: 3}
   battleStateMoveSpeed: 6
-  explosivePrefab: {fileID: 2283389122960958411, guid: 2ed38bce3a8dd914486cae0d40a78ca1, type: 3}
+  explosivePoolConfig: {fileID: 11400000, guid: 22af486b69555454b9f47b8be48dd1d9, type: 2}
   growSpeed: 15
   maxSize: 7

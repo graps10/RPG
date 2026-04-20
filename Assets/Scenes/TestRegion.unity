@@ -384,7 +384,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 260727ae7a29c1344b889ea4a4a0c373, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  skillCost: 0
+  skillCost: 50
   skillName: Dodge
   skillDescription: You getting 10% of evasion.
   lockedSkillColor: {r: 0.49411765, g: 0.4117647, b: 0.4117647, a: 1}
@@ -2333,8 +2333,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: 
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 84bdc42b70bb5e54aa18bb33c1fa834e, type: 2}
+  m_sharedMaterial: {fileID: -8065883861848785263, guid: 84bdc42b70bb5e54aa18bb33c1fa834e, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -2847,7 +2847,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 260727ae7a29c1344b889ea4a4a0c373, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  skillCost: 0
+  skillCost: 500
   skillName: Multiple mirage
   skillDescription: 'Your mirage has 30% of your attacks.
 
@@ -4678,8 +4678,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: 
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 84bdc42b70bb5e54aa18bb33c1fa834e, type: 2}
+  m_sharedMaterial: {fileID: -8065883861848785263, guid: 84bdc42b70bb5e54aa18bb33c1fa834e, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -4785,7 +4785,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 260727ae7a29c1344b889ea4a4a0c373, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  skillCost: 0
+  skillCost: 200
   skillName: Explosion
   skillDescription: 'Crystal can explode.
 
@@ -4931,22 +4931,9 @@ MonoBehaviour:
     equipmentSlotParent: {fileID: 664557241}
     statSlotParent: {fileID: 2134590434}
   startingItems:
-  - {fileID: 11400000, guid: e2fac72d89a1ca949b1846de1228d215, type: 2}
-  - {fileID: 11400000, guid: 3033d33e400f6194aa86d3af11116422, type: 2}
-  - {fileID: 11400000, guid: 696cdcfe02c4c4d4babf89b0a80f429c, type: 2}
-  - {fileID: 11400000, guid: 7e3cbe6980b75464392d5d10bb651ff0, type: 2}
+  - {fileID: 11400000, guid: 53b3c5738a9759749b156026fd98478c, type: 2}
   - {fileID: 11400000, guid: 29e04b4dc8f0e484ca394ec4e7032af5, type: 2}
-  - {fileID: 11400000, guid: 7fd4b18feb2686b4d9b8619ee47e9554, type: 2}
-  - {fileID: 11400000, guid: e345c2647f7fc0e4e86fc513496a31fc, type: 2}
   - {fileID: 11400000, guid: 8e44877b707ab364586b5733909184b1, type: 2}
-  - {fileID: 11400000, guid: a7c301e88a476cd4b8f7a81884d042d2, type: 2}
-  - {fileID: 11400000, guid: a7c301e88a476cd4b8f7a81884d042d2, type: 2}
-  - {fileID: 11400000, guid: a7c301e88a476cd4b8f7a81884d042d2, type: 2}
-  - {fileID: 11400000, guid: a7c301e88a476cd4b8f7a81884d042d2, type: 2}
-  - {fileID: 11400000, guid: 31c49433047bf6d49aed80da8565d32a, type: 2}
-  - {fileID: 11400000, guid: 31c49433047bf6d49aed80da8565d32a, type: 2}
-  - {fileID: 11400000, guid: 31c49433047bf6d49aed80da8565d32a, type: 2}
-  - {fileID: 11400000, guid: 31c49433047bf6d49aed80da8565d32a, type: 2}
   equipment: []
   inventory: []
   stash: []
@@ -6869,8 +6856,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: 5
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 84bdc42b70bb5e54aa18bb33c1fa834e, type: 2}
+  m_sharedMaterial: {fileID: -8065883861848785263, guid: 84bdc42b70bb5e54aa18bb33c1fa834e, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -7459,7 +7446,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 260727ae7a29c1344b889ea4a4a0c373, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  skillCost: 0
+  skillCost: 100
   skillName: Parry
   skillDescription: You can parry attack to avoid damage.
   lockedSkillColor: {r: 0.49411765, g: 0.4117647, b: 0.4117647, a: 1}
@@ -7791,7 +7778,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 260727ae7a29c1344b889ea4a4a0c373, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  skillCost: 0
+  skillCost: 200
   skillName: Mirage blink
   skillDescription: 'You leave your mirage instead of you when you blink.
 
@@ -8306,8 +8293,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: 5
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 84bdc42b70bb5e54aa18bb33c1fa834e, type: 2}
+  m_sharedMaterial: {fileID: -8065883861848785263, guid: 84bdc42b70bb5e54aa18bb33c1fa834e, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -8736,7 +8723,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 260727ae7a29c1344b889ea4a4a0c373, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  skillCost: 0
+  skillCost: 150
   skillName: Crystal
   skillDescription: 'You create magic crystal that does magic damage.
 
@@ -9156,7 +9143,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 260727ae7a29c1344b889ea4a4a0c373, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  skillCost: 500
+  skillCost: 350
   skillName: Time stop
   skillDescription: When enemy hit by sword his time stops.
   lockedSkillColor: {r: 0.49411765, g: 0.4117647, b: 0.4117647, a: 1}
@@ -10100,8 +10087,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Craft
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 84bdc42b70bb5e54aa18bb33c1fa834e, type: 2}
+  m_sharedMaterial: {fileID: -8065883861848785263, guid: 84bdc42b70bb5e54aa18bb33c1fa834e, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -11023,7 +11010,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 260727ae7a29c1344b889ea4a4a0c373, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  skillCost: 0
+  skillCost: 200
   skillName: Bullet sword
   skillDescription: 'Sword can pierce targets.
 
@@ -13111,8 +13098,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: 5
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 84bdc42b70bb5e54aa18bb33c1fa834e, type: 2}
+  m_sharedMaterial: {fileID: -8065883861848785263, guid: 84bdc42b70bb5e54aa18bb33c1fa834e, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -13296,7 +13283,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 340, y: 185}
+  m_SizeDelta: {x: 504.5, y: 175}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &937610051
 CanvasRenderer:
@@ -13332,8 +13319,8 @@ MonoBehaviour:
 
     + 5 evasion chance'
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 84bdc42b70bb5e54aa18bb33c1fa834e, type: 2}
+  m_sharedMaterial: {fileID: -8065883861848785263, guid: 84bdc42b70bb5e54aa18bb33c1fa834e, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -13357,12 +13344,12 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 28
+  m_fontSize: 40
   m_fontSizeBase: 28
   m_fontWeight: 400
-  m_enableAutoSizing: 0
+  m_enableAutoSizing: 1
   m_fontSizeMin: 18
-  m_fontSizeMax: 72
+  m_fontSizeMax: 40
   m_fontStyle: 0
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
@@ -13373,7 +13360,7 @@ MonoBehaviour:
   m_lineSpacingMax: 0
   m_paragraphSpacing: 0
   m_charWidthMaxAdj: 0
-  m_enableWordWrapping: 1
+  m_enableWordWrapping: 0
   m_wordWrappingRatios: 0.4
   m_overflowMode: 0
   m_linkedTextComponent: {fileID: 0}
@@ -14030,8 +14017,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: 5
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 84bdc42b70bb5e54aa18bb33c1fa834e, type: 2}
+  m_sharedMaterial: {fileID: -8065883861848785263, guid: 84bdc42b70bb5e54aa18bb33c1fa834e, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -15552,7 +15539,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 260727ae7a29c1344b889ea4a4a0c373, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  skillCost: 0
+  skillCost: 400
   skillName: Blackhole
   skillDescription: You trap enemies in a blackhole which allows you to do tons of
     damage.
@@ -15773,7 +15760,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 260727ae7a29c1344b889ea4a4a0c373, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  skillCost: 0
+  skillCost: 250
   skillName: Parry with a mirage
   skillDescription: You create a clone with successful parry.
   lockedSkillColor: {r: 0.49411765, g: 0.4117647, b: 0.4117647, a: 1}
@@ -15954,7 +15941,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 260727ae7a29c1344b889ea4a4a0c373, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  skillCost: 0
+  skillCost: 200
   skillName: Time mirage
   skillDescription: 'Your mirage can attack targets.
 
@@ -16257,7 +16244,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 260727ae7a29c1344b889ea4a4a0c373, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  skillCost: 100
+  skillCost: 50
   skillName: Sword throw
   skillDescription: Throws sword into the enemy.
   lockedSkillColor: {r: 0.49411765, g: 0.4117647, b: 0.4117647, a: 1}
@@ -17838,7 +17825,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 260727ae7a29c1344b889ea4a4a0c373, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  skillCost: 0
+  skillCost: 100
   skillName: Dash - "Actually here I am"
   skillDescription: You create mirage at your arrival.
   lockedSkillColor: {r: 0.49411765, g: 0.4117647, b: 0.4117647, a: 1}
@@ -18765,7 +18752,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 260727ae7a29c1344b889ea4a4a0c373, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  skillCost: 0
+  skillCost: 50
   skillName: Dash - "Here I am"
   skillDescription: You leave mirage when you dash.
   lockedSkillColor: {r: 0.49411765, g: 0.4117647, b: 0.4117647, a: 1}
@@ -19746,7 +19733,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 260727ae7a29c1344b889ea4a4a0c373, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  skillCost: 0
+  skillCost: 400
   skillName: Crystal mirage
   skillDescription: 'You create a crystal instead of mirage.
 
@@ -20500,7 +20487,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 260727ae7a29c1344b889ea4a4a0c373, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  skillCost: 1500
+  skillCost: 500
   skillName: Vulnerability
   skillDescription: Enemy hit by sword takes 10% more damage.
   lockedSkillColor: {r: 0.49411765, g: 0.4117647, b: 0.4117647, a: 1}
@@ -21063,7 +21050,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 260727ae7a29c1344b889ea4a4a0c373, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  skillCost: 500
+  skillCost: 150
   skillName: Bouncy sword
   skillDescription: 'Sword can bounce between targets.
 
@@ -21394,7 +21381,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 260727ae7a29c1344b889ea4a4a0c373, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  skillCost: 0
+  skillCost: 150
   skillName: Restore with parry
   skillDescription: You restore a bit of health with successful parry.
   lockedSkillColor: {r: 0.49411765, g: 0.4117647, b: 0.4117647, a: 1}
@@ -23992,7 +23979,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 260727ae7a29c1344b889ea4a4a0c373, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  skillCost: 0
+  skillCost: 250
   skillName: Chain saw sword
   skillDescription: 'Sword will spin like a chain saw.
 
@@ -24049,7 +24036,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 260727ae7a29c1344b889ea4a4a0c373, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  skillCost: 0
+  skillCost: 300
   skillName: Controlled destruction
   skillDescription: 'Crystal moves towards the enemy.
 
@@ -25120,7 +25107,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 260727ae7a29c1344b889ea4a4a0c373, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  skillCost: 0
+  skillCost: 150
   skillName: Dodge mirage
   skillDescription: You can create mirage on dodge.
   lockedSkillColor: {r: 0.49411765, g: 0.4117647, b: 0.4117647, a: 1}
@@ -27675,7 +27662,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 260727ae7a29c1344b889ea4a4a0c373, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  skillCost: 0
+  skillCost: 400
   skillName: Multiple destruction
   skillDescription: You can create up to 3 crystals at a time.
   lockedSkillColor: {r: 0.49411765, g: 0.4117647, b: 0.4117647, a: 1}
@@ -28598,7 +28585,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 260727ae7a29c1344b889ea4a4a0c373, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  skillCost: 0
+  skillCost: 300
   skillName: Aggressive mirage
   skillDescription: 'Your mirage has 80% of your damage.
 
@@ -29096,8 +29083,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: 
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 84bdc42b70bb5e54aa18bb33c1fa834e, type: 2}
+  m_sharedMaterial: {fileID: -8065883861848785263, guid: 84bdc42b70bb5e54aa18bb33c1fa834e, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -29510,7 +29497,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fileName: data.chpion
-  encryptData: 0
+  encryptData: 1
 --- !u!1001 &6194511098844886488
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -29690,8 +29677,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: 
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 84bdc42b70bb5e54aa18bb33c1fa834e, type: 2}
+  m_sharedMaterial: {fileID: -8065883861848785263, guid: 84bdc42b70bb5e54aa18bb33c1fa834e, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []

@@ -584,8 +584,8 @@ GameObject:
   - component: {fileID: 1429430561176479689}
   - component: {fileID: 805335163748739493}
   - component: {fileID: 3023183467518170880}
-  - component: {fileID: 4795927575025898893}
   - component: {fileID: 4078269123703412013}
+  - component: {fileID: 3496921247831902397}
   m_Layer: 7
   m_Name: Enemy_Slime_Medium
   m_TagString: Untagged
@@ -704,16 +704,16 @@ MonoBehaviour:
     baseValue: 0
     modifiers: 
   damage:
-    baseValue: 1
+    baseValue: 10
     modifiers: 
   critChance:
     baseValue: 0
     modifiers: 
   critPower:
-    baseValue: 0
+    baseValue: 150
     modifiers: 
   maxHealth:
-    baseValue: 100
+    baseValue: 45
     modifiers: 
   armor:
     baseValue: 0
@@ -728,7 +728,7 @@ MonoBehaviour:
     baseValue: 0
     modifiers: 
   iceDamage:
-    baseValue: 1
+    baseValue: 2
     modifiers: 
   lightingDamage:
     baseValue: 0
@@ -737,7 +737,7 @@ MonoBehaviour:
   shockStrikeConfig: {fileID: 11400000, guid: ddabd98dd8e2f4247be4e06582f199f7, type: 2}
   level: 1
   percentageModifier: 0.4
-  initialSoulsDropAmount: 100
+  initialSoulsDropAmount: 5
 --- !u!114 &3023183467518170880
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -767,21 +767,6 @@ MonoBehaviour:
   igniteFx: {fileID: 1427048706113579005}
   chillFx: {fileID: 1905653191365372923, guid: 232bb00d0f9b2f64a85b16bb88dac708, type: 3}
   shockFx: {fileID: 698393417793007381, guid: 3a4709d650a25f44b9abb73ba8f4aaed, type: 3}
---- !u!114 &4795927575025898893
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8684695651257718815}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3b08a18df41db074da2b02a4ca061947, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  maxItemsToDrop: 2
-  itemList: []
-  itemDropConfig: {fileID: 11400000, guid: 27ecf18bcbb2bae49b75deed81e0bc0a, type: 2}
 --- !u!114 &4078269123703412013
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -822,6 +807,25 @@ MonoBehaviour:
   attackCooldown: 0
   attackCooldownRange: {x: 1, y: 2}
   config: {fileID: 11400000, guid: 2b23eaa2ef3da0647a558ecd3be8a26a, type: 2}
+--- !u!114 &3496921247831902397
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8684695651257718815}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1bb9cd6b11c1445dbbebfac5646d62e9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemDropConfig: {fileID: 11400000, guid: 27ecf18bcbb2bae49b75deed81e0bc0a, type: 2}
+  maxItemsToDrop: 1
+  dropList:
+  - item: {fileID: 11400000, guid: 31c49433047bf6d49aed80da8565d32a, type: 2}
+    dropChance: 30
+  - item: {fileID: 11400000, guid: c8057499c5ffae64fba425aa6986c484, type: 2}
+    dropChance: 20
 --- !u!1 &8916576299040146534
 GameObject:
   m_ObjectHideFlags: 0

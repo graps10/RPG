@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   effectDescription: Gives fire buff for 5 seconds.
   buffType: 11
-  buffAmount: 15
-  buffDuration: 5
+  buffAmount: 10
+  buffDuration: 15

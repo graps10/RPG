@@ -16,9 +16,8 @@ MonoBehaviour:
   ItemName: Armor flask
   Icon: {fileID: -165920498, guid: a9ca9a41598dd2e44b125928045c518f, type: 3}
   ItemID: e345c2647f7fc0e4e86fc513496a31fc
-  DropChance: 0
   equipmentType: 3
-  itemCooldown: 10
+  itemCooldown: 30
   itemEffects:
   - {fileID: 11400000, guid: 71b76a3caaf6b8b4db6f140ff290b69f, type: 2}
   - {fileID: 11400000, guid: 09f2dd6cf87181844a70b6504c23981c, type: 2}
@@ -36,4 +35,8 @@ MonoBehaviour:
   fireDamage: 0
   iceDamage: 0
   lightingDamage: 0
-  craftingMaterials: []
+  craftingMaterials:
+  - data: {fileID: 11400000, guid: 8e44877b707ab364586b5733909184b1, type: 2}
+    stackSize: 1
+  - data: {fileID: 11400000, guid: a7c301e88a476cd4b8f7a81884d042d2, type: 2}
+    stackSize: 10

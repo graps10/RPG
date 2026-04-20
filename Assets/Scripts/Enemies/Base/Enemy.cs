@@ -149,6 +149,9 @@ namespace Enemies.Base
 
         public virtual RaycastHit2D IsPlayerDetected()
         {
+            if (Managers.PlayerManager.Instance.PlayerGameObject.Stats.IsDead)
+                return default;
+            
             RaycastHit2D playerDetected = Physics2D.Raycast(wallCheck.position, 
                 Vector2.right * FacingDir, playerDetectionRange, whatIsPlayer);
             RaycastHit2D wallDetected = Physics2D.Raycast(wallCheck.position, 

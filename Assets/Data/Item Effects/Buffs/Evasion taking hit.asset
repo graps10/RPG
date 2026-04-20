@@ -15,4 +15,4 @@ MonoBehaviour:
   effectDescription: Increase evasion on each hit taken.
   buffType: 9
   buffAmount: 15
-  buffDuration: 1.5
+  buffDuration: 10
