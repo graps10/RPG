@@ -21,9 +21,6 @@ namespace Items_and_Inventory
         public Sprite Icon;
         public string ItemID;
 
-        [Range(0, 100)]
-        public float DropChance;
-
         protected StringBuilder sb = new();
 
         private void OnValidate()

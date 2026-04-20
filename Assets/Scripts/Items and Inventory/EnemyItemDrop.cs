@@ -2,23 +2,30 @@
 
 namespace Items_and_Inventory
 {
+    [System.Serializable]
+    public class EnemyDropData
+    {
+        public ItemData item;
+        [Range(0, 100)] public float dropChance;
+    }
+    
     public class EnemyItemDrop : ItemDrop
     {
         [SerializeField] private int maxItemsToDrop;
-        [SerializeField] private ItemData[] itemList;
+        [SerializeField] private EnemyDropData[] dropList;
 
-        public virtual void GenerateDrop()
+        public override void GenerateDrop()
         {
-            if (itemList.Length == 0)
+            if (dropList == null || dropList.Length == 0)
             {
                 Debug.Log("Item Pool is empty. Enemy cannot drop items.");
                 return;
             }
-
-            foreach (ItemData item in itemList)
+            
+            foreach (EnemyDropData dropData in dropList)
             {
-                if (item != null && Random.Range(0, 100) < item.DropChance)
-                    _possibleDrop.Add(item);
+                if (dropData.item != null && Random.Range(0, 100) < dropData.dropChance)
+                    _possibleDrop.Add(dropData.item);
             }
 
             for (int i = 0; i < maxItemsToDrop; i++)
