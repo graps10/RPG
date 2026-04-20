@@ -10,7 +10,7 @@ namespace Enemies.Base
     [RequireComponent(typeof(CapsuleCollider2D))]
     [RequireComponent(typeof(EnemyStats))]
     [RequireComponent(typeof(EntityFX))]
-    [RequireComponent(typeof(ItemDrop))]
+    [RequireComponent(typeof(EnemyItemDrop))]
     public class Enemy : Entity.Entity
     {
         [SerializeField] protected LayerMask whatIsPlayer;

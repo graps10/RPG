@@ -15,7 +15,7 @@ namespace Stats
         [SerializeField] private int initialSoulsDropAmount = 100;
         
         private Enemy _enemy;
-        private ItemDrop _myDropSystem;
+        private EnemyItemDrop _myDropSystem;
         
         private Stat _soulsDropAmount = new();
 
@@ -23,7 +23,7 @@ namespace Stats
         {
             base.Awake();
             _enemy = GetComponent<Enemy>();
-            _myDropSystem = GetComponent<ItemDrop>();
+            _myDropSystem = GetComponent<EnemyItemDrop>();
         }
 
         protected override void OnEnable()

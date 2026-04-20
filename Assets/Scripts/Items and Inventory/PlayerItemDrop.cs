@@ -5,12 +5,11 @@ namespace Items_and_Inventory
 {
     public class PlayerItemDrop : ItemDrop
     {
-        // TODO: make item pool not serializable for player
         [Header("Player's Drop")]
         [SerializeField] private float chanceToLooseItems;
         [SerializeField] private float chanceToLooseMaterials;
         
-        private List<InventoryItem> _itemsToUnequipment = new();
+        private List<InventoryItem> _itemsToUnequip = new();
         private List<InventoryItem> _materialsToLoose = new();
 
         public override void GenerateDrop()
@@ -18,7 +17,7 @@ namespace Items_and_Inventory
             GenerateEquipmentToDrop();
             GenerateMaterialsToDrop();
 
-            _itemsToUnequipment.Clear();
+            _itemsToUnequip.Clear();
             _materialsToLoose.Clear();
         }
 
@@ -29,12 +28,12 @@ namespace Items_and_Inventory
                 if (Random.Range(0, 100) <= chanceToLooseItems)
                 {
                     DropItem(item.GetData());
-                    _itemsToUnequipment.Add(item);
+                    _itemsToUnequip.Add(item);
                 }
             }
 
-            for (int i = 0; i < _itemsToUnequipment.Count; i++)
-                Inventory.Instance.UnequipItem(_itemsToUnequipment[i].GetData() as ItemData_Equipment);
+            for (int i = 0; i < _itemsToUnequip.Count; i++)
+                Inventory.Instance.UnequipItem(_itemsToUnequip[i].GetData() as ItemData_Equipment);
         }
 
         private void GenerateMaterialsToDrop()
