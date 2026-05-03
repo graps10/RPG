@@ -1,6 +1,7 @@
 using Cinemachine;
 using Core.ObjectPool;
 using Core.ObjectPool.Configs.FX;
+using UI_Elements;
 using UnityEngine;
 
 namespace Components.FX
@@ -32,6 +33,8 @@ namespace Components.FX
 
         public void ScreenShake(Vector3 shakePower)
         {
+            if (!OptionsUI.CameraShake) return;
+
             _screenShake.m_DefaultVelocity = new Vector3(shakePower.x * player.FacingDir, shakePower.y) * shakeMultiplier;
             _screenShake.GenerateImpulse();
         }

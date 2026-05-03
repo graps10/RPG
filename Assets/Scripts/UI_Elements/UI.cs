@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using Components.Audio;
 using Core.Save_and_Load;
 using Managers;
@@ -9,7 +8,7 @@ using UnityEngine.UI;
 
 namespace UI_Elements
 {
-    public class UI : MonoBehaviour, ISaveManager
+    public class UI : MonoBehaviour
     {
         private const float End_Text_Delay = 1f;
         private const float Restart_Button_Delay = 1.5f;
@@ -145,42 +144,20 @@ namespace UI_Elements
 
         #region Options
 
-        [SerializeField] private VolumeSlider[] volumeSettings;
-        [SerializeField] private Toggle showHealthBarToggle;
+        // The "Save & Exit" button lives on the options panel but drives scene management,
+        // so it stays here in UI rather than in OptionsUI.
         [SerializeField] private Button saveAndExitButton;
-        
-        public static bool ShowHealthBar { get; private set; } = true;
 
         private void OnEnable()
         {
-            if (showHealthBarToggle != null)
-                showHealthBarToggle.onValueChanged.AddListener(TogglePlayerHealthBar);
-            
             if (saveAndExitButton != null)
                 saveAndExitButton.onClick.AddListener(SaveAndExit);
         }
 
         private void OnDisable()
         {
-            if (showHealthBarToggle != null)
-                showHealthBarToggle.onValueChanged.RemoveListener(TogglePlayerHealthBar);
-            
             if (saveAndExitButton != null)
                 saveAndExitButton.onClick.RemoveListener(SaveAndExit);
-        }
-
-        private void TogglePlayerHealthBar(bool isOn)
-        {
-            ShowHealthBar = isOn;
-            
-            if (PlayerManager.Instance != null && PlayerManager.Instance.PlayerGameObject != null)
-            {
-                HealthBar playerHealthBar =
-                    PlayerManager.Instance.PlayerGameObject.GetComponentInChildren<HealthBar>(true);
-
-                if (playerHealthBar != null)
-                    playerHealthBar.gameObject.SetActive(isOn);
-            }
         }
 
         private void SaveAndExit()
@@ -192,53 +169,13 @@ namespace UI_Elements
         private IEnumerator LoadMainMenuCoroutine()
         {
             fadeScreen.FadeIn();
-            
-            yield return new WaitForSecondsRealtime(Load_Scene_Fade_Duration); 
-            
+
+            yield return new WaitForSecondsRealtime(Load_Scene_Fade_Duration);
+
             if (GameManager.Instance != null)
                 GameManager.PauseGame(false);
-            
+
             SceneManager.LoadScene("MainMenu");
-        }
-
-        public void LoadData(GameData data)
-        {
-            ShowHealthBar = data.ShowPlayerHealthBar;
-
-            if (showHealthBarToggle != null)
-            {
-                showHealthBarToggle.onValueChanged.RemoveListener(TogglePlayerHealthBar);
-                showHealthBarToggle.isOn = ShowHealthBar;
-                showHealthBarToggle.onValueChanged.AddListener(TogglePlayerHealthBar);
-            }
-
-            foreach (KeyValuePair<string, float> pair in data.GetVolumeSettings())
-            {
-                foreach (VolumeSlider item in volumeSettings)
-                {
-                    if (item.GetParameter() == pair.Key)
-                    {
-                        item.LoadSlider(pair.Value);
-
-                        if (item.GetParameter() == AudioManager.MIXER_BGM)
-                            AudioManager.Instance.SetupBGMVolume(pair.Value);
-                        else
-                            AudioManager.Instance.SetupSFXVolume(pair.Value);
-                    }
-                }
-            }
-        }
-
-        public void SaveData(ref GameData data)
-        {
-            data.SetShowPlayerHealthBar(ShowHealthBar);
-
-            data.GetVolumeSettings().Clear();
-
-            foreach (VolumeSlider item in volumeSettings)
-            {
-                data.GetVolumeSettings().Add(item.GetParameter(), item.GetSlider().value);
-            }
         }
 
         #endregion

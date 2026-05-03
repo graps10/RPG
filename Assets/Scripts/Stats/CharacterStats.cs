@@ -4,6 +4,7 @@ using Components.FX;
 using Controllers.Skill_Controllers;
 using Core.ObjectPool.Configs.FX;
 using Enemies.Base;
+using UI_Elements;
 using UnityEngine;
 using PoolManager = Core.ObjectPool.PoolManager;
 using Random = UnityEngine.Random;
@@ -322,7 +323,8 @@ namespace Stats
         
             if (_fx != null && damage > 0)
             {
-                _fx.CreatePopUpText(damage.ToString());
+                if (OptionsUI.ShowDamageNumbers)
+                    _fx.CreatePopUpText(damage.ToString());
                 GetComponent<Entity.Entity>().DamageImpact();
                 _fx.StartCoroutine("FlashFX");
             }

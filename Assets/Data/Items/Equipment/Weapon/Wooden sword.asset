@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ItemType: 1
   ItemName: Wooden sword
-  Icon: {fileID: 1025091068, guid: a9ca9a41598dd2e44b125928045c518f, type: 3}
+  Icon: {fileID: -1055781779, guid: be55291aae08d434db3da3b59db3ab4a, type: 3}
   ItemID: 53b3c5738a9759749b156026fd98478c
   equipmentType: 0
   itemCooldown: 0

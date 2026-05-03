@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: Vampier's sword
   m_EditorClassIdentifier: 
   ItemType: 1
-  ItemName: Vampier's swprd
-  Icon: {fileID: -1944902997, guid: a9ca9a41598dd2e44b125928045c518f, type: 3}
+  ItemName: Vampier's sword
+  Icon: {fileID: 678717410, guid: be55291aae08d434db3da3b59db3ab4a, type: 3}
   ItemID: 35ebf87b80cb42b46b35a75e4ac4d408
   equipmentType: 0
   itemCooldown: 0

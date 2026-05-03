@@ -30,7 +30,7 @@ namespace Stats
                 Debug.LogWarning("InGameUI not found!");
             
             HealthBar myHealthBar = GetComponentInChildren<HealthBar>();
-            if(!UI.ShowHealthBar)
+            if(!OptionsUI.ShowHealthBar)
                 myHealthBar.gameObject.SetActive(false);
         }
 

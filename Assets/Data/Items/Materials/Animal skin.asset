@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ItemType: 0
   ItemName: Animal skin
-  Icon: {fileID: -973012730, guid: a9ca9a41598dd2e44b125928045c518f, type: 3}
+  Icon: {fileID: -30923116, guid: be55291aae08d434db3da3b59db3ab4a, type: 3}
   ItemID: 31c49433047bf6d49aed80da8565d32a

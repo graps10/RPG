@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ItemType: 1
   ItemName: Amulet of God
-  Icon: {fileID: -245851270, guid: a9ca9a41598dd2e44b125928045c518f, type: 3}
+  Icon: {fileID: 1501868837, guid: be55291aae08d434db3da3b59db3ab4a, type: 3}
   ItemID: 7e3cbe6980b75464392d5d10bb651ff0
   equipmentType: 2
   itemCooldown: 0

@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ItemType: 0
   ItemName: Wood
-  Icon: {fileID: 691979374, guid: a9ca9a41598dd2e44b125928045c518f, type: 3}
+  Icon: {fileID: -293499293, guid: be55291aae08d434db3da3b59db3ab4a, type: 3}
   ItemID: c8057499c5ffae64fba425aa6986c484

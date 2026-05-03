@@ -73,7 +73,9 @@ namespace Core.Save_and_Load
 
         private static List<ISaveManager> FindAllSaveManagers()
         {
-            IEnumerable<ISaveManager> saveManagers = FindObjectsOfType<MonoBehaviour>().OfType<ISaveManager>();
+            // includeInactive: true — ensures ISaveManager components on initially-inactive
+            // GameObjects (e.g. OptionsUI on the hidden options panel) are still discovered.
+            IEnumerable<ISaveManager> saveManagers = FindObjectsOfType<MonoBehaviour>(true).OfType<ISaveManager>();
             return new List<ISaveManager>(saveManagers);
         }
     }

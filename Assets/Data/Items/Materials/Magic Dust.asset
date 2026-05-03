@@ -14,6 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ItemType: 0
   ItemName: Magic Dust
-  Icon: {fileID: 600882348, guid: a9ca9a41598dd2e44b125928045c518f, type: 3}
+  Icon: {fileID: -1969949487, guid: be55291aae08d434db3da3b59db3ab4a, type: 3}
   ItemID: 2ce79669c8af36e4c90ce30a84cfdc28
-  DropChance: 0

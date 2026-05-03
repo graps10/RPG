@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ItemType: 1
   ItemName: Rogue's jacket
-  Icon: {fileID: 957708663, guid: a9ca9a41598dd2e44b125928045c518f, type: 3}
+  Icon: {fileID: -1145925287, guid: be55291aae08d434db3da3b59db3ab4a, type: 3}
   ItemID: 29e04b4dc8f0e484ca394ec4e7032af5
   equipmentType: 1
   itemCooldown: 0
