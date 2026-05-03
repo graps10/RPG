@@ -67,8 +67,18 @@ namespace Enemies.Base.States
 
         protected virtual void ChasePlayer()
         {
+            // Safety check: if there's no ground ahead, don't follow the player off ledges.
+            // Mirrors the same check in EnemyMoveState to prevent enemies falling into pits
+            // when chasing a player who crossed to another platform or chunk.
+            if (!enemy.IsGroundDetected())
+            {
+                enemy.SetZeroVelocity();
+                stateMachine.ChangeState(enemy.IdleState);
+                return;
+            }
+
             var hit = enemy.IsPlayerDetected();
-            
+
             if (hit && hit.distance < enemy.GetAttackDistance() - ATTACK_DISTANCE_THRESHOLD)
                 enemy.Anim.SetFloat(AnimatorHashes.XVelocity, 0);
             else
