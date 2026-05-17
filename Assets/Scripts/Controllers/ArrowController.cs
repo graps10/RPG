@@ -1,5 +1,4 @@
 using Core.ObjectPool;
-using Core.ObjectPool.Configs;
 using Core.ObjectPool.Configs.Controllers;
 using Core.Utilities;
 using Stats;
@@ -10,18 +9,18 @@ namespace Controllers
     public class ArrowController : PooledObject
     {
         private const int Arrow_Flip_Multiplier = -1;
-        
+
         private Rigidbody2D _rb;
         private CapsuleCollider2D _cd;
         private ParticleSystem _trailFx;
-    
+
         private CharacterStats _myStats;
         private ArrowPoolConfig _config;
 
         private LayerMask _targetLayer;
-    
+
         private float _xVelocity;
-    
+
         private bool _canMove;
         private bool _flipped;
 
@@ -31,18 +30,18 @@ namespace Controllers
             _cd = GetComponent<CapsuleCollider2D>();
             _trailFx = GetComponentInChildren<ParticleSystem>();
         }
-        
-        private void OnEnable() 
+
+        private void OnEnable()
         {
             _rb.isKinematic = false;
             _rb.constraints = RigidbodyConstraints2D.None;
-            
+
             _cd.enabled = false;
             _canMove = false;
             _flipped = false;
-    
+
             _trailFx.Play();
-            
+
             CancelInvoke(nameof(ReturnToPool));
         }
 
@@ -57,7 +56,7 @@ namespace Controllers
             _trailFx.Stop();
             _targetLayer = _config.WhatIsPlayer;
             transform.parent = null;
-            
+
             CancelInvoke();
             base.ReturnToPool();
         }
@@ -66,26 +65,30 @@ namespace Controllers
         {
             if (((1 << collision.gameObject.layer) & _targetLayer) != 0)
             {
-                /*collision.GetComponent<CharacterStats>()?.TakeDamage(damage);*/
-                _myStats.DoDamage(collision.GetComponent<CharacterStats>());
+                CharacterStats targetStats =
+                    collision.GetComponent<CharacterStats>() ??
+                    collision.GetComponentInParent<CharacterStats>();
+
+                _myStats.DoDamage(targetStats);
                 StuckInto(collision);
             }
-        
-            if (((1 << collision.gameObject.layer) & _config.WhatIsGround) != 0)
+            else if (((1 << collision.gameObject.layer) & _config.WhatIsGround) != 0)
+            {
                 StuckInto(collision);
+            }
         }
 
         public void SetupArrow(CharacterStats myStats, ArrowPoolConfig config, int facingDir)
         {
             _myStats = myStats;
             _config = config;
-    
+
             _xVelocity = _config.Speed * facingDir;
-            _targetLayer = _config.WhatIsPlayer;  
-            
+            _targetLayer = _config.WhatIsPlayer;
+
             _cd.enabled = true;
             _canMove = true;
-            
+
             Invoke(nameof(ReturnToPool), _config.MissReturnDelay);
         }
 
@@ -99,6 +102,25 @@ namespace Controllers
 
             transform.Rotate(TransformUtils.FlipAngle);
             _targetLayer = _config.WhatIsEnemy;
+            
+            Unstick();
+        }
+
+        private void Unstick()
+        {
+            transform.parent = null;
+
+            _rb.isKinematic = false;
+            _rb.constraints = RigidbodyConstraints2D.None;
+
+            _cd.enabled = true;
+            _canMove = true;
+
+            if (!_trailFx.isPlaying)
+                _trailFx.Play();
+
+            CancelInvoke(nameof(ReturnToPool));
+            Invoke(nameof(ReturnToPool), _config.MissReturnDelay);
         }
 
         private void StuckInto(Collider2D collision)
@@ -107,10 +129,10 @@ namespace Controllers
             _canMove = false;
             _rb.isKinematic = true;
             _rb.constraints = RigidbodyConstraints2D.FreezeAll;
-            
+
             transform.parent = collision.transform;
             _trailFx.Stop();
-            
+
             CancelInvoke(nameof(ReturnToPool));
             Invoke(nameof(ReturnToPool), _config.HitReturnDelay);
         }

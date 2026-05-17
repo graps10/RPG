@@ -30,7 +30,7 @@ namespace Core.Save_and_Load
 
         public GameData()
         {
-            SetCurrency(1000000);
+            SetCurrency(0);
             SetLostCurrencyAmount(0);
             showPlayerHealthBar = true;
             //SetSpawnLostCurrencyRange(Vector2.zero);

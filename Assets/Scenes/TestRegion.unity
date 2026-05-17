@@ -4900,9 +4900,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   skillCost: 200
   skillName: Explosion
-  skillDescription: 'Crystal can explode.
-
-    [Only one crystal upgrade can be chosen]'
+  skillDescription: "Crystal can explode. \nDamage depends on your magic stats.\n[Only
+    one crystal upgrade can be chosen]"
   lockedSkillColor: {r: 0.335849, g: 0.335849, b: 0.335849, a: 1}
   shouldBeUnlocked:
   - {fileID: 643378564}
